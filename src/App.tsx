@@ -1,21 +1,17 @@
 import './App.css';
-import HamburgerBtn from './components/common/HamburgerBtn';
-import Logo from './components/common/Logo';
-import ProductCard from './components/common/ProductCard';
-import Searchbar from './components/common/Searchbar';
-import Header from './components/widgets/Header';
-import Tab from './components/widgets/Tab';
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import BestPage from './pages/BestPage';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
-    <div className=" bg-Grey-30 min-h-screen">
-      <ProductCard />
-      <Logo />
-      <HamburgerBtn />
-      <Searchbar />
-      <Header />
-      <Tab />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/best" element={<BestPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
