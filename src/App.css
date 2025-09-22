@@ -1,42 +1,101 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import "tailwindcss";
+
+
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* GRAYSCALE */
+  --color-Grey-05: #ffffff;
+  --color-Grey-10: #f5f5f5;
+  --color-Grey-20: #e3e3e3;
+  --color-Grey-30: #d0d0d0;
+  --color-Grey-40: #b9b9b9;
+  --color-Grey-50: #a8a8a8;
+  --color-Grey-60: #9a9a9a;
+  --color-Grey-70: #606060;
+  --color-Grey-80: #404040;
+  --color-Grey-90: #1f1f1f;
+
+  /* BG GRAYSCALE */
+  --color-Bgrey-10: #F6F7FB;
+  --color-Bgrey-20: #D1D7E4;
+  --color-Bgrey-30: #ADB7CB;
+  --color-Bgrey-40: #7E8AA3;
+  --color-Bgrey-50: #3A4254;
+
+  /* PRIMARY */
+  --color-Blue-05: #EDF5FE;
+  --color-Blue-10: #D1E7FF;
+  --color-Blue-20: #95C6FF;
+  --color-Blue-30: #65ADFF;
+  --color-Blue-40: #1F83F8;
+  --color-Blue-50: #006DEB;
+  --color-Blue-60: #0059BF;
+  --color-Blue-70: #004CA4;
+  --color-Blue-80: #003E86;
+  --color-Blue-90: #002856;
+
+  /* OTHER */
+  --color-HITUP_Blue: #007CEE;
+  --color-HITUP_Red: #FB5135;
+  --color-HITUP_Orange: #FC9127;
+
+  /* SYSTEM */
+  --color-Error: #E41515;
+
+  /* TYPOGRAPHY */
+  --color-foreground-default: #000000;
+  --color-foreground-secondary: #FF6C6C;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+@theme {
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --color-white: var(--color-white);
+  --color-black: var(--color-black);
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+  /* GRAYSCALE */
+  --color-Grey-05: var(--color-Grey-05);
+  --color-Grey-10: var(--color-Grey-10);
+  --color-Grey-20: var(--color-Grey-20);
+  --color-Grey-30: var(--color-Grey-30);
+  --color-Grey-40: var(--color-Grey-40);
+  --color-Grey-50: var(--color-Grey-50);
+  --color-Grey-60: var(--color-Grey-60);
+  --color-Grey-70: var(--color-Grey-70);
+  --color-Grey-80: var(--color-Grey-80);
+  --color-Grey-90: var(--color-Grey-90);
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
+  /* BG GRAYSCALE */
+  --color-Bgrey-10: var(--color-Bgrey-10);
+  --color-Bgrey-20: var(--color-Bgrey-20);
+  --color-Bgrey-30: var(--color-Bgrey-30);
+  --color-Bgrey-40: var(--color-Bgrey-40);
+  --color-Bgrey-50: var(--color-Bgrey-50);
 
-.card {
-  padding: 2em;
-}
+  /* PRIMARY */
+  --color-Blue-05: var(--color-Blue-05);
+  --color-Blue-10: var(--color-Blue-10);
+  --color-Blue-20: var(--color-Blue-20);
+  --color-Blue-30: var(--color-Blue-30);
+  --color-Blue-40: var(--color-Blue-40);
+  --color-Blue-50: var(--color-Blue-50);
+  --color-Blue-60: var(--color-Blue-60);
+  --color-Blue-70: var(--color-Blue-70);
+  --color-Blue-80: var(--color-Blue-80);
+  --color-Blue-90: var(--color-Blue-90);
 
-.read-the-docs {
-  color: #888;
+  /* OTHER */
+  --color-HITUP_Blue: var(--color-HITUP_Blue);
+  --color-HITUP_Red: var(--color-HITUP_Red);
+  --color-HITUP_Orange: var(--color-HITUP_Orange);
+
+  /* SYSTEM */
+  --color-Error: var(--color-Error);
+
+  /* TYPOGRAPHY */
+  --color-foreground-default: var(--color-foreground-default);
+  --color-foreground-secondary: var(--color-foreground-secondary);
 }
