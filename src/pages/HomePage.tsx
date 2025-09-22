@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div className=" bg-Grey-30 min-h-screen">
       <Tab />
-      <ProductCard />
+      <ProductCard label="new" color="blue" />
       <Logo />
       <HamburgerBtn />
       <Searchbar />
