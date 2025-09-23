@@ -1,8 +1,8 @@
-import HamburgerBtn from '../common/HamburgerBtn';
-import CartIcon from '../common/icon/CartIcon';
-import ProfileIcon from '../common/icon/ProfileIcon';
-import Logo from '../common/Logo';
-import Searchbar from '../common/Searchbar';
+import HamburgerBtn from '../HamburgerBtn';
+import CartIcon from '../icon/CartIcon';
+import ProfileIcon from '../icon/ProfileIcon';
+import Logo from '../Logo';
+import Searchbar from '../Searchbar';
 
 const Header = () => {
   return (

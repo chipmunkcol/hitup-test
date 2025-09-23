@@ -1,4 +1,4 @@
-import Tab from '../components/widgets/Tab';
+import Tab from '../components/common/widgets/Tab';
 
 const BestPage = () => {
   return (

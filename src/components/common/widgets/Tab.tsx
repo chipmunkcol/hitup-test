@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TYPOGRAPHY } from '../../styles/typography';
+import { TYPOGRAPHY } from '../../../styles/typography';
 
 const Tab = () => {
   const pathname = window.location.pathname;
