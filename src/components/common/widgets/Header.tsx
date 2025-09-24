@@ -2,7 +2,7 @@ import HamburgerBtn from '../HamburgerBtn';
 import CartIcon from '../icon/CartIcon';
 import ProfileIcon from '../icon/ProfileIcon';
 import Logo from '../Logo';
-import Searchbar from '../Searchbar';
+import SearchField from './SearchField';
 
 const Header = () => {
   return (
@@ -12,7 +12,8 @@ const Header = () => {
         <Logo />
       </div>
       <div className="flex gap-[26px]">
-        <Searchbar />
+        {/* <Searchbar /> */}
+        <SearchField />
         <div className="flex  items-center gap-[28px]">
           <div className="flex gap-[14px] items-center cursor-pointer">
             <ProfileIcon />

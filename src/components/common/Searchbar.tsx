@@ -5,12 +5,14 @@ interface SearchbarProps extends React.HTMLAttributes<HTMLInputElement> {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 const Searchbar = ({
   value,
   onChange,
   placeholder,
+  ref,
   ...props
 }: SearchbarProps) => {
   return (
@@ -22,6 +24,7 @@ const Searchbar = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          ref={ref}
           {...props}
         />
       </div>

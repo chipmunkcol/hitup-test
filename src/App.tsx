@@ -12,6 +12,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/best" element={<BestPage />} />
+          <Route path="/new" element={<div>신상품 페이지</div>} />
+          <Route path="/product/:id" element={<div>상품 상세 페이지</div>} />
+
+          <Route path="*" element={<div>없는 페이지</div>} />
         </Routes>
       </Layout>
     </BrowserRouter>

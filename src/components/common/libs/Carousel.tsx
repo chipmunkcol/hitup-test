@@ -33,14 +33,9 @@ export function Carousel() {
     <section className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {/* {slides.map((index) => (
-            <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">{index + 1}</div>
-            </div>
-          ))} */}
           {slides.map((image, index) => (
-            <div className="embla__slide" key={index}>
-              <img src={image} alt="slider-image" />
+            <div className="embla__slide h-full" key={index}>
+              <img className="h-full" src={image} alt="slider-image" />
             </div>
           ))}
         </div>

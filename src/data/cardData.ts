@@ -10,6 +10,7 @@ export interface Product {
 
 export const 신상품 = [
   {
+    id: 1,
     title: '아부가르시아',
     description: '맥스Z 더블핸들, 선상 루어 베이트릴',
     price: 89000,
@@ -18,6 +19,7 @@ export const 신상품 = [
     freeShipping: true,
   },
   {
+    id: 2,
     title: '999피싱',
     description: '쭈꾸미 갑오징어용 집어제',
     price: 14900,
@@ -25,6 +27,7 @@ export const 신상품 = [
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
   },
   {
+    id: 3,
     title: '시마노',
     description: '25년 고어텍스 레인 로우 캡 CA-0712',
     price: 61800,
@@ -32,6 +35,7 @@ export const 신상품 = [
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
   },
   {
+    id: 4,
     title: '델리온',
     description: '델리리그 2세대',
     price: 4500,
@@ -39,6 +43,7 @@ export const 신상품 = [
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
   },
   {
+    id: 5,
     title: '포세이돈코리아',
     description: '듀얼 고급 카운터기',
     price: 13000,
