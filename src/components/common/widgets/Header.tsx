@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import HamburgerBtn from '../HamburgerBtn';
 import CartIcon from '../icon/CartIcon';
 import ProfileIcon from '../icon/ProfileIcon';
@@ -5,11 +6,16 @@ import Logo from '../Logo';
 import SearchField from './SearchField';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const goMain = () => {
+    navigate('/');
+  };
+
   return (
     <header className="p-[20px] flex justify-between">
       <div className="flex  items-center gap-[33px]">
         <HamburgerBtn />
-        <Logo />
+        <Logo onClick={goMain} />
       </div>
       <div className="flex gap-[26px]">
         {/* <Searchbar /> */}

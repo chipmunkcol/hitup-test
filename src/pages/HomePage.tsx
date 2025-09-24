@@ -5,6 +5,11 @@ import More from '../components/common/widgets/More';
 import Tab from '../components/common/widgets/Tab';
 import { 신상품 } from '../data/cardData';
 
+import img1 from '../assets/images/Banner_carousel_desktop1.png';
+import img2 from '../assets/images/Banner_carousel_desktop2.png';
+
+const slides = [img1, img2];
+
 const HomePage = () => {
   const navigate = useNavigate();
 
@@ -12,7 +17,7 @@ const HomePage = () => {
     <div className="w-full">
       <Tab />
       <div className="w-full h-[440px] bg-Bgrey-40">
-        <Carousel />
+        <Carousel images={slides} />
       </div>
       <More
         title="신상품 특가"

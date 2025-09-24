@@ -7,12 +7,12 @@ import {
   usePrevNextButtons,
 } from './EmblaCarouselArrowButtons';
 import { TYPOGRAPHY } from '../../../styles/typography';
-import img1 from '../../../assets/images/Banner_carousel_desktop1.png';
-import img2 from '../../../assets/images/Banner_carousel_desktop2.png';
 
-const slides = [img1, img2];
+interface CarouselProps {
+  images: string[];
+}
 
-export function Carousel() {
+export function Carousel({ images }: CarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const {
     prevBtnDisabled,
@@ -33,9 +33,9 @@ export function Carousel() {
     <section className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.map((image, index) => (
-            <div className="embla__slide h-full" key={index}>
-              <img className="h-full" src={image} alt="slider-image" />
+          {images?.map((image, index) => (
+            <div className="embla__slide w-full h-full" key={index}>
+              <img className="w-full h-full" src={image} alt="slider-image" />
             </div>
           ))}
         </div>

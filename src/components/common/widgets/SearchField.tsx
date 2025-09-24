@@ -57,7 +57,7 @@ const SearchField = () => {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="w-[400px] bg-white z-10 absolute top-[57px] rounded-[16px] pb-[16px] px-[20px]"
+          className="w-[400px] bg-white z-999 absolute top-[57px] rounded-[16px] pb-[16px] px-[20px]"
         >
           <div className="flex justify-between py-[12px]">
             <div className={TYPOGRAPHY.Subheading16Bold}>최근 검색어</div>
