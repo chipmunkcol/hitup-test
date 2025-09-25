@@ -11,6 +11,10 @@ const Header = () => {
     navigate('/');
   };
 
+  const goCart = () => {
+    navigate('/cart');
+  };
+
   return (
     <header className="p-[20px] flex justify-between">
       <div className="flex  items-center gap-[33px]">
@@ -25,7 +29,10 @@ const Header = () => {
             <ProfileIcon />
             <div>마이페이지</div>
           </div>
-          <div className="flex gap-[12px] items-center cursor-pointer">
+          <div
+            className="flex gap-[12px] items-center cursor-pointer"
+            onClick={goCart}
+          >
             <CartIcon />
             <div>장바구니</div>
           </div>

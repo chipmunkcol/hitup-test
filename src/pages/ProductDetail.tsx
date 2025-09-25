@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { TumbCarousel } from '../components/common/libs/TumbCarousel';
 import DropdownInfo from '../components/common/widgets/DropdownInfo';
+import { useQuery } from '@tanstack/react-query';
+import { getProduct } from '../utils/api/api';
 
 const 배송교환반품안내 =
   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -9,114 +11,24 @@ const 상품고시정보안내 =
 const 판매자정보 =
   '본 상품은 해당 판매자가 직접 등록·관리하고 있으며, 판매자 상호, 대표자명, 사업자등록번호, 통신판매업 신고번호, 소재지 및 고객센터 연락처 등 필수 정보는 관련 법령에 따라 상세페이지 하단 ‘판매자 정보’에서 확인하실 수 있습니다.';
 
-const data = {
-  id: 1,
-  브랜드명: '브랜드 명',
-  상품명: '상품 명',
-  가격: 10000,
-  할인율: 10,
-  이미지: [
-    'https://picsum.photos/200',
-    'https://picsum.photos/300',
-    'https://picsum.photos/400',
-    'https://picsum.photos/500',
-    'https://picsum.photos/600',
-    'https://picsum.photos/700',
-    'https://picsum.photos/800',
-  ],
-  무료배송: true,
-  별점: 4.5,
-  옵션: ['옵션 1', '옵션 2', '옵션 3'],
-  상품정보: `string 값으로 img data 가 같이 들어가는 형태가 될듯함`,
-  리뷰: [
-    {
-      id: 1,
-      작성자: '작성자',
-      작성자프로필: 'https://picsum.photos/200',
-      작성일: '2023-01-01',
-      내용: '리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.리뷰 내용입니다.',
-      별점: 5,
-      리뷰이미지: ['https://picsum.photos/200', 'https://picsum.photos/300'],
-    },
-    {
-      id: 2,
-      작성자: '작성자',
-      작성자프로필: 'https://picsum.photos/200',
-      작성일: '2023-01-01',
-      내용: '리뷰 내용입니다.',
-      별점: 4,
-      리뷰이미지: [
-        'https://picsum.photos/200',
-        'https://picsum.photos/200',
-        'https://picsum.photos/300',
-      ],
-    },
-    {
-      id: 3,
-      작성자: '작성자',
-      작성자프로필: 'https://picsum.photos/200',
-      작성일: '2023-01-01',
-      내용: '리뷰 내용입니다.',
-      별점: 3,
-      리뷰이미지: [],
-    },
-  ],
-  상품문의: [
-    {
-      id: 1,
-      문의유형: '사이즈',
-      문의상품옵션: '',
-      제목: '사이즈 문의합니다.',
-      내용: '사이즈 문의 내용입니다.',
-      이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
-      작성일: '2023-01-01',
-      답변: {
-        완료: true,
-        내용: '답변 내용입니다.',
-        완료일: '2023-01-02',
-      },
-    },
-    {
-      id: 2,
-      문의유형: '배송',
-      문의상품옵션: '',
-      제목: '배송 문의합니다.',
-      내용: '배송 문의 내용입니다.',
-      이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
-      작성일: '2023-01-01',
-      답변: {
-        완료: false,
-        내용: '',
-        완료일: '',
-      },
-    },
-    {
-      id: 3,
-      문의유형: '재입고',
-      문의상품옵션: '',
-      제목: '재입고 문의합니다.',
-      내용: '재입고 문의 내용입니다.',
-      이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
-      작성일: '2023-01-01',
-      답변: {
-        완료: false,
-        내용: '',
-        완료일: '',
-      },
-    },
-  ],
-};
-
 const ProductDetail = () => {
+  const id = 1;
+
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ['productDetail', id],
+    queryFn: () => getProduct(id),
+  });
+
   const [cuttedIndex, setCuttedIndex] = useState(1);
   const handleMore = () => {
     setCuttedIndex(3);
   };
 
   const [tab, setTab] = useState('info');
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error...</div>;
+  if (!data) return <div>상품이 존재하지 않습니다.</div>;
 
   return (
     <div className="w-full">
@@ -140,26 +52,26 @@ const ProductDetail = () => {
           {tab === 'review' && (
             <ul className="space-y-4">
               {data.리뷰.map((item) => (
-                <li className="w-full py-2 border-b flex gap-4" key={item.id}>
+                <li className="w-full py-2 border-b flex gap-4" key={item?.id}>
                   <div className="flex flex-4 gap-2">
                     <div className="w-[40px] h-[40px] rounded-full">
-                      <img src={item.작성자프로필} />
+                      <img src={item?.작성자프로필} />
                     </div>
                     <div className="flex flex-col gap-2">
                       <div className="flex gap-2">
-                        <div>{item.작성자}</div>
+                        <div>{item?.작성자}</div>
                         <div>
-                          {item.별점.toFixed(0)}*⭐ {item.별점}
+                          {item?.별점.toFixed(0)}*⭐ {item?.별점}
                         </div>
                       </div>
                       <div>옵션</div>
-                      <div>{item.내용}</div>
+                      <div>{item?.내용}</div>
                     </div>
                   </div>
                   <div className="relative flex-1">
-                    <img src={item.리뷰이미지[0]} />
+                    <img src={item?.리뷰이미지[0]} />
                     <div className="absolute bottom-0 right-0 z-10 bg-Grey-70">
-                      {item.리뷰이미지.length}
+                      {item?.리뷰이미지.length}
                     </div>
                   </div>
                 </li>
@@ -173,14 +85,14 @@ const ProductDetail = () => {
           <div className="relative w-full">
             {data.상품문의.length > 0 &&
               data.상품문의.slice(0, cuttedIndex).map((item) => (
-                <div className="flex" key={item.id}>
+                <div className="flex" key={item?.id}>
                   <div>
-                    <div>{item.문의유형}</div>
-                    <div>{item.제목}</div>
+                    <div>{item?.문의유형}</div>
+                    <div>{item?.제목}</div>
                     <div>
-                      <span>{item.답변.완료 ? '답변완료' : ''}</span>{' '}
-                      <span>{item.작성자}</span>{' '}
-                      <span>{item.답변?.완료일}</span>
+                      <span>{item?.답변.완료 ? '답변완료' : ''}</span>{' '}
+                      <span>{item?.작성자}</span>{' '}
+                      <span>{item?.답변?.완료일}</span>
                     </div>
                   </div>
                 </div>
