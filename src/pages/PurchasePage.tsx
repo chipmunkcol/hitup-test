@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAddresses, getCart } from '../utils/api/api';
-import { useEffect, useState } from 'react';
-import { groupByBrand } from '../utils/function';
 import useCart from '../hooks/useCart';
-import { useNavigate } from 'react-router-dom';
+import type { Address } from '../data/addressesData';
 
-const CartPage = () => {
+const PurchasePage = () => {
   const {
     data: cartItems,
     isError,
@@ -16,13 +14,8 @@ const CartPage = () => {
   });
 
   const {
-    allChecked,
-    brandChecked,
     brandItems,
     brandNames,
-    toggleAll,
-    toggleBrand,
-    toggleItem,
     브랜드별배송비,
     브랜드별총금액,
     총결제금액,
@@ -30,55 +23,53 @@ const CartPage = () => {
     총배송비,
   } = useCart({ data: cartItems || [] });
 
-  const { data: addresses, refetch } = useQuery({
+  const { data: addresses } = useQuery({
     queryKey: ['addressses'],
     queryFn: getAddresses,
-    enabled: false, // 자동 실행 방지
   });
   console.log('addresses: ', addresses);
 
-  const navigate = useNavigate();
-  const handlePurchase = () => {
-    refetch();
-    console.log('addresses: ', addresses);
-    if (addresses && addresses?.length === 0) {
-      const res = confirm('등록 된 배송지가 없습니다');
-      if (res) {
-        navigate('/address/add');
-      }
-    }
+  const defaultAddress =
+    addresses && (addresses.find((addr) => addr.기본배송지) || addresses[0]);
 
-    if (addresses && addresses?.length > 0) {
-      navigate('/purchase');
-    }
+  const handlePurchase = () => {
+    console.log('temp');
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
-  if (!cartItems) return <div>장바구니가 비어있습니다.</div>;
+  if (!cartItems) return <div>결제할 제품이 없습니다</div>;
 
   return (
-    <div className="w-full py-10">
-      <div>장바구니</div>
-      <div>
-        <input
-          type="checkbox"
-          checked={allChecked}
-          onChange={(e) => toggleAll(e.target.checked)}
-        />
-        <span>전체 선택</span>
+    <div className="w-full flex flex-col gap-5 py-10">
+      <div className="flex justify-between items-center">
+        <div>주문/결제</div>
       </div>
-      {/* 장바구니 상품 */}
+
+      {/* 배송지 */}
+      <div>배송지</div>
+      <div className="flex items-center justify-center">
+        <div className="p-5 w-[500px] border border-Grey-50 rounded-2xl">
+          <div className="flex justify-between">
+            <div>
+              {defaultAddress?.수령인} ({defaultAddress?.배송지명})
+            </div>
+            <button className="border border-Grey-20 px-4 rounded-lg">
+              변경
+            </button>
+          </div>
+          <div>{defaultAddress?.연락처}</div>
+          <div>
+            {defaultAddress?.주소} {defaultAddress?.상세주소}
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-5">
         {/* 브랜드별 */}
         {brandNames.map((brand, index) => (
           <div className="bg-Grey-30 p-2" key={index}>
             <div>
-              <input
-                type="checkbox"
-                checked={brandChecked(brand)}
-                onChange={(e) => toggleBrand(brand, e.target.checked)}
-              />
               <span>{brand}</span>
             </div>
             {/* 상품 목록 */}
@@ -86,11 +77,6 @@ const CartPage = () => {
               {brandItems[index]?.map((item) => {
                 return (
                   <li className="flex gap-2 bg-white p-2" key={item.id}>
-                    <input
-                      type="checkbox"
-                      checked={item.checked}
-                      onChange={(e) => toggleItem(item.id, e.target.checked)}
-                    />
                     <div className="flex gap-2 ">
                       <div className="w-[150px] h-[150px]">
                         <img
@@ -101,18 +87,13 @@ const CartPage = () => {
                       </div>
                       <div className="flex flex-col gap-2">
                         <div>{item.상품명}</div>
-                        <div>옵션: 옵션1</div>
+                        <div>옵션: {item.옵션}</div>
                         <div className="flex gap-2">
                           <div>{item.할인율}%</div>
                           <div className="line-through">{item.가격}원</div>
                           <div>
                             {item.가격 - (item.가격 * item.할인율) / 100}원
                           </div>
-                        </div>
-                        <div className="w-[300px] border flex items-center justify-between">
-                          <button>-</button>
-                          <span>1</span>
-                          <button>+</button>
                         </div>
                       </div>
                     </div>
@@ -150,4 +131,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default PurchasePage;

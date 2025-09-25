@@ -1,6 +1,9 @@
 import axios, { AxiosError } from 'axios';
+import type { Product } from '../../data/productDetailData';
+import type { CartItem } from '../../data/CartData';
+import type { Address } from '../../data/addressesData';
 
-export const getProduct = async (id: number) => {
+export const getProduct = async (id: number): Promise<Product> => {
   try {
     const response = await axios.get(`/product/${id}`);
     return response.data;
@@ -34,9 +37,9 @@ export const apiRequest = axios.create({
 export const getCart = () => apiRequest.get('/cart').then((res) => res.data);
 
 // 상품 추가
-export const addToCart = (productId: number, quantity: number) =>
-  apiRequest.post('/cart', { productId, quantity });
-
+export const addToCart = (newItem: CartItem) => {
+  return apiRequest.post('/cart', newItem);
+};
 // 상품 수정
 export const updateCartItem = (cartItemId: number, quantity: number) =>
   apiRequest.put(`/cart/${cartItemId}`, { quantity });
@@ -44,3 +47,11 @@ export const updateCartItem = (cartItemId: number, quantity: number) =>
 // 상품 삭제
 export const removeFromCart = (cartItemId: number) =>
   apiRequest.delete(`/cart/${cartItemId}`);
+
+// 배송지 관련
+export const getAddresses = (): Promise<Address[]> =>
+  apiRequest.get('/addresses').then((res) => res.data);
+
+export const addToAddress = (newAddress: Address) => {
+  return apiRequest.post('/addresses', newAddress);
+};

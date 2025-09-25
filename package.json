@@ -14,6 +14,7 @@
     "@tanstack/react-query": "^5.90.2",
     "embla-carousel-react": "^8.6.0",
     "react": "^19.1.1",
+    "react-daum-postcode": "^3.0.3",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.1",
     "tailwindcss": "^4.1.13"
@@ -43,5 +44,10 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "overrides": {
+    "react-daum-postcode": {
+      "react": "19.1.1"
+    }
   }
 }

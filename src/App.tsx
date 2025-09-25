@@ -6,6 +6,11 @@ import BestPage from './pages/BestPage';
 import HomePage from './pages/HomePage';
 import ProductDetail from './pages/ProductDetail';
 import CartPage from './pages/CartPage';
+import NewPage from './pages/NewPage';
+import PurchasePage from './pages/PurchasePage';
+import AddAddressPage from './pages/address/AddAddressPage';
+import EditAddressPage from './pages/address/EditAddressPage';
+import AddressPage from './pages/address/AddressPage';
 
 function App() {
   return (
@@ -14,10 +19,15 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/best" element={<BestPage />} />
-          <Route path="/new" element={<div>신상품 페이지</div>} />
+          <Route path="/new" element={<NewPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
 
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/address" element={<AddressPage />} />
+          <Route path="/address/add" element={<AddAddressPage />} />
+          <Route path="/address/edit/:id" element={<EditAddressPage />} />
+
+          <Route path="/purchase" element={<PurchasePage />} />
           <Route path="*" element={<div>없는 페이지</div>} />
         </Routes>
       </Layout>

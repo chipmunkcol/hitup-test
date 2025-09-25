@@ -1,7 +1,44 @@
-export const productDetailData = {
-  id: 1,
-  브랜드명: '브랜드 명',
-  상품명: '상품 명',
+export interface Product {
+  id: number;
+  브랜드명: string;
+  상품명: string;
+  가격: number;
+  할인율: number;
+  이미지: string[];
+  무료배송: boolean;
+  별점: number;
+  옵션: string[];
+  상품정보: string;
+  리뷰: {
+    id: number;
+    작성자: string;
+    작성자프로필: string;
+    작성일: string;
+    내용: string;
+    별점: number;
+    리뷰이미지: string[];
+  }[];
+  상품문의: {
+    id: number;
+    문의유형: string;
+    문의상품옵션: string;
+    제목: string;
+    내용: string;
+    이미지: string;
+    작성자: string;
+    작성일: string;
+    답변: {
+      완료: boolean;
+      내용: string;
+      완료일: string;
+    };
+  }[];
+}
+
+export const productDetailData: Product = {
+  id: 4,
+  브랜드명: 'CCCC',
+  상품명: 'C',
   가격: 10000,
   할인율: 10,
   이미지: [

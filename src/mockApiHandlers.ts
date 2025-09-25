@@ -1,6 +1,10 @@
 import { delay, http, HttpResponse } from 'msw';
 import { productDetailData } from './data/productDetailData';
-import { cardData } from './data/CartData';
+import { cardData, type CartItem } from './data/CartData';
+import { addressesData, type Address } from './data/addressesData';
+
+let cart = [...cardData];
+let addresses = [...addressesData];
 
 export const mockApiHandlers = [
   http.get('/product/:id', ({ params }) => {
@@ -21,7 +25,6 @@ export const mockApiHandlers = [
   }),
 
   http.get('/cart', async () => {
-    const cart = cardData;
     if (!cart) {
       return HttpResponse.json(
         {
@@ -31,9 +34,34 @@ export const mockApiHandlers = [
       );
     }
 
-    await delay(2000); // 0.5초 지연
+    await delay(2000); // 2초 지연
 
     return HttpResponse.json(cart);
+  }),
+
+  http.post('/cart', async ({ request }) => {
+    const newItem = await request.json();
+    console.log('newItem: ', newItem);
+    if (!newItem) {
+      return HttpResponse.json(
+        { message: '장바구니에 추가할 상품 정보가 없습니다.' },
+        { status: 400 }
+      );
+    }
+    cart = [...cart, newItem as CartItem];
+    return HttpResponse.json(newItem, { status: 201 });
+  }),
+
+  // 배송지 관련 (주소, 상세주소, 수령인, 연락처, 배송지명(선택))
+  http.get('/addresses', () => {
+    return HttpResponse.json(addresses);
+  }),
+
+  http.post('/addresses', async ({ request }) => {
+    const newAddress = await request.json();
+    console.log('newAddress: ', newAddress);
+    addresses = [...addresses, newAddress as Address];
+    return HttpResponse.json(newAddress, { status: 201 });
   }),
 
   // http.post('/todos', async ({ request }) => {

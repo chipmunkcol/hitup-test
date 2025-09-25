@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { TumbCarousel } from '../components/common/libs/TumbCarousel';
 import DropdownInfo from '../components/common/widgets/DropdownInfo';
-import { useQuery } from '@tanstack/react-query';
-import { getProduct } from '../utils/api/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { addToCart, getProduct } from '../utils/api/api';
+import type { CartItem } from '../data/CartData';
+import type { Product } from '../data/productDetailData';
 
 const 배송교환반품안내 =
   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -25,6 +27,31 @@ const ProductDetail = () => {
   };
 
   const [tab, setTab] = useState('info');
+
+  // 장바구니 담기
+  const mutation = useMutation({
+    mutationFn: (newItem: CartItem) => addToCart(newItem),
+    onSuccess: (data) => {
+      console.log('장바구니 담기 성공: ', data);
+      alert('장바구니에 담겼습니다.');
+    },
+    onError: (error) => {
+      console.error('장바구니 담기 실패: ', error);
+      alert('장바구니 담기에 실패했습니다. 다시 시도해주세요.');
+    },
+  });
+
+  const handleAddToCart = (newItem: Product) => {
+    mutation.mutate({
+      id: newItem.id,
+      브랜드명: newItem.브랜드명,
+      상품명: newItem.상품명,
+      가격: newItem.가격,
+      할인율: newItem.할인율,
+      이미지: newItem.이미지[0],
+      수량: 1,
+    });
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
@@ -134,7 +161,9 @@ const ProductDetail = () => {
             ))}
           </select>
           <div>
-            <div className="border py-2">장바구니 담기</div>
+            <div className="border py-2" onClick={() => handleAddToCart(data)}>
+              장바구니 담기
+            </div>
             <div className="border py-2">바로구매</div>
           </div>
           <div className="border py-2">Npay 구매</div>
