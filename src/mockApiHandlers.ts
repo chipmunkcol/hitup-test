@@ -6,6 +6,7 @@ import { addressesData, type Address } from './data/addressesData';
 let cart = [...cardData];
 let addresses = [...addressesData];
 
+// await delay(2000); // 2초 지연
 export const mockApiHandlers = [
   http.get('/product/:id', ({ params }) => {
     console.log('params: ', params);
@@ -33,8 +34,6 @@ export const mockApiHandlers = [
         { status: 404 }
       );
     }
-
-    await delay(2000); // 2초 지연
 
     return HttpResponse.json(cart);
   }),
@@ -78,7 +77,8 @@ export const mockApiHandlers = [
 
   // 배송지 관련 (주소, 상세주소, 수령인, 연락처, 배송지명(선택))
   http.get('/addresses', () => {
-    return HttpResponse.json(addresses);
+    // return HttpResponse.json(addresses);
+    return HttpResponse.json([]);
   }),
 
   http.post('/addresses', async ({ request }) => {

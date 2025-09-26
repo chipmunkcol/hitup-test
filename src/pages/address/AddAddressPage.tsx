@@ -47,10 +47,7 @@ const AddAddressPage = () => {
     //   return;
     // }
     if (isDefault && addresses && addresses.some((addr) => addr.기본배송지)) {
-      const confirmChange = window.confirm(
-        '기존 기본 배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정하시겠습니까?'
-      );
-
+      ('기존 기본 배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정하시겠습니까?');
       if (confirmChange) {
         // 기존 기본 배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정
         const updatedAddresses = addresses.map((addr) => ({

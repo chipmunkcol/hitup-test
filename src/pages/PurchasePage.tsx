@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import { useDeliveryStore } from '../store/useDeliveryStore';
 import { getAddresses, getCart } from '../utils/api/api';
+import Button from '../components/common/Button';
 
 const PurchasePage = () => {
   const {
@@ -51,37 +52,52 @@ const PurchasePage = () => {
     navigate('/address');
   };
 
+  const goAddAddress = () => {
+    navigate('/address/add');
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
   if (!cartItems) return <div>결제할 제품이 없습니다</div>;
 
   return (
-    <div className="w-full flex flex-col gap-5 py-10">
+    <div className="w-[500px] mx-auto flex flex-col gap-5 py-10">
       <div className="flex justify-between items-center">
         <div>주문/결제</div>
       </div>
 
       {/* 배송지 */}
       <div>배송지</div>
-      <div className="flex items-center justify-center">
-        <div className="p-5 w-[500px] border border-Grey-50 rounded-2xl">
-          <div className="flex justify-between">
-            <div>
-              {currentAddress?.수령인} ({currentAddress?.배송지명})
+      {addresses && addresses.length === 0 && (
+        <div className="flex flex-col gap-4 p-4 border border-Grey-20">
+          <div>등록 된 배송지가 없습니다.</div>
+          <Button variant="default" onClick={goAddAddress}>
+            배송지 추가
+          </Button>
+        </div>
+      )}
+
+      {currentAddress && (
+        <div className="flex items-center justify-center">
+          <div className="p-5 w-[500px] border border-Grey-50 rounded-2xl">
+            <div className="flex justify-between">
+              <div>
+                {currentAddress?.수령인} ({currentAddress?.배송지명})
+              </div>
+              <button
+                onClick={goAddress}
+                className="border border-Grey-20 px-4 rounded-lg"
+              >
+                변경
+              </button>
             </div>
-            <button
-              onClick={goAddress}
-              className="border border-Grey-20 px-4 rounded-lg"
-            >
-              변경
-            </button>
-          </div>
-          <div>{currentAddress?.연락처}</div>
-          <div>
-            {currentAddress?.주소} {currentAddress?.상세주소}
+            <div>{currentAddress?.연락처}</div>
+            <div>
+              {currentAddress?.주소} {currentAddress?.상세주소}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="flex flex-col gap-5">
         {/* 브랜드별 */}
