@@ -8,11 +8,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="max-w-[1280px] mx-auto">
+    // body를 전체 화면으로 하고 main은 flex-1으로 조절 (main height 영역이 적을 경우 footer 보이게)
+    // <div className="max-w-[1280px] mx-auto flex flex-col min-h-screen">
+    <div className="max-w-[1280px] mx-auto flex flex-col">
       <Header />
-      <main className="min-h-[calc(100vh-80px)]">{children}</main>
-      {/* 높이를 고정시켜놓으면 사이드이펙트 발생함 min-h 사용할것 */}
-      {/* <main className="h-[calc(100vh-80px)]">{children}</main> */}
+      {/* <main className="flex-1 relative">{children}</main> */}
+      <main className="relative min-h-screen">{children}</main>
       <Footer />
     </div>
   );

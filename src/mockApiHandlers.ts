@@ -48,8 +48,32 @@ export const mockApiHandlers = [
         { status: 400 }
       );
     }
-    cart = [...cart, newItem as CartItem];
+
+    const existedItem = cart.find((item) => item.id === newItem.id);
+    if (existedItem) {
+      // 이미 장바구니에 있는 상품이면 수량만 증가
+      cart = cart.map((item) =>
+        item.id === newItem.id ? { ...item, 수량: item.수량 + 1 } : item
+      );
+    } else {
+      cart = [...cart, newItem as CartItem];
+    }
+
     return HttpResponse.json(newItem, { status: 201 });
+  }),
+
+  http.put('/cart/:id', async ({ params, request }) => {
+    const { id } = params;
+    const updates = (await request.json()) as Partial<CartItem>;
+
+    cart = cart.map((item) =>
+      item.id === Number(id) ? { ...item, ...updates } : item
+    );
+
+    // 수량이 0이면 해당 아이템 삭제
+    cart = cart.filter((item) => item.수량 > 0);
+
+    return HttpResponse.json(cart.find((item) => item.id === Number(id)));
   }),
 
   // 배송지 관련 (주소, 상세주소, 수령인, 연락처, 배송지명(선택))
@@ -64,25 +88,12 @@ export const mockApiHandlers = [
     return HttpResponse.json(newAddress, { status: 201 });
   }),
 
-  // http.post('/todos', async ({ request }) => {
-  //   const { text } = (await request.json()) as { text: string };
-  //   const newTodo = { id: todos.length + 1, text, completed: false };
-  //   todos.push(newTodo);
-  //   return HttpResponse.json(newTodo, { status: 201 });
-  // }),
-
-  // http.put('/todos/:id', async ({ params, request }) => {
-  //   const { id } = params;
-  //   const updates = (await request.json()) as Record<string, unknown>;
-  //   todos = todos.map((todo) =>
-  //     todo.id === Number(id) ? { ...todo, ...updates } : todo
-  //   );
-  //   return HttpResponse.json(todos.find((todo) => todo.id === Number(id)));
-  // }),
-
-  // http.delete('/todos/:id', ({ params }) => {
-  //   const { id } = params;
-  //   todos = todos.filter((todo) => todo.id !== Number(id));
-  //   return new HttpResponse(null, { status: 204 });
-  // }),
+  http.put('/addresses/:id', async ({ params, request }) => {
+    const { id } = params;
+    const updates = (await request.json()) as Partial<Address>;
+    addresses = addresses.map((addr) =>
+      addr.id === Number(id) ? { ...addr, ...updates } : addr
+    );
+    return HttpResponse.json(addresses.find((addr) => addr.id === Number(id)));
+  }),
 ];

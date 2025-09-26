@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAddresses, getCart } from '../utils/api/api';
+import { useNavigate } from 'react-router-dom';
 import useCart from '../hooks/useCart';
-import type { Address } from '../data/addressesData';
+import { useDeliveryStore } from '../store/useDeliveryStore';
+import { getAddresses, getCart } from '../utils/api/api';
 
 const PurchasePage = () => {
   const {
@@ -29,11 +30,25 @@ const PurchasePage = () => {
   });
   console.log('addresses: ', addresses);
 
+  const { getSelectedAddress } = useDeliveryStore();
   const defaultAddress =
     addresses && (addresses.find((addr) => addr.기본배송지) || addresses[0]);
+  const currentAddress = getSelectedAddress() || defaultAddress;
+
+  // const deliveryAddress = useDeliveryStore((state) => state.address); // 배송지 상태 (구독)
+
+  // const currentAddress = deliveryAddress ? deliveryAddress : defaultAddress;
+  console.log('currentAddress: ', currentAddress);
 
   const handlePurchase = () => {
-    console.log('temp');
+    // 필요한 데이터
+    console.log('총결제금액 ', 총결제금액);
+    console.log('배송지', currentAddress);
+  };
+
+  const navigate = useNavigate();
+  const goAddress = () => {
+    navigate('/address');
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -52,15 +67,18 @@ const PurchasePage = () => {
         <div className="p-5 w-[500px] border border-Grey-50 rounded-2xl">
           <div className="flex justify-between">
             <div>
-              {defaultAddress?.수령인} ({defaultAddress?.배송지명})
+              {currentAddress?.수령인} ({currentAddress?.배송지명})
             </div>
-            <button className="border border-Grey-20 px-4 rounded-lg">
+            <button
+              onClick={goAddress}
+              className="border border-Grey-20 px-4 rounded-lg"
+            >
               변경
             </button>
           </div>
-          <div>{defaultAddress?.연락처}</div>
+          <div>{currentAddress?.연락처}</div>
           <div>
-            {defaultAddress?.주소} {defaultAddress?.상세주소}
+            {currentAddress?.주소} {currentAddress?.상세주소}
           </div>
         </div>
       </div>

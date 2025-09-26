@@ -55,3 +55,11 @@ export const getAddresses = (): Promise<Address[]> =>
 export const addToAddress = (newAddress: Address) => {
   return apiRequest.post('/addresses', newAddress);
 };
+
+// update addresss
+export const updateAddress = (
+  addressId: number,
+  updatedAddress: Partial<Address>
+) => {
+  return apiRequest.put(`/addresses/${addressId}`, updatedAddress);
+};
