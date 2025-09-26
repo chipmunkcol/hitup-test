@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios';
-import type { Product } from '../../data/productDetailData';
+import axios from 'axios';
 import type { CartItem } from '../../data/CartData';
 import type { Address } from '../../data/addressesData';
+import type { Product } from '../../data/productDetailData';
 
 export const getProduct = async (id: number): Promise<Product> => {
   try {
@@ -52,7 +52,7 @@ export const removeFromCart = (cartItemId: number) =>
 export const getAddresses = (): Promise<Address[]> =>
   apiRequest.get('/addresses').then((res) => res.data);
 
-export const addToAddress = (newAddress: Address) => {
+export const addToAddress = (newAddress: Partial<Address>) => {
   return apiRequest.post('/addresses', newAddress);
 };
 

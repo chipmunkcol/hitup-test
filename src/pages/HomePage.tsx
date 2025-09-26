@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Carousel } from '../components/common/libs/Carousel';
+
 import ProductCard from '../components/common/ProductCard';
 import More from '../components/common/widgets/More';
 import Tab from '../components/common/widgets/Tab';
@@ -7,6 +7,7 @@ import { 신상품 } from '../data/cardData';
 
 import img1 from '../assets/images/Banner_carousel_desktop1.png';
 import img2 from '../assets/images/Banner_carousel_desktop2.png';
+import { Carousel } from '../components/common/libs/carousel/Carousel';
 
 const slides = [img1, img2];
 

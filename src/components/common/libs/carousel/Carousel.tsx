@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import './carousel.css';
 import useEmblaCarousel from 'embla-carousel-react';
+import { TYPOGRAPHY } from '@/';
 import {
   PrevButton,
   NextButton,
   usePrevNextButtons,
 } from './EmblaCarouselArrowButtons';
-import { TYPOGRAPHY } from '../../../styles/typography';
 
 interface CarouselProps {
   images: string[];

@@ -1,9 +1,7 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-@import "tailwindcss";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import 'tailwindcss';
 
-
-
-#root {
+:root {
   --color-white: #ffffff;
   --color-black: #000000;
 
@@ -20,39 +18,40 @@
   --color-Grey-90: #1f1f1f;
 
   /* BG GRAYSCALE */
-  --color-Bgrey-10: #F6F7FB;
-  --color-Bgrey-20: #D1D7E4;
-  --color-Bgrey-30: #ADB7CB;
-  --color-Bgrey-40: #7E8AA3;
-  --color-Bgrey-50: #3A4254;
+  --color-Bgrey-10: #f6f7fb;
+  --color-Bgrey-20: #d1d7e4;
+  --color-Bgrey-30: #adb7cb;
+  --color-Bgrey-40: #7e8aa3;
+  --color-Bgrey-50: #3a4254;
 
   /* PRIMARY */
-  --color-Blue-05: #EDF5FE;
-  --color-Blue-10: #D1E7FF;
-  --color-Blue-20: #95C6FF;
-  --color-Blue-30: #65ADFF;
-  --color-Blue-40: #1F83F8;
-  --color-Blue-50: #006DEB;
-  --color-Blue-60: #0059BF;
-  --color-Blue-70: #004CA4;
-  --color-Blue-80: #003E86;
+  --color-Blue-05: #edf5fe;
+  --color-Blue-10: #d1e7ff;
+  --color-Blue-20: #95c6ff;
+  --color-Blue-30: #65adff;
+  --color-Blue-40: #1f83f8;
+  --color-Blue-50: #006deb;
+  --color-Blue-60: #0059bf;
+  --color-Blue-70: #004ca4;
+  --color-Blue-80: #003e86;
   --color-Blue-90: #002856;
 
   /* OTHER */
-  --color-HITUP_Blue: #007CEE;
-  --color-HITUP_Red: #FB5135;
-  --color-HITUP_Orange: #FC9127;
+  --color-HITUP_Blue: #007cee;
+  --color-HITUP_Red: #fb5135;
+  --color-HITUP_Orange: #fc9127;
 
   /* SYSTEM */
-  --color-Error: #E41515;
+  --color-Error: #e41515;
 
   /* TYPOGRAPHY */
   --color-foreground-default: #000000;
-  --color-foreground-secondary: #FF6C6C;
+  --color-foreground-secondary: #ff6c6c;
 }
 
 @theme {
-  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-sans:
+    'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --color-white: var(--color-white);
   --color-black: var(--color-black);
 
@@ -98,4 +97,28 @@
   /* TYPOGRAPHY */
   --color-foreground-default: var(--color-foreground-default);
   --color-foreground-secondary: var(--color-foreground-secondary);
+}
+
+/* sweet alert 커스텀 */
+
+.swal2-confirm {
+  background: var(--color-HITUP_Blue) !important;
+  /* background: blue !important; */
+  border: none !important;
+  width: 150px !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  /* border-radius: 25px !important; */
+  font-weight: bold !important;
+  color: var(--color-white) !important;
+}
+
+.swal2-cancel {
+  background: var(--color-black) !important;
+  /* border-radius: 25px !important; */
+
+  width: 150px !important;
 }

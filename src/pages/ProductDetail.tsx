@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { TumbCarousel } from '../components/common/libs/TumbCarousel';
 import DropdownInfo from '../components/common/widgets/DropdownInfo';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { addToCart, getProduct } from '../utils/api/api';
 import type { CartItem } from '../data/CartData';
 import type { Product } from '../data/productDetailData';
+import { TumbCarousel } from '../components/common/libs/carousel/TumbCarousel';
 
 const 배송교환반품안내 =
   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';

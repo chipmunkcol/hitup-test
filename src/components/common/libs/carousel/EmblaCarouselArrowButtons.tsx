@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useCallback, useEffect, useState } from 'react';
-import btnLeft from '../../../assets/images/Button_left_main.png';
-import btnRight from '../../../assets/images/Button_right_main.png';
+import btnLeft from '@/assets/images/Button_left_main.png';
+import btnRight from '@/assets/images/Button_right_main.png';
 
 export const usePrevNextButtons = (emblaApi) => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);

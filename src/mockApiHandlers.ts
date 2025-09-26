@@ -77,8 +77,8 @@ export const mockApiHandlers = [
 
   // 배송지 관련 (주소, 상세주소, 수령인, 연락처, 배송지명(선택))
   http.get('/addresses', () => {
-    // return HttpResponse.json(addresses);
-    return HttpResponse.json([]);
+    return HttpResponse.json(addresses);
+    // return HttpResponse.json([]);
   }),
 
   http.post('/addresses', async ({ request }) => {

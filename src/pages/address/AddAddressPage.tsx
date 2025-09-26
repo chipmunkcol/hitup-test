@@ -1,18 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import { 커스텀_alert } from '../../components/common/libs/sweetalert/sweetalert';
 import type { Address } from '../../data/addressesData';
 import { addToAddress, getAddresses } from '../../utils/api/api';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 
 const AddAddressPage = () => {
-  // sweet alert 커스텀!
-  const MySwal = withReactContent(Swal);
-  MySwal.fire({
-    title: '기본 배송지 설정',
-  });
-
   const [isPostcodeOpen, setPostcodeOpen] = useState(false);
   const openPostcode = () => {
     setPostcodeOpen(true);
@@ -31,7 +24,7 @@ const AddAddressPage = () => {
   const [isDefault, setIsDefault] = useState(false); // 기본 배송지 설정
 
   const mutation = useMutation({
-    mutationFn: (payload: Address) => addToAddress(payload),
+    mutationFn: (payload: Partial<Address>) => addToAddress(payload),
     onSuccess: (data) => {
       console.log('배송지 추가 성공: ', data);
       alert('배송지가 추가되었습니다.');
@@ -49,21 +42,26 @@ const AddAddressPage = () => {
   });
   console.log('addresses: ', addresses);
 
-  const handleSubmit = () => {
-    // if (!address || !detailAddress || !receiver || !phone) {
-    //   alert('필수 항목을 모두 입력해주세요.');
-    //   return;
-    // }
-    if (isDefault && addresses && addresses.some((addr) => addr.기본배송지)) {
-      ('기존 기본 배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정하시겠습니까?');
-      if (confirmChange) {
-        // 기존 기본 배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정
-        const updatedAddresses = addresses.map((addr) => ({
-          ...addr,
-          기본배송지: addr.기본배송지 ? false : addr.주소 === address,
-        }));
-        console.log('업데이트된 배송지 목록:', updatedAddresses);
-      }
+  const defaultAddress =
+    addresses && addresses.find((addr) => addr.기본배송지)?.주소;
+
+  const handleSubmit = async () => {
+    // 필수 항목 체크
+
+    let swalResult = null;
+    // 이미 등록되어있는 기본 배송지가 있는 경우
+    if (isDefault && defaultAddress) {
+      swalResult = await 커스텀_alert(
+        '기본배송지 설정',
+        `이전에 등록되어있던 기본 배송지는 ${defaultAddress}입니다.`
+      );
+      console.log('swalResult: ', swalResult);
+
+      // 확인 누르면 기본배송지를 해제하고 새로 추가하는 배송지를 기본 배송지로 설정
+      // if (swalResult.isConfirmed)
+
+      // 취소 누르면 그냥 추가 (payload에서 기본배송지 false로 설정)
+      // if (swalResult.isDenied)
     }
 
     const payload = {
