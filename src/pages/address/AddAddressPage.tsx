@@ -3,8 +3,16 @@ import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import type { Address } from '../../data/addressesData';
 import { addToAddress, getAddresses } from '../../utils/api/api';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 const AddAddressPage = () => {
+  // sweet alert 커스텀!
+  const MySwal = withReactContent(Swal);
+  MySwal.fire({
+    title: '기본 배송지 설정',
+  });
+
   const [isPostcodeOpen, setPostcodeOpen] = useState(false);
   const openPostcode = () => {
     setPostcodeOpen(true);
