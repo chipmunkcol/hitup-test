@@ -5,6 +5,9 @@ import { addToCart, getProduct } from '../utils/api/api';
 import type { CartItem } from '../data/CartData';
 import type { Product } from '../data/productDetailData';
 import { TumbCarousel } from '../components/common/libs/carousel/TumbCarousel';
+import Button from '@/components/common/Button';
+import { 커스텀_alert } from '@/components/common/libs/sweetalert/sweetalert';
+import { useNavigate } from 'react-router-dom';
 
 const 배송교환반품안내 =
   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -13,8 +16,9 @@ const 상품고시정보안내 =
 const 판매자정보 =
   '본 상품은 해당 판매자가 직접 등록·관리하고 있으며, 판매자 상호, 대표자명, 사업자등록번호, 통신판매업 신고번호, 소재지 및 고객센터 연락처 등 필수 정보는 관련 법령에 따라 상세페이지 하단 ‘판매자 정보’에서 확인하실 수 있습니다.';
 
+const id = 1;
 const ProductDetail = () => {
-  const id = 1;
+  const navigate = useNavigate();
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ['productDetail', id],
@@ -26,14 +30,72 @@ const ProductDetail = () => {
     setCuttedIndex(3);
   };
 
+  // 옵션 클릭 시 선택 항목이 보이도록
+  const [selectedOption, setSelectedOption] = useState<
+    { name: string; quantity: number }[]
+  >([]);
+  const handleOptionChange = (option: string) => {
+    const existingOption = selectedOption.find((item) => item.name === option);
+    if (existingOption) {
+      setSelectedOption((prev) =>
+        prev.map((item) =>
+          item.name === option ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      );
+    } else {
+      setSelectedOption((prev) => [...prev, { name: option, quantity: 1 }]);
+    }
+  };
+
+  const addOptionQuantity = (option: string) => {
+    setSelectedOption((prev) =>
+      prev.map((item) =>
+        item.name === option ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const subtractOptionQuantity = (option: string) => {
+    const isLastItem =
+      selectedOption.find((item) => item.name === option)?.quantity === 1;
+    if (isLastItem) {
+      setSelectedOption((prev) => prev.filter((item) => item.name !== option));
+      return;
+    }
+
+    setSelectedOption((prev) =>
+      prev.map((item) =>
+        item.name === option ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+  };
+
+  const removeOption = (option: string) => {
+    setSelectedOption((prev) => prev.filter((item) => item.name !== option));
+  };
+
   const [tab, setTab] = useState('info');
 
   // 장바구니 담기
   const mutation = useMutation({
     mutationFn: (newItem: CartItem) => addToCart(newItem),
-    onSuccess: (data) => {
-      console.log('장바구니 담기 성공: ', data);
-      alert('장바구니에 담겼습니다.');
+    onSuccess: async (data) => {
+      console.log('data: ', data);
+      const res_confirm = await 커스텀_alert(
+        '장바구니',
+        `<div>선택한 상품이 장바구니에 담겼어요<br />
+      장바구니로 이동하시겠어요?</div>`,
+        '네',
+        '더 둘러보기'
+      );
+      //  확인 버튼 클릭 시 장바구니 이동
+      if (res_confirm.isConfirmed) {
+        // 장바구니로 이동
+        navigate('/cart');
+      }
+
+      // 더 둘러보기 클릭 시 아무 동작 없음
+      if (res_confirm.isDismissed) return null;
     },
     onError: (error) => {
       console.error('장바구니 담기 실패: ', error);
@@ -41,7 +103,7 @@ const ProductDetail = () => {
     },
   });
 
-  const handleAddToCart = (newItem: Product) => {
+  const handleAddToCart = async (newItem: Product) => {
     mutation.mutate({
       id: newItem.id,
       브랜드명: newItem.브랜드명,
@@ -56,6 +118,7 @@ const ProductDetail = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
   if (!data) return <div>상품이 존재하지 않습니다.</div>;
+  console.log('data: ', data);
 
   return (
     <div className="w-full">
@@ -67,12 +130,16 @@ const ProductDetail = () => {
           <div className="">
             <TumbCarousel images={data.이미지} />
           </div>
-          <div className="flex justify-between">
-            <div onClick={() => setTab('info')}>상품정보</div>
-            <div onClick={() => setTab('review')}>리뷰({data.리뷰.length})</div>
+          <div className="flex justify-between px-15 py-5 text-2xl">
+            <div className="cursor-pointer" onClick={() => setTab('info')}>
+              상품정보
+            </div>
+            <div className="cursor-pointer" onClick={() => setTab('review')}>
+              리뷰({data.리뷰.length})
+            </div>
           </div>
           {tab === 'info' && (
-            <div className="h-[400px] bg-Bgrey-40">
+            <div className="h-[400px] bg-Bgrey-20 flex items-center justify-center">
               상품 정보 이미지 + 텍스트
             </div>
           )}
@@ -81,10 +148,13 @@ const ProductDetail = () => {
               {data.리뷰.map((item) => (
                 <li className="w-full py-2 border-b flex gap-4" key={item?.id}>
                   <div className="flex flex-4 gap-2">
-                    <div className="w-[40px] h-[40px] rounded-full">
-                      <img src={item?.작성자프로필} />
+                    <div className=" w-[40px] h-[40px] rounded-full">
+                      <img
+                        className="w-full h-full rounded-full"
+                        src={item?.작성자프로필}
+                      />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex-1 flex flex-col gap-2">
                       <div className="flex gap-2">
                         <div>{item?.작성자}</div>
                         <div>
@@ -95,25 +165,27 @@ const ProductDetail = () => {
                       <div>{item?.내용}</div>
                     </div>
                   </div>
-                  <div className="relative flex-1">
-                    <img src={item?.리뷰이미지[0]} />
-                    <div className="absolute bottom-0 right-0 z-10 bg-Grey-70">
-                      {item?.리뷰이미지.length}
+                  <div className="h-[128px] relative flex-1">
+                    <img className="h-full" src={item?.리뷰이미지[0]} />
+                    <div className="absolute bottom-0 right-0 z-10 text-white bg-Grey-70 px-2">
+                      {item?.리뷰이미지.length > 0 && item?.리뷰이미지.length}
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
           )}
-          <div className="flex justify-between">
+          <div className="flex justify-between text-xl py-5">
             <div>상품문의({data.상품문의.length})</div>
             <div>더보기</div>
           </div>
           <div className="relative w-full">
             {data.상품문의.length > 0 &&
               data.상품문의.slice(0, cuttedIndex).map((item) => (
-                <div className="flex" key={item?.id}>
-                  <div>
+                <div className="flex px-5  " key={item?.id}>
+                  <div
+                    className={`w-full py-3 ${cuttedIndex === 1 ? '' : 'border-b border-Grey-40'}`}
+                  >
                     <div>{item?.문의유형}</div>
                     <div>{item?.제목}</div>
                     <div>
@@ -125,7 +197,7 @@ const ProductDetail = () => {
                 </div>
               ))}
             {cuttedIndex < data.상품문의.length && (
-              <div className="absolute bottom-[30%] right-[5%]">
+              <div className="absolute bottom-[30%] right-[4%]">
                 <button onClick={handleMore}>↓</button>
               </div>
             )}
@@ -136,37 +208,85 @@ const ProductDetail = () => {
               </div>
             )}
           </div>
-          <div className="border py-2">판매자에게 문의하기</div>
+          <div className="px-4 py-4">
+            <Button
+              onClick={() => navigate(`/product/${data.id}/contact`)}
+              variant="default"
+            >
+              판매자에게 문의하기
+            </Button>
+          </div>
           {/* <div>배송/교환/반품 안내</div> */}
           <DropdownInfo title="배송/교환/반품 안내" data={배송교환반품안내} />
           <DropdownInfo title="상품 고시 정보 안내" data={상품고시정보안내} />
           <DropdownInfo title="판매자 정보" data={판매자정보} />
         </div>
         <div className="flex flex-col gap-4 flex-3">
-          <div>브랜드 명 {'>'}</div>
-          <div>상품명</div>
+          <div className="text-xl font-semibold">브랜드 명 {'>'}</div>
+          <div>상품명상품명상품명</div>
           <div>⭐별점4.6 / 리뷰(6) </div>
           <div className="flex justify-between">
-            <div>{data.할인율}%</div>
-            <div className="line-through">{data.가격}</div>
-            <div>{data.가격 - (data.가격 * data.할인율) / 100}원</div>
-            {data.무료배송 && <div className="bg-Grey-10 px-2">무료배송</div>}
+            <div className="text-2xl text-HITUP_Red">{data.할인율}%</div>
+            <div>
+              <div className="flex gap-2">
+                <div className="line-through">{data.가격}원</div>
+                <div>{data.가격 - (data.가격 * data.할인율) / 100}원</div>
+              </div>
+              {data.무료배송 && (
+                <div className="bg-Grey-10 px-2 items-end">무료배송</div>
+              )}
+            </div>
           </div>
-          <div className="border py-2">쿠폰받기</div>
+          <Button variant="grey">쿠폰받기</Button>
           {/* <div className="border py-2">선택옵션</div> */}
-          <select className="border p-2">
+          <select
+            className="border p-2"
+            onChange={(e) => handleOptionChange(e.target.value)}
+          >
             <option>선택옵션</option>
             {data.옵션.map((item, index) => (
               <option key={index}>{item}</option>
             ))}
           </select>
-          <div>
-            <div className="border py-2" onClick={() => handleAddToCart(data)}>
+          {selectedOption.length > 0 &&
+            selectedOption.map((selectedOption) => (
+              <div className="border p-2">
+                <div className="flex justify-between">
+                  <div className="font-semibold">{selectedOption.name}</div>
+                  <div onClick={() => removeOption(selectedOption.name)}>X</div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex">
+                    <button
+                      onClick={() =>
+                        subtractOptionQuantity(selectedOption.name)
+                      }
+                      className="border px-2"
+                    >
+                      -
+                    </button>
+                    <div>{selectedOption.quantity}</div>
+                    <button
+                      onClick={() => addOptionQuantity(selectedOption.name)}
+                      className="border px-2"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div>가격가격 가격</div>
+                </div>
+              </div>
+            ))}
+          <div className="flex gap-2">
+            <Button variant="default" onClick={() => handleAddToCart(data)}>
               장바구니 담기
-            </div>
-            <div className="border py-2">바로구매</div>
+            </Button>
+            <Button variant="grey">바로구매</Button>
           </div>
           <div className="border py-2">Npay 구매</div>
+          <hr />
+          <div className="text-lg font-semibold">브랜드 배송 정보</div>
+          <div>14시 이내 결제 주문건 당일 출고 우체국 택배</div>
         </div>
       </div>
     </div>

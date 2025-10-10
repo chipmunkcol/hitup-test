@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { CartItem } from '../../data/CartData';
 import type { Address } from '../../data/addressesData';
-import type { Product } from '../../data/productDetailData';
+import type { Product, ProductContact } from '../../data/productDetailData';
 
 export const getProduct = async (id: number): Promise<Product> => {
   try {
@@ -62,4 +62,12 @@ export const updateAddress = (
   updatedAddress: Partial<Address>
 ) => {
   return apiRequest.put(`/addresses/${addressId}`, updatedAddress);
+};
+
+// 판매자 문의하기
+export const contactSeller = (
+  productId: number,
+  newContact: Partial<ProductContact>
+) => {
+  return apiRequest.post(`/product/${productId}/contact`, newContact);
 };

@@ -1,3 +1,24 @@
+import mainImage from '@/assets/images/detail_page/detail_main.png';
+import subImage2 from '@/assets/images/detail_page/detail_sub2.png';
+import subImage3 from '@/assets/images/detail_page/detail_sub3.png';
+import subImage4 from '@/assets/images/detail_page/detail_sub4.png';
+
+export interface ProductContact {
+  id: number;
+  문의유형: string;
+  문의상품옵션: string;
+  제목: string;
+  내용: string;
+  이미지: string;
+  작성자: string;
+  작성일: string;
+  답변: {
+    완료: boolean;
+    내용: string;
+    완료일: string;
+  };
+}
+
 export interface Product {
   id: number;
   브랜드명: string;
@@ -18,21 +39,7 @@ export interface Product {
     별점: number;
     리뷰이미지: string[];
   }[];
-  상품문의: {
-    id: number;
-    문의유형: string;
-    문의상품옵션: string;
-    제목: string;
-    내용: string;
-    이미지: string;
-    작성자: string;
-    작성일: string;
-    답변: {
-      완료: boolean;
-      내용: string;
-      완료일: string;
-    };
-  }[];
+  상품문의: ProductContact[];
 }
 
 export const productDetailData: Product = {
@@ -42,13 +49,16 @@ export const productDetailData: Product = {
   가격: 10000,
   할인율: 10,
   이미지: [
-    'https://picsum.photos/200',
-    'https://picsum.photos/300',
-    'https://picsum.photos/400',
-    'https://picsum.photos/500',
-    'https://picsum.photos/600',
-    'https://picsum.photos/700',
-    'https://picsum.photos/800',
+    mainImage,
+    subImage2,
+    subImage3,
+    subImage4,
+    subImage2,
+    subImage3,
+    subImage4,
+    subImage2,
+    subImage3,
+    subImage4,
   ],
   무료배송: true,
   별점: 4.5,
@@ -103,35 +113,35 @@ export const productDetailData: Product = {
         완료일: '2023-01-02',
       },
     },
-    {
-      id: 2,
-      문의유형: '배송',
-      문의상품옵션: '',
-      제목: '배송 문의합니다.',
-      내용: '배송 문의 내용입니다.',
-      이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
-      작성일: '2023-01-01',
-      답변: {
-        완료: false,
-        내용: '',
-        완료일: '',
-      },
-    },
-    {
-      id: 3,
-      문의유형: '재입고',
-      문의상품옵션: '',
-      제목: '재입고 문의합니다.',
-      내용: '재입고 문의 내용입니다.',
-      이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
-      작성일: '2023-01-01',
-      답변: {
-        완료: false,
-        내용: '',
-        완료일: '',
-      },
-    },
+    // {
+    //   id: 2,
+    //   문의유형: '배송',
+    //   문의상품옵션: '',
+    //   제목: '배송 문의합니다.',
+    //   내용: '배송 문의 내용입니다.',
+    //   이미지: 'https://picsum.photos/200',
+    //   작성자: '작성자',
+    //   작성일: '2023-01-01',
+    //   답변: {
+    //     완료: false,
+    //     내용: '',
+    //     완료일: '',
+    //   },
+    // },
+    // {
+    //   id: 3,
+    //   문의유형: '재입고',
+    //   문의상품옵션: '',
+    //   제목: '재입고 문의합니다.',
+    //   내용: '재입고 문의 내용입니다.',
+    //   이미지: 'https://picsum.photos/200',
+    //   작성자: '작성자',
+    //   작성일: '2023-01-01',
+    //   답변: {
+    //     완료: false,
+    //     내용: '',
+    //     완료일: '',
+    //   },
+    // },
   ],
 };

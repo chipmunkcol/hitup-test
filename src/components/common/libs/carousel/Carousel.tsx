@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import './carousel.css';
 import useEmblaCarousel from 'embla-carousel-react';
-import { TYPOGRAPHY } from '@/';
+import { TYPOGRAPHY } from '@/styles/typography';
 import {
   PrevButton,
   NextButton,

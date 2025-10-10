@@ -13,7 +13,7 @@ const DropdownInfo = ({ title, data }: DropdownInfoProps) => {
 
   return (
     <div className="relative w-full items-center">
-      <div>{title}</div>
+      <div className="text-lg font-semibold">{title}</div>
       {!isOpen && (
         <div className="absolute top-[0px] right-0" onClick={toggleDropdown}>
           ↓

@@ -1,10 +1,14 @@
 import { delay, http, HttpResponse } from 'msw';
-import { productDetailData } from './data/productDetailData';
+import {
+  productDetailData,
+  type ProductContact,
+} from './data/productDetailData';
 import { cardData, type CartItem } from './data/CartData';
 import { addressesData, type Address } from './data/addressesData';
 
 let cart = [...cardData];
 let addresses = [...addressesData];
+let productDetail = { ...productDetailData };
 
 // await delay(2000); // 2초 지연
 export const mockApiHandlers = [
@@ -12,7 +16,7 @@ export const mockApiHandlers = [
     console.log('params: ', params);
     // const { id } = params;
 
-    const product = productDetailData;
+    const product = productDetail;
     if (!product) {
       return HttpResponse.json(
         {
@@ -95,5 +99,24 @@ export const mockApiHandlers = [
       addr.id === Number(id) ? { ...addr, ...updates } : addr
     );
     return HttpResponse.json(addresses.find((addr) => addr.id === Number(id)));
+  }),
+
+  // 판매자에게 문의하기
+  http.post('/product/:id/contact', async ({ params, request }) => {
+    const { id } = params;
+    console.log('id: ', id);
+    const newContact = (await request.json()) as Partial<ProductContact>;
+    const contact = {
+      id: productDetail.상품문의.length + 1,
+      ...newContact,
+      작성자: '사용자',
+      작성일: new Date().toISOString().split('T')[0],
+      답변: { 완료: false, 내용: '', 완료일: '' },
+    } as ProductContact;
+    productDetail = {
+      ...productDetail,
+      상품문의: [...(productDetail.상품문의 || []), contact],
+    };
+    return HttpResponse.json(contact, { status: 201 });
   }),
 ];
