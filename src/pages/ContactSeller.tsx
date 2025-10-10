@@ -1,6 +1,7 @@
 // import Button from '@/components/common/Button';
 import Selectbox from '@/components/common/Selectbox';
-import type { Product, ProductContact } from '@/data/productDetailData';
+import type { ProductContact } from '@/data/productDetailData';
+import { useNavi } from '@/hooks/useNavi';
 import { contactSeller, getProduct } from '@/utils/api/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, Input } from 'antd';
@@ -10,7 +11,8 @@ const { TextArea } = Input;
 
 const ContactSeller = () => {
   const id = 1;
-  //   const navigate = useNavigate();
+  const { goBack } = useNavi();
+  // const navigate = useNavigate();
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ['productDetail', id],
@@ -20,7 +22,9 @@ const ContactSeller = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const onClickFileRef = () => {
     fileRef.current?.click();
+    console.log('fileRef: ', fileRef.current?.files);
   };
+  const [images, setImages] = useState<string[]>([]);
 
   const formRef = useRef({
     문의유형: '',
@@ -86,6 +90,12 @@ const ContactSeller = () => {
     formRef.current = { ...formRef.current, [name]: value };
 
     checkBtnDisabled();
+
+    if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+      const fileUrl = URL.createObjectURL(e.target.files![0]);
+      setImages((prev) => [...prev, fileUrl]);
+      formRef.current.이미지 = e.target.files ? e.target.files[0].name : '';
+    }
   };
 
   //   판매자에게 문의하기
@@ -102,6 +112,12 @@ const ContactSeller = () => {
   return (
     <div className="w-[800px] mx-auto">
       <div className="flex flex-col gap-6">
+        <div
+          onClick={goBack}
+          className="text-HITUP_Blue text-xl cursor-pointer"
+        >
+          {'<'} 돌아가기{' '}
+        </div>
         <div className="text-2xl font-semibold">판매자에게 문의하기</div>
 
         {/* 1. 상품 정보 */}
@@ -194,12 +210,18 @@ const ContactSeller = () => {
             onChange={handleChange}
             name="이미지"
           />
-          <button
+          <div
             onClick={onClickFileRef}
             className="w-[100px] h-[100px] border border-gray-300 rounded-md cursor-pointer"
           >
-            +
-          </button>
+            <div className="flex items-center justify-center w-full h-full text-gray-400">
+              +
+            </div>
+
+            {fileRef.current?.files?.[0] && (
+              <img src={images} className="w-full h-full object-cover" />
+            )}
+          </div>
         </div>
 
         {/* 저장하기 버튼 */}
