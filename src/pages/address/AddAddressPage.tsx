@@ -78,8 +78,8 @@ const AddAddressPage = () => {
   };
 
   return (
-    <div className=" w-full h-full py-10 flex flex-col gap-8">
-      <div>배송지 추가</div>
+    <div className="max-w-xl m-auto h-full py-10 flex flex-col gap-8">
+      <div className="text-xl">배송지 추가</div>
       {isPostcodeOpen && (
         <div
           onClick={closePostcode}

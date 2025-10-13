@@ -34,22 +34,35 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
     items.reduce(
       (total, item) =>
         item.checked
-          ? total + item.가격 - (item.가격 * item.할인율) / 100
+          ? total + (item.가격 - (item.가격 * item.할인율) / 100) * item.수량
           : total,
       0
     )
   );
-  const 브랜드별배송비: number[] = 브랜드별총금액.map((amount) =>
+  const 총선택상품금액 = brandItems.map((items) =>
+    items.reduce(
+      (total, item) => (item.checked ? total + item.가격 * item.수량 : total),
+      0
+    )
+  );
+  const 총할인금액 = cart.reduce(
+    (sum, item) =>
+      item.checked ? sum + ((item.가격 * item.할인율) / 100) * item.수량 : sum,
+    0
+  );
+
+  const 브랜드별배송비: number[] = 총선택상품금액.map((amount) =>
     amount === 0 ? 0 : amount >= 30000 ? 0 : 2500
   );
   console.log('브랜드별배송비: ', 브랜드별배송비);
 
-  const 총상품금액 = 브랜드별총금액.reduce((sum, amount) => sum + amount, 0);
+  const 총상품금액 = 총선택상품금액.reduce((sum, amount) => sum + amount, 0);
   const 총배송비 = 브랜드별배송비.reduce((sum, amount) => sum + amount, 0);
 
   console.log('총배송비: ', 총배송비);
 
-  const 총결제금액 = 총상품금액 + 총배송비;
+  const 주문상품금액 = 총상품금액 - 총할인금액;
+  const 총결제금액 = 총상품금액 + 총배송비 - 총할인금액;
 
   const toggleAll = (checked: boolean) => {
     setCart(cart.map((item) => ({ ...item, checked })));
@@ -143,9 +156,13 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
     총결제금액,
     총상품금액,
     총배송비,
+    총할인금액,
 
     브랜드별총금액,
+    총선택상품금액,
     브랜드별배송비,
+
+    주문상품금액,
 
     handleUpdateCartItem,
   };

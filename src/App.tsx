@@ -12,6 +12,9 @@ import AddAddressPage from './pages/address/AddAddressPage';
 import EditAddressPage from './pages/address/EditAddressPage';
 import AddressPage from './pages/address/AddressPage';
 import ContactSeller from './pages/contactSeller';
+import Mypage from './pages/Mypage';
+import PartnershipPage from './pages/PartnershipPage';
+import CouponPage from './pages/CouponPage';
 
 function App() {
   return (
@@ -29,6 +32,13 @@ function App() {
           <Route path="/address" element={<AddressPage />} />
           <Route path="/address/add" element={<AddAddressPage />} />
           <Route path="/address/edit/:id" element={<EditAddressPage />} />
+
+          {/* 입점/제휴 신청 */}
+          <Route path="/partnership" element={<PartnershipPage />} />
+
+          <Route path="/coupon" element={<CouponPage />} />
+
+          <Route path="/mypage" element={<Mypage />} />
 
           <Route path="/purchase" element={<PurchasePage />} />
           <Route path="*" element={<div>없는 페이지</div>} />

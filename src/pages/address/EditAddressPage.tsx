@@ -86,7 +86,7 @@ const EditAddressPage = () => {
 
   return (
     <div className="relative w-full h-full py-10 flex flex-col gap-8">
-      <div>배송지 추가</div>
+      <div>배송지 수정</div>
       {isPostcodeOpen && (
         <div
           onClick={closePostcode}

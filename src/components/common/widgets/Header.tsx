@@ -15,6 +15,10 @@ const Header = () => {
     navigate('/cart');
   };
 
+  const goMypage = () => {
+    navigate('/mypage');
+  };
+
   return (
     <header className="p-[20px] flex justify-between">
       <div className="flex  items-center gap-[33px]">
@@ -22,19 +26,23 @@ const Header = () => {
         <Logo onClick={goMain} />
       </div>
       <div className="flex gap-[26px]">
-        {/* <Searchbar /> */}
-        <SearchField />
+        <div className="hidden md:block">
+          <SearchField />
+        </div>
         <div className="flex  items-center gap-[28px]">
-          <div className="flex gap-[14px] items-center cursor-pointer">
+          <div
+            className="flex gap-[14px] items-center cursor-pointer"
+            onClick={goMypage}
+          >
             <ProfileIcon />
-            <div>마이페이지</div>
+            <div className="hidden md:block">마이페이지</div>
           </div>
           <div
             className="flex gap-[12px] items-center cursor-pointer"
             onClick={goCart}
           >
             <CartIcon />
-            <div>장바구니</div>
+            <div className="hidden md:block">장바구니</div>
           </div>
         </div>
       </div>

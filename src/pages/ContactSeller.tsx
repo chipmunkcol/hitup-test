@@ -90,8 +90,18 @@ const ContactSeller = () => {
     formRef.current = { ...formRef.current, [name]: value };
 
     checkBtnDisabled();
+  };
 
-    if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    formRef.current = { ...formRef.current, [name]: value };
+    console.log('images: ', images);
+    if (images.length >= 5) {
+      alert('사진은 최대 5장까지 첨부 가능합니다');
+      return;
+    }
+
+    if (e.target.type === 'file') {
       const fileUrl = URL.createObjectURL(e.target.files![0]);
       setImages((prev) => [...prev, fileUrl]);
       formRef.current.이미지 = e.target.files ? e.target.files[0].name : '';
@@ -130,7 +140,11 @@ const ContactSeller = () => {
             <div className="flex gap-2">
               <div>{data?.할인율}%</div>
               <div className="line-through">{data?.가격}원</div>
-              <div>{data?.가격 - (data?.가격 * data?.할인율) / 100}원</div>
+              <div>
+                {data?.가격 !== undefined &&
+                  data?.가격 - (data?.가격 * data?.할인율) / 100}
+                원
+              </div>
             </div>
           </div>
         </div>
@@ -207,20 +221,21 @@ const ContactSeller = () => {
             accept="image/*"
             ref={fileRef}
             className="hidden"
-            onChange={handleChange}
+            onChange={handleFileChange}
             name="이미지"
           />
-          <div
-            onClick={onClickFileRef}
-            className="w-[100px] h-[100px] border border-gray-300 rounded-md cursor-pointer"
-          >
-            <div className="flex items-center justify-center w-full h-full text-gray-400">
+          <div onClick={onClickFileRef} className=" flex gap-4">
+            <div className="w-[100px] h-[100px] flex items-center justify-center border border-gray-300 rounded-md cursor-pointer text-gray-400">
               +
             </div>
 
-            {fileRef.current?.files?.[0] && (
-              <img src={images} className="w-full h-full object-cover" />
-            )}
+            {fileRef.current?.files?.[0] &&
+              images.length > 0 &&
+              images.map((image) => (
+                <div className="flex gap-4 w-[100px]">
+                  <img src={image} className="w-full h-full object-cover" />
+                </div>
+              ))}
           </div>
         </div>
 

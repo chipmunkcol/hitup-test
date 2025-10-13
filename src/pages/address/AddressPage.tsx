@@ -45,7 +45,14 @@ const AddressPage = () => {
   return (
     <div className="flex col-8">
       <div className="w-[500px] mx-auto py-10 flex flex-col gap-5">
-        <div>배송지 목록</div>
+        <div className="flex items-center justify-between">
+          <div>배송지 목록</div>
+          <div className="w-[200px]">
+            <Button variant="default" onClick={() => navigate('/address/add')}>
+              배송지 추가
+            </Button>
+          </div>
+        </div>
         <ul className="flex flex-col gap-4">
           {addresses &&
             addresses.map((address) => (

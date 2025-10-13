@@ -135,7 +135,7 @@ const ProductDetail = () => {
               상품정보
             </div>
             <div className="cursor-pointer" onClick={() => setTab('review')}>
-              리뷰({data.리뷰.length})
+              리뷰({data?.리뷰?.length})
             </div>
           </div>
           {tab === 'info' && (
@@ -176,12 +176,12 @@ const ProductDetail = () => {
             </ul>
           )}
           <div className="flex justify-between text-xl py-5">
-            <div>상품문의({data.상품문의.length})</div>
+            <div>상품문의({data?.상품문의?.length})</div>
             <div>더보기</div>
           </div>
           <div className="relative w-full">
-            {data.상품문의.length > 0 &&
-              data.상품문의.slice(0, cuttedIndex).map((item) => (
+            {data.상품문의?.length > 0 &&
+              data.상품문의?.slice(0, cuttedIndex).map((item) => (
                 <div className="flex px-5  " key={item?.id}>
                   <div
                     className={`w-full py-3 ${cuttedIndex === 1 ? '' : 'border-b border-Grey-40'}`}
@@ -240,7 +240,7 @@ const ProductDetail = () => {
           <Button variant="grey">쿠폰받기</Button>
           {/* <div className="border py-2">선택옵션</div> */}
           <select
-            className="border p-2"
+            className="border border-Bgrey-30 rounded-lg p-2 "
             onChange={(e) => handleOptionChange(e.target.value)}
           >
             <option>선택옵션</option>
@@ -250,7 +250,7 @@ const ProductDetail = () => {
           </select>
           {selectedOption.length > 0 &&
             selectedOption.map((selectedOption) => (
-              <div className="border p-2">
+              <div className="border border-Bgrey-30 rounded-lg p-2">
                 <div className="flex justify-between">
                   <div className="font-semibold">{selectedOption.name}</div>
                   <div onClick={() => removeOption(selectedOption.name)}>X</div>

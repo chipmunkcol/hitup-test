@@ -71,3 +71,11 @@ export const contactSeller = (
 ) => {
   return apiRequest.post(`/product/${productId}/contact`, newContact);
 };
+
+// 쿠폰 (GET, POST)
+export const getCoupons = () =>
+  apiRequest.get('/coupon/my').then((res) => res.data);
+
+export const addToCoupon = (code: string) => {
+  return apiRequest.post('/coupon/my', { code });
+};
