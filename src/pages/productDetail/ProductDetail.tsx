@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import DropdownInfo from '../components/common/widgets/DropdownInfo';
+import DropdownInfo from '@/components/common/widgets/DropdownInfo';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { addToCart, getProduct } from '../utils/api/api';
-import type { CartItem } from '../data/CartData';
-import type { Product } from '../data/productDetailData';
-import { TumbCarousel } from '../components/common/libs/carousel/TumbCarousel';
+import { addToCart, getProduct } from '@/utils/api/api';
+import type { CartItem } from '@/data/CartData';
+import type { Product } from '@/data/productDetailData';
+import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import Button from '@/components/common/Button';
 import { 커스텀_alert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavigate } from 'react-router-dom';
@@ -111,8 +111,17 @@ const ProductDetail = () => {
       가격: newItem.가격,
       할인율: newItem.할인율,
       이미지: newItem.이미지[0],
+      옵션: selectedOption.map((item) => item.name).join(', '), // 선택한 옵션들을 ,로 구분하여 문자열로 넘겨줄듯
       수량: 1,
     });
+  };
+
+  const goContactSeller = (productId: number) => {
+    navigate(`/product/${productId}/contact/add`);
+  };
+
+  const goContactHistory = () => {
+    navigate(`/product/${id}/contacts`);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -177,7 +186,9 @@ const ProductDetail = () => {
           )}
           <div className="flex justify-between text-xl py-5">
             <div>상품문의({data?.상품문의?.length})</div>
-            <div>더보기</div>
+            <div className="cursor-pointer" onClick={goContactHistory}>
+              더 보기
+            </div>
           </div>
           <div className="relative w-full">
             {data.상품문의?.length > 0 &&
@@ -209,10 +220,7 @@ const ProductDetail = () => {
             )}
           </div>
           <div className="px-4 py-4">
-            <Button
-              onClick={() => navigate(`/product/${data.id}/contact`)}
-              variant="default"
-            >
+            <Button onClick={() => goContactSeller(data.id)} variant="default">
               판매자에게 문의하기
             </Button>
           </div>

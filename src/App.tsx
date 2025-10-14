@@ -1,22 +1,34 @@
 import './App.css';
 
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/common/layout/Layout';
 import BestPage from './pages/BestPage';
-import HomePage from './pages/HomePage';
-import ProductDetail from './pages/ProductDetail';
 import CartPage from './pages/CartPage';
+import CouponPage from './pages/CouponPage';
+import HomePage from './pages/HomePage';
+import Mypage from './pages/Mypage';
 import NewPage from './pages/NewPage';
+import PartnershipPage from './pages/PartnershipPage';
 import PurchasePage from './pages/PurchasePage';
 import AddAddressPage from './pages/address/AddAddressPage';
-import EditAddressPage from './pages/address/EditAddressPage';
 import AddressPage from './pages/address/AddressPage';
-import ContactSeller from './pages/contactSeller';
-import Mypage from './pages/Mypage';
-import PartnershipPage from './pages/PartnershipPage';
-import CouponPage from './pages/CouponPage';
+import EditAddressPage from './pages/address/EditAddressPage';
+import ContactHistory from './pages/productDetail/ContactHistory';
+import ContactSeller from './pages/productDetail/ContactSeller';
+import ProductDetail from './pages/productDetail/ProductDetail';
+import { useAuthStore } from './store/useAuthStore';
 
 function App() {
+  const { user, fetchUser } = useAuthStore();
+  console.log('user: ', user);
+
+  useEffect(() => {
+    // 로그인 체크
+    // 토큰에 expired 시간 있으면 체크해서 로그아웃
+    fetchUser();
+  }, []);
+
   return (
     <BrowserRouter>
       <Layout>
@@ -26,7 +38,12 @@ function App() {
           <Route path="/new" element={<NewPage />} />
 
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/product/:id/contact" element={<ContactSeller />} />
+          <Route path="/product/:id/contacts" element={<ContactHistory />} />
+          <Route path="/product/:id/contact/add" element={<ContactSeller />} />
+          <Route
+            path="/product/:id/contact/edit/:contactId:"
+            element={<div></div>}
+          />
 
           <Route path="/cart" element={<CartPage />} />
           <Route path="/address" element={<AddressPage />} />

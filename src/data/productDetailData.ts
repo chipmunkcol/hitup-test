@@ -5,6 +5,7 @@ import subImage4 from '@/assets/images/detail_page/detail_sub4.png';
 
 export interface ProductContact {
   id: number;
+  상품명: string;
   문의유형: string;
   문의상품옵션: string;
   제목: string;
@@ -100,12 +101,13 @@ export const productDetailData: Product = {
   상품문의: [
     {
       id: 1,
+      상품명: '상품명A',
       문의유형: '사이즈',
       문의상품옵션: '',
       제목: '사이즈 문의합니다.',
       내용: '사이즈 문의 내용입니다.',
       이미지: 'https://picsum.photos/200',
-      작성자: '작성자',
+      작성자: 'admin',
       작성일: '2023-01-01',
       답변: {
         완료: true,
@@ -113,23 +115,25 @@ export const productDetailData: Product = {
         완료일: '2023-01-02',
       },
     },
-    // {
-    //   id: 2,
-    //   문의유형: '배송',
-    //   문의상품옵션: '',
-    //   제목: '배송 문의합니다.',
-    //   내용: '배송 문의 내용입니다.',
-    //   이미지: 'https://picsum.photos/200',
-    //   작성자: '작성자',
-    //   작성일: '2023-01-01',
-    //   답변: {
-    //     완료: false,
-    //     내용: '',
-    //     완료일: '',
-    //   },
-    // },
+    {
+      id: 2,
+      상품명: '상품명BB',
+      문의유형: '배송',
+      문의상품옵션: '',
+      제목: '배송 문의합니다.',
+      내용: '배송 문의 내용입니다.',
+      이미지: 'https://picsum.photos/200',
+      작성자: 'user123',
+      작성일: '2023-01-01',
+      답변: {
+        완료: false,
+        내용: '',
+        완료일: '',
+      },
+    },
     // {
     //   id: 3,
+    //   상품명: '상품명CCC',
     //   문의유형: '재입고',
     //   문의상품옵션: '',
     //   제목: '재입고 문의합니다.',
