@@ -6,7 +6,7 @@ import type { CartItem } from '@/data/CartData';
 import type { Product } from '@/data/productDetailData';
 import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import Button from '@/components/common/Button';
-import { 커스텀_alert } from '@/components/common/libs/sweetalert/sweetalert';
+import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 const 배송교환반품안내 =
@@ -81,7 +81,7 @@ const ProductDetail = () => {
     mutationFn: (newItem: CartItem) => addToCart(newItem),
     onSuccess: async (data) => {
       console.log('data: ', data);
-      const res_confirm = await 커스텀_alert(
+      const res_confirm = await swalConfirm(
         '장바구니',
         `<div>선택한 상품이 장바구니에 담겼어요<br />
       장바구니로 이동하시겠어요?</div>`,

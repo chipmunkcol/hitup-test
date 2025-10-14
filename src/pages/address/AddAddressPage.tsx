@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
-import { 커스텀_alert } from '../../components/common/libs/sweetalert/sweetalert';
+import { swalConfirm } from '../../components/common/libs/sweetalert/sweetalert';
 import type { Address } from '../../data/addressesData';
 import { addToAddress, getAddresses } from '../../utils/api/api';
 
@@ -51,7 +51,7 @@ const AddAddressPage = () => {
     let swalResult = null;
     // 이미 등록되어있는 기본 배송지가 있는 경우
     if (isDefault && defaultAddress) {
-      swalResult = await 커스텀_alert(
+      swalResult = await swalConfirm(
         '기본배송지 설정',
         `이전에 등록되어있던 기본 배송지는 ${defaultAddress}입니다.`
       );

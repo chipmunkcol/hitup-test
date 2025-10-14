@@ -4,6 +4,7 @@ import Button from '../components/common/Button';
 import useCart from '../hooks/useCart';
 import { getAddresses, getCart } from '../utils/api/api';
 import Loading from './utils/Loading';
+import { useState } from 'react';
 
 const CartPage = () => {
   const {
@@ -34,33 +35,40 @@ const CartPage = () => {
     handleUpdateCartItem,
   } = useCart({ data: cartItems || [] });
 
-  const { data: addresses, refetch: refetchAddresses } = useQuery({
+  const {
+    data: addresses,
+    isLoading: isLoadingAddresses,
+    refetch: refetchAddresses,
+  } = useQuery({
     queryKey: ['addressses'],
     queryFn: getAddresses,
     enabled: false, // 자동 실행 방지
   });
   console.log('addresses: ', addresses);
 
+  const [isLoadingRefetch, setIsLoadingRefetch] = useState(false);
   const navigate = useNavigate();
   const handlePurchase = async () => {
-    // refetch();
-    await refetchCart();
-    await refetchAddresses();
+    // refetch 돌리면 query에서 받아오는 data가 undefined 되어서 아래 로직 실행x
+    setIsLoadingRefetch(true);
+    const { data: refreshedAddresses } = await refetchAddresses();
 
-    console.log('addresses: ', addresses);
-    if (addresses && addresses?.length === 0) {
+    console.log('addresses: ', refreshedAddresses);
+    if (refreshedAddresses && refreshedAddresses?.length === 0) {
       const res = confirm('등록 된 배송지가 없습니다');
       if (res) {
         navigate('/address/add');
       }
     }
 
-    if (addresses && addresses?.length > 0) {
+    if (refreshedAddresses && refreshedAddresses?.length > 0) {
       navigate('/purchase');
     }
+
+    setIsLoadingRefetch(false);
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isLoadingAddresses || isLoadingRefetch) return <Loading />;
   if (isError) return <div>Error...</div>;
   if (!cartItems) return <div>장바구니가 비어있습니다.</div>;
 

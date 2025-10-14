@@ -153,6 +153,23 @@ export const mockApiHandlers = [
     return HttpResponse.json(contact, { status: 201 });
   }),
 
+  http.delete('/product/:id/contact/edit/:contactId', async ({ params }) => {
+    const { id, contactId } = params;
+    console.log('id, contactId: ', id, contactId);
+
+    // 백엔드에서 token 검증 로직 필요
+    productDetail = {
+      ...productDetail,
+      상품문의: productDetail.상품문의.filter(
+        (contact) => contact.id !== Number(contactId)
+      ),
+    };
+    return HttpResponse.json(
+      { message: '문의가 삭제되었습니다.' },
+      { status: 200 }
+    );
+  }),
+
   // 유저 데이터 (쿠폰, 나의 등급, 리뷰, 주문/배송) 최근 본 상품 (local?)
 
   // GET 쿠폰

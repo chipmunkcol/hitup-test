@@ -1,16 +1,58 @@
-import { getProduct } from '@/utils/api/api';
-import { useQuery } from '@tanstack/react-query';
+import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
+import { useAuthStore } from '@/store/useAuthStore';
+import { deleteContact, getProduct } from '@/utils/api/api';
+import { cutString } from '@/utils/function';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from 'antd';
 
 const id = 1;
 const ContactHistory = () => {
-  const { data, isError, isLoading } = useQuery({
+  const {
+    data: productData,
+    isError,
+    isLoading,
+  } = useQuery({
     queryKey: ['productDetail', id],
     queryFn: () => getProduct(id),
-    select: (data) => {
-      return data.상품문의;
+    // select: (data) => {
+    //   return data.상품문의;
+    // },
+  });
+
+  const data = productData?.상품문의 || [];
+
+  const { user } = useAuthStore();
+
+  // 문의 삭제 핸들러
+  const queryClient = useQueryClient();
+  const { mutate: deleteContactMutate } = useMutation({
+    mutationFn: ({
+      productId,
+      contactId,
+    }: {
+      productId: number;
+      contactId: number;
+    }) => deleteContact(productId, contactId),
+    onSuccess: (res) => {
+      console.log('res: ', res.data?.message);
+      queryClient.invalidateQueries({ queryKey: ['productDetail', id] });
+    },
+    onError: (err) => {
+      console.log('err: ', err);
     },
   });
+
+  const handleDelete = async (productId: number, contactId: number) => {
+    const res = await swalConfirm(
+      '삭제',
+      '문의글을 정말 삭제하시겠어요?',
+      '확인',
+      '취소'
+    );
+    if (res.isConfirmed) {
+      deleteContactMutate({ productId, contactId });
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
@@ -34,7 +76,7 @@ const ContactHistory = () => {
                       <div className="flex gap-3">
                         <div className="w-[100px] h-[100px]">
                           <img
-                            src={item.이미지 || 'https://picsum.photos/200'}
+                            src={productData?.이미지[0]}
                             className="w-full h-full"
                           />
                         </div>
@@ -50,16 +92,38 @@ const ContactHistory = () => {
                           </div>
                         </div>
                         <div>{item.문의유형}</div>
-                        <div>{item.제목}</div>
-                        <div>{item.내용}</div>
+                        <div>{cutString(item.제목, 30)}</div>
+                        <div>{cutString(item.내용, 1000)}</div>
+                        {item.이미지 && item.이미지.length > 0 && (
+                          <div className="mt-2 flex gap-2">
+                            {item.이미지.map((imgUrl, index) => (
+                              <img
+                                key={index}
+                                src={imgUrl}
+                                className="w-20 h-20 object-cover"
+                              />
+                            ))}
+                          </div>
+                        )}
                         <div>{item.작성일}</div>
                       </div>
-                    </div>
 
-                    <div className="flex-1 flex gap-3">
-                      <Button>수정</Button>
-                      <Button>삭제</Button>
+                      {item.답변.완료 && (
+                        <div className="mt-4 p-4 bg-Grey-20 rounded-lg">
+                          <div className="font-semibold">답변</div>
+                          <div>{cutString(item.답변.내용, 1000)}</div>
+                          <div>{item.답변.완료일}</div>
+                        </div>
+                      )}
                     </div>
+                    {user?.id === item?.작성자 && (
+                      <div className="flex-1 flex gap-3">
+                        {!item.답변.완료 && <Button>수정</Button>}
+                        <Button onClick={() => handleDelete(id, item.id)}>
+                          삭제
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </li>
               ))}

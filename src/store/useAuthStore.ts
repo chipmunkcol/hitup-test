@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 // const jwt_key = 'test';
 export interface User {
-  id: number;
+  id: string;
 }
 
 interface AuthState {
@@ -19,9 +19,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user: User | null) => set({ user: user }),
   fetchUser: async () => {
     try {
-      // const token = localStorage.getItem('access_token');
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3NjA0MDg2MDh9.21K6TDJbE03tc4BA0TzAsXnbyLzUILQC_kCuAH6klVU';
+      const token = localStorage.getItem('access_token');
+      // const token =
+      //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3NjA0MDg2MDh9.21K6TDJbE03tc4BA0TzAsXnbyLzUILQC_kCuAH6klVU';
 
       if (!token) {
         set({ user: null });

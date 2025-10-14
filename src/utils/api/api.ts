@@ -72,6 +72,10 @@ export const contactSeller = (
   return apiRequest.post(`/product/${productId}/contact`, newContact);
 };
 
+export const deleteContact = (productId: number, contactId: number) => {
+  return apiRequest.delete(`/product/${productId}/contact/edit/${contactId}`);
+};
+
 // 쿠폰 (GET, POST)
 export const getCoupons = () =>
   apiRequest.get('/coupon/my').then((res) => res.data);

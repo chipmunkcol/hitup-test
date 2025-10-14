@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-export const 커스텀_alert = async (
+export const swalConfirm = async (
   title: string,
   text: string,
   confirmButtonText?: string,
