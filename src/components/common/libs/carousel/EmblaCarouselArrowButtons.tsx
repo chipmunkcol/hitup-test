@@ -2,8 +2,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import btnLeft from '@/assets/images/Button_left_main.png';
 import btnRight from '@/assets/images/Button_right_main.png';
+import type { EmblaCarouselType } from 'embla-carousel';
 
-export const usePrevNextButtons = (emblaApi) => {
+export const usePrevNextButtons = (emblaApi: EmblaCarouselType | undefined) => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
 
@@ -17,7 +18,7 @@ export const usePrevNextButtons = (emblaApi) => {
     emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const onSelect = useCallback((emblaApi) => {
+  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
     setPrevBtnDisabled(!emblaApi.canScrollPrev());
     setNextBtnDisabled(!emblaApi.canScrollNext());
   }, []);
@@ -37,7 +38,9 @@ export const usePrevNextButtons = (emblaApi) => {
   };
 };
 
-export const PrevButton = (props) => {
+export const PrevButton = (
+  props: React.ButtonHTMLAttributes<HTMLButtonElement>
+) => {
   const { children, ...restProps } = props;
 
   return (
@@ -52,7 +55,9 @@ export const PrevButton = (props) => {
   );
 };
 
-export const NextButton = (props) => {
+export const NextButton = (
+  props: React.ButtonHTMLAttributes<HTMLButtonElement>
+) => {
   const { children, ...restProps } = props;
 
   return (

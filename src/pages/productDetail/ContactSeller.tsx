@@ -116,8 +116,12 @@ const ContactSeller = () => {
     onSuccess: (data) => {
       console.log('문의하기 성공: ', data);
       queryClient.invalidateQueries({ queryKey: ['productDetail', id] });
+      goBack();
     },
   });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error...</div>;
 
   return (
     <div className="w-[800px] mx-auto">

@@ -1,17 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import useCart from '../hooks/useCart';
 import { getAddresses, getCart } from '../utils/api/api';
 import Loading from './utils/Loading';
-import { useState } from 'react';
 
 const CartPage = () => {
   const {
     data: cartItems,
     isError,
     isLoading,
-    refetch: refetchCart,
   } = useQuery({
     queryKey: ['cart'],
     queryFn: getCart,
@@ -52,6 +51,8 @@ const CartPage = () => {
     // refetch 돌리면 query에서 받아오는 data가 undefined 되어서 아래 로직 실행x
     setIsLoadingRefetch(true);
     const { data: refreshedAddresses } = await refetchAddresses();
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     console.log('addresses: ', refreshedAddresses);
     if (refreshedAddresses && refreshedAddresses?.length === 0) {

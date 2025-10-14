@@ -9,7 +9,7 @@ interface UseCartProps {
 }
 
 // Cartitem에 checked 속성 추가
-interface CartItemWithChecked extends CartItem {
+export interface CartItemWithChecked extends CartItem {
   checked: boolean;
 }
 
@@ -117,7 +117,7 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
       // rollback을 위해 이전 데이터 반환
       return { previousCart };
     },
-    onError: (err, updateItem, context) => {
+    onError: (err, _, context) => {
       if (context?.previousCart) {
         queryClient.setQueryData(['cart'], context.previousCart);
       }

@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
-import type { Address } from '../../data/addressesData';
-import { addToAddress, getAddresses, updateAddress } from '../../utils/api/api';
 import { useNavigate, useParams } from 'react-router-dom';
+import type { Address } from '../../data/addressesData';
+import { getAddresses, updateAddress } from '../../utils/api/api';
 
 const EditAddressPage = () => {
   const params = useParams<{ id: string }>();
@@ -174,8 +174,12 @@ const EditAddressPage = () => {
 
 export default EditAddressPage;
 
-const Postcode = ({ closePostcode, setAddress }) => {
-  const handleComplete = (data) => {
+interface PostcodeProps {
+  closePostcode: () => void;
+  setAddress: (address: string) => void;
+}
+const Postcode = ({ closePostcode, setAddress }: PostcodeProps) => {
+  const handleComplete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = '';
 

@@ -10,7 +10,7 @@ import HomePage from './pages/HomePage';
 import Mypage from './pages/Mypage';
 import NewPage from './pages/NewPage';
 import PartnershipPage from './pages/PartnershipPage';
-import PurchasePage from './pages/PurchasePage';
+import PurchasePage from './pages/purchase/PurchasePage';
 import AddAddressPage from './pages/address/AddAddressPage';
 import AddressPage from './pages/address/AddressPage';
 import EditAddressPage from './pages/address/EditAddressPage';
@@ -18,6 +18,7 @@ import ContactHistory from './pages/productDetail/ContactHistory';
 import ContactSeller from './pages/productDetail/ContactSeller';
 import ProductDetail from './pages/productDetail/ProductDetail';
 import { useAuthStore } from './store/useAuthStore';
+import PurchaseDetail from './pages/purchase/PurchaseDetail';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -57,7 +58,10 @@ function App() {
 
           <Route path="/mypage" element={<Mypage />} />
 
+          {/* 주문관련 */}
           <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/purchase/:id" element={<PurchaseDetail />} />
+
           <Route path="*" element={<div>없는 페이지</div>} />
         </Routes>
       </Layout>

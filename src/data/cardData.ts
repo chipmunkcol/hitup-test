@@ -1,12 +1,12 @@
-// export interface Product {
-//   title: string;
-//   description: string;
-//   price: number;
-//   discountRate: number;
-//   img: string;
-//   freeShipping?: boolean;
-//   //   label: "new" | "best"
-// }
+export interface Product {
+  title: string;
+  description: string;
+  price: number;
+  discountRate: number;
+  img: string;
+  freeShipping?: boolean;
+  //   label: "new" | "best"
+}
 
 export const 신상품 = [
   {

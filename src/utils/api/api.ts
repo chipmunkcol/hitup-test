@@ -2,6 +2,12 @@ import axios from 'axios';
 import type { CartItem } from '../../data/CartData';
 import type { Address } from '../../data/addressesData';
 import type { Product, ProductContact } from '../../data/productDetailData';
+import type { Coupon } from '@/data/couponData';
+
+// axios 기본 설정
+export const apiRequest = axios.create({
+  baseURL: '', // API 서버의 기본 URL
+});
 
 export const getProduct = async (id: number): Promise<Product> => {
   try {
@@ -14,24 +20,6 @@ export const getProduct = async (id: number): Promise<Product> => {
     throw new Error('알 수 없는 오류가 발생했습니다.');
   }
 };
-
-// axios 기본 설정
-export const apiRequest = axios.create({
-  baseURL: '', // API 서버의 기본 URL
-});
-
-// apiRequest.interceptors.request.use(
-//     (config) => {
-//         const token = localStorage.getItem("token");
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
-//         }
-//         return config;
-//     },
-//     (error) => {
-//         return Promise.reject(error);
-//     }
-// );
 
 // 장바구니 조회
 export const getCart = () => apiRequest.get('/cart').then((res) => res.data);
@@ -77,9 +65,22 @@ export const deleteContact = (productId: number, contactId: number) => {
 };
 
 // 쿠폰 (GET, POST)
-export const getCoupons = () =>
+export const getCoupons = (): Promise<Coupon[]> =>
   apiRequest.get('/coupon/my').then((res) => res.data);
 
 export const addToCoupon = (code: string) => {
   return apiRequest.post('/coupon/my', { code });
 };
+
+// apiRequest.interceptors.request.use(
+//     (config) => {
+//         const token = localStorage.getItem("token");
+//         if (token) {
+//             config.headers.Authorization = `Bearer ${token}`;
+//         }
+//         return config;
+//     },
+//     (error) => {
+//         return Promise.reject(error);
+//     }
+// );

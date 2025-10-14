@@ -1,6 +1,8 @@
+import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
+  const { user } = useAuthStore();
   const navigate = useNavigate();
   const goAddress = () => {
     navigate('/address');
@@ -19,9 +21,16 @@ const Mypage = () => {
       <div className="flex flex-col gap-4">
         <div className="flex gap-4 px-16">
           <div className="w-[60px] h-[60px] rounded-full bg-Bgrey-20"></div>
-          <div className="flex items-center">
-            로그인/회원가입하고 이용해보세요
-          </div>
+          {!user && (
+            <div className="flex items-center">
+              로그인/회원가입하고 이용해보세요
+            </div>
+          )}
+          {user && (
+            <div className="flex flex-col justify-center">
+              <div className="font-bold text-lg">{user?.id}님</div>
+            </div>
+          )}
         </div>
         {/* 구분 선 */}
         <div className="border-b border-Bgrey-20 my-4"></div>

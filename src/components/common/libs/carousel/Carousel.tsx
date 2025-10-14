@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import './carousel.css';
 import useEmblaCarousel from 'embla-carousel-react';
+import type { EmblaCarouselType } from 'embla-carousel';
 import { TYPOGRAPHY } from '@/styles/typography';
 import {
   PrevButton,
@@ -53,11 +54,11 @@ export function Carousel({ images }: CarouselProps) {
   );
 }
 
-const useSelectedSnapDisplay = (emblaApi) => {
+const useSelectedSnapDisplay = (emblaApi: EmblaCarouselType | undefined) => {
   const [selectedSnap, setSelectedSnap] = useState(0);
   const [snapCount, setSnapCount] = useState(0);
 
-  const updateScrollSnapState = useCallback((emblaApi) => {
+  const updateScrollSnapState = useCallback((emblaApi: EmblaCarouselType) => {
     setSnapCount(emblaApi.scrollSnapList().length);
     setSelectedSnap(emblaApi.selectedScrollSnap());
   }, []);
@@ -76,7 +77,11 @@ const useSelectedSnapDisplay = (emblaApi) => {
   };
 };
 
-export const SelectedSnapDisplay = (props) => {
+type SelectedSnapDisplayProps = {
+  selectedSnap: number;
+  snapCount: number;
+};
+export const SelectedSnapDisplay = (props: SelectedSnapDisplayProps) => {
   const { selectedSnap, snapCount } = props;
 
   return (

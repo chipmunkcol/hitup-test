@@ -1,6 +1,5 @@
 import Button from '@/components/common/Button';
 import { Input } from 'antd';
-import SkeletonInput from 'antd/es/skeleton/Input';
 
 const PartnershipPage = () => {
   return (

@@ -94,17 +94,19 @@ const ContactHistory = () => {
                         <div>{item.문의유형}</div>
                         <div>{cutString(item.제목, 30)}</div>
                         <div>{cutString(item.내용, 1000)}</div>
-                        {item.이미지 && item.이미지.length > 0 && (
-                          <div className="mt-2 flex gap-2">
-                            {item.이미지.map((imgUrl, index) => (
-                              <img
-                                key={index}
-                                src={imgUrl}
-                                className="w-20 h-20 object-cover"
-                              />
-                            ))}
-                          </div>
-                        )}
+                        {item.이미지 &&
+                          item.이미지.length > 0 &&
+                          typeof item.이미지 === 'object' && (
+                            <div className="mt-2 flex gap-2">
+                              {item.이미지.map((imgUrl, index) => (
+                                <img
+                                  key={index}
+                                  src={imgUrl}
+                                  className="w-20 h-20 object-cover"
+                                />
+                              ))}
+                            </div>
+                          )}
                         <div>{item.작성일}</div>
                       </div>
 

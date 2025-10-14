@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import useCart from '../hooks/useCart';
-import { useDeliveryStore } from '../store/useDeliveryStore';
-import { getAddresses, getCart } from '../utils/api/api';
+import useCart from '../../hooks/useCart';
+import { useDeliveryStore } from '../../store/useDeliveryStore';
+import { getAddresses, getCart } from '../../utils/api/api';
 import { Button, Radio } from 'antd';
 import { useState } from 'react';
 
@@ -23,7 +23,6 @@ const PurchasePage = () => {
     브랜드별총금액,
     주문상품금액,
     총결제금액,
-    총상품금액,
     총배송비,
   } = useCart({ data: cartItems || [] });
 

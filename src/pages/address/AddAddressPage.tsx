@@ -4,8 +4,10 @@ import DaumPostcode from 'react-daum-postcode';
 import { swalConfirm } from '../../components/common/libs/sweetalert/sweetalert';
 import type { Address } from '../../data/addressesData';
 import { addToAddress, getAddresses } from '../../utils/api/api';
+import { useNavigate } from 'react-router-dom';
 
 const AddAddressPage = () => {
+  const navigate = useNavigate();
   const [isPostcodeOpen, setPostcodeOpen] = useState(false);
   const openPostcode = () => {
     setPostcodeOpen(true);
@@ -28,6 +30,7 @@ const AddAddressPage = () => {
     onSuccess: (data) => {
       console.log('배송지 추가 성공: ', data);
       alert('배송지가 추가되었습니다.');
+      navigate('/address');
     },
     onError: (error) => {
       console.error('배송지 추가 실패: ', error);
@@ -176,8 +179,12 @@ const AddAddressPage = () => {
 
 export default AddAddressPage;
 
-const Postcode = ({ closePostcode, setAddress }) => {
-  const handleComplete = (data) => {
+interface PostcodeProps {
+  closePostcode: () => void;
+  setAddress: (address: string) => void;
+}
+const Postcode = ({ closePostcode, setAddress }: PostcodeProps) => {
+  const handleComplete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = '';
 

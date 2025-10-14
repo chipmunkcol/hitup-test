@@ -28,7 +28,7 @@ export function TumbCarousel({ images }: TumbCarouselProps) {
   } = usePrevNextButtons(emblaMainApi);
 
   const onThumbClick = useCallback(
-    (index) => {
+    (index: number) => {
       if (!emblaMainApi || !emblaThumbsApi) return;
       emblaMainApi.scrollTo(index);
     },
@@ -81,7 +81,6 @@ export function TumbCarousel({ images }: TumbCarouselProps) {
                 key={index}
                 onClick={() => onThumbClick(index)}
                 selected={index === selectedIndex}
-                index={index}
                 value={image}
               />
             ))}
@@ -92,7 +91,11 @@ export function TumbCarousel({ images }: TumbCarouselProps) {
   );
 }
 
-export const Thumb = (props) => {
+export const Thumb = (props: {
+  selected: boolean;
+  value: string;
+  onClick: () => void;
+}) => {
   const { selected, value, onClick } = props;
 
   return (
