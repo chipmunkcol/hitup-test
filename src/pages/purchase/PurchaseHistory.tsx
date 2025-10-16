@@ -1,5 +1,5 @@
 import { purchaseData } from '@/data/purchaseData';
-import { useModalStore } from '@/store/useModal';
+import { useModalStore } from '@/store/useModalStore';
 import { Button } from 'antd';
 import { TrackingHistory } from './PurchaseDetail';
 import { useNavigate } from 'react-router-dom';

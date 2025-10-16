@@ -1,6 +1,6 @@
 import { purchaseDetail } from '@/data/purchaseData';
 import { trackingData } from '@/data/trackingData';
-import { useModalStore } from '@/store/useModal';
+import { useModalStore } from '@/store/useModalStore';
 import { Button } from 'antd';
 import { useState } from 'react';
 

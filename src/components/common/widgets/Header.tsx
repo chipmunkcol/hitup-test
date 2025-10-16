@@ -1,13 +1,18 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import HamburgerBtn from '../HamburgerBtn';
 import CartIcon from '../icon/CartIcon';
 import ProfileIcon from '../icon/ProfileIcon';
 import Logo from '../Logo';
 import SearchField from './SearchField';
+import { useModalStore } from '@/store/useModalStore';
 
 const Header = () => {
   const navigate = useNavigate();
   const pathname = window.location.pathname;
+
+  const toggleCategoryVisible = useModalStore(
+    (state) => state.toggleCategoryVisible
+  );
 
   const goMain = () => {
     if (pathname === '/') {
@@ -29,7 +34,7 @@ const Header = () => {
   return (
     <header className="p-[20px] flex justify-between">
       <div className="flex  items-center gap-[33px]">
-        <HamburgerBtn />
+        <HamburgerBtn onClick={toggleCategoryVisible} />
         <Logo onClick={goMain} />
       </div>
       <div className="flex gap-[26px]">
