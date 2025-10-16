@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import HamburgerBtn from '../HamburgerBtn';
 import CartIcon from '../icon/CartIcon';
 import ProfileIcon from '../icon/ProfileIcon';
@@ -7,7 +7,14 @@ import SearchField from './SearchField';
 
 const Header = () => {
   const navigate = useNavigate();
+  const pathname = window.location.pathname;
+
   const goMain = () => {
+    if (pathname === '/') {
+      window.location.reload();
+      return;
+    }
+
     navigate('/');
   };
 

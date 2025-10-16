@@ -123,11 +123,14 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
       }
       alert('장바구니 수량 변경 실패: ' + err);
     },
-    onSettled: () => {
-      // 서버와 동기화
-      // queryClient.invalidateQueries({ queryKey: ["cart"] });
-      // alert('장바구니 수량 변경 성공');
+    onSuccess: () => {
+      alert('장바구니 수량 변경 성공');
     },
+    // onSettled: () => {
+    //   서버와 동기화
+    //   queryClient.invalidateQueries({ queryKey: ["cart"] });
+    //   alert('장바구니 수량 변경 성공');
+    // },
   });
 
   const handleUpdateCartItem = {
@@ -139,10 +142,19 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
         updateCartItem({ id: item.id, 수량: item.수량 - 1 });
       }
     },
-    remove: (item: CartItem) => {
-      updateCartItem({ id: item.id, 수량: 0 });
-    },
+    // remove: (item: CartItem) => {
+    //   updateCartItem({ id: item.id, 수량: 0 });
+    // },
   };
+
+  const { mutate: removeCartItem } = useMutation({
+    mutationFn: (id: number) => {
+      return axios.delete(`/cart/${id}`);
+    },
+    onSuccess: () => {
+      alert('장바구니에서 상품이 삭제되었습니다.');
+    },
+  });
 
   return {
     toggleAll,

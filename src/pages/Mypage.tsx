@@ -16,6 +16,10 @@ const Mypage = () => {
     navigate('/coupon');
   };
 
+  const goPurchaseHistory = () => {
+    navigate('/purchase/history');
+  };
+
   return (
     <div className="max-w-2xl m-auto px-4 py-10">
       <div className="flex flex-col gap-4">
@@ -36,8 +40,11 @@ const Mypage = () => {
         <div className="border-b border-Bgrey-20 my-4"></div>
 
         <div className="flex justify-between px-12 pb-8">
-          <div className="flex flex-col gap-2 items-center">
-            <div className="w-[50px] h-[50px] bg-Bgrey-20"></div>
+          <div
+            onClick={goPurchaseHistory}
+            className="flex flex-col gap-2 items-center"
+          >
+            <div className="w-[50px] h-[50px] bg-HITUP_Blue"></div>
             <div>주문/배송</div>
           </div>
           <div className="flex flex-col gap-2 items-center">

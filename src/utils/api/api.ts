@@ -33,7 +33,7 @@ export const updateCartItem = (cartItemId: number, quantity: number) =>
   apiRequest.put(`/cart/${cartItemId}`, { quantity });
 
 // 상품 삭제
-export const removeFromCart = (cartItemId: number) =>
+export const removeCartItem = (cartItemId: number) =>
   apiRequest.delete(`/cart/${cartItemId}`);
 
 // 배송지 관련

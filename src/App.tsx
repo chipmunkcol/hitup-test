@@ -19,6 +19,8 @@ import ContactSeller from './pages/productDetail/ContactSeller';
 import ProductDetail from './pages/productDetail/ProductDetail';
 import { useAuthStore } from './store/useAuthStore';
 import PurchaseDetail from './pages/purchase/PurchaseDetail';
+import PurchaseHistory from './pages/purchase/PurchaseHistory';
+import CategoryPage from './pages/CategoryPage';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -35,6 +37,11 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/category/:category/sub/:sub"
+            element={<CategoryPage />}
+          />
+
           <Route path="/best" element={<BestPage />} />
           <Route path="/new" element={<NewPage />} />
 
@@ -60,6 +67,7 @@ function App() {
 
           {/* 주문관련 */}
           <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/purchase/history" element={<PurchaseHistory />} />
           <Route path="/purchase/:id" element={<PurchaseDetail />} />
 
           <Route path="*" element={<div>없는 페이지</div>} />

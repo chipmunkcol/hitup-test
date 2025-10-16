@@ -76,10 +76,15 @@ export const mockApiHandlers = [
       item.id === Number(id) ? { ...item, ...updates } : item
     );
 
-    // 수량이 0이면 해당 아이템 삭제
-    cart = cart.filter((item) => item.수량 > 0);
-
     return HttpResponse.json(cart.find((item) => item.id === Number(id)));
+  }),
+
+  http.delete('/cart/:id', ({ params }) => {
+    const { id } = params;
+    cart = cart.filter((item) => item.id !== Number(id));
+    return HttpResponse.json({
+      message: '장바구니에서 상품이 삭제되었습니다.',
+    });
   }),
 
   // 배송지 관련 (주소, 상세주소, 수령인, 연락처, 배송지명(선택))

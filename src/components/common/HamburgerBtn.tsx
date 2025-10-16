@@ -10,7 +10,7 @@ const HamburgerBtn = ({ onClick }: HamburgerBtnProps) => {
       onClick={onClick}
       src={hamburgerBtn}
       alt="hamburger"
-      className="w-[32px] h-[32px]"
+      className="w-[32px] h-[32px] cursor-pointer"
     />
   );
 };

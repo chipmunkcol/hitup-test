@@ -17,3 +17,23 @@ export const swalConfirm = async (
     reverseButtons: true,
   });
 };
+
+const sweatalert = Swal.mixin({
+  toast: true,
+  position: 'center',
+  // iconColor: 'white',
+  // customClass: {
+  //   popup: 'colored-toast',
+  // },
+  // showConfirmButton: false,
+  // timer: 1500,
+  // timerProgressBar: true,
+});
+
+type IconProps = 'success' | 'error' | 'warning' | 'info' | 'question';
+export const swalToast = (icon: IconProps, title: string) => {
+  sweatalert.fire({
+    icon: icon,
+    title: title,
+  });
+};

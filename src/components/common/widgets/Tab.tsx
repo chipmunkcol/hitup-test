@@ -3,11 +3,11 @@ import { TYPOGRAPHY } from '../../../styles/typography';
 
 const Tab = () => {
   const pathname = window.location.pathname;
-  console.log('currentPath: ', pathname);
+  // console.log('currentPath: ', pathname);
   const currentPath = pathname.split('/')[1];
 
   return (
-    <div className="px-[20px] h-[40px]  flex items-center justify-start gap-[20px]">
+    <div className="flex md:hidden px-[20px] h-[40px] items-center justify-start gap-[20px]">
       <div className=" flex flex-col  gap-[8px]">
         <Link to={'/'}>
           <div

@@ -9,7 +9,7 @@ const Logo = ({ onClick }: LogoProps) => {
     <img
       src={logo}
       alt="logo"
-      className="w-[141px] h-[40px]"
+      className="w-[141px] h-[40px] cursor-pointer"
       onClick={onClick}
     />
   );

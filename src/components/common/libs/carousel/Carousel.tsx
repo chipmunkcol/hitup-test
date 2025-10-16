@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import './carousel.css';
 import useEmblaCarousel from 'embla-carousel-react';
 import type { EmblaCarouselType } from 'embla-carousel';
+import Autoplay from 'embla-carousel-autoplay';
 import { TYPOGRAPHY } from '@/styles/typography';
 import {
   PrevButton,
@@ -14,7 +15,9 @@ interface CarouselProps {
 }
 
 export function Carousel({ images }: CarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    // Autoplay({ delay: 3000, stopOnInteraction: true, stopOnLastSnap: false }),
+  ]);
   const {
     prevBtnDisabled,
     nextBtnDisabled,
@@ -33,10 +36,10 @@ export function Carousel({ images }: CarouselProps) {
   return (
     <section className="embla">
       <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
+        <div className="embla__container h-full">
           {images?.map((image, index) => (
             <div className="embla__slide w-full h-full" key={index}>
-              <img className="w-full h-full" src={image} alt="slider-image" />
+              <img className="w-full h-full " src={image} alt="slider-image" />
             </div>
           ))}
         </div>
