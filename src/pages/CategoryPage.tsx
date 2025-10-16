@@ -1,43 +1,24 @@
 import ProductCard from '@/components/common/ProductCard';
 import Category from '@/components/common/widgets/Category';
 import { 신상품 } from '@/data/cardData';
-import { getSubCategory } from '@/utils/function';
 import { Select } from 'antd';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryPage = () => {
-  const navigate = useNavigate();
-
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get('type');
-  const fish = searchParams.get('fish');
-
-  const pathname = window.location.pathname;
-  console.log('pathname, type: ', pathname, type, fish);
-
-  const category =
-    pathname?.split('/')[
-      pathname?.split('/')?.findIndex((v) => v === 'category') + 1
-    ];
-  const sub =
-    pathname?.split('/')[
-      pathname?.split('/')?.findIndex((v) => v === 'sub') + 1
-    ];
-
   // pathname & params 활용해서 useQuery 상품 불러오기 (대분류, 중분류, 타입, 어종) & 정렬
   // 예상 API /products?category=sea&sub=ship&type=all&fish=갑오징어&sort=popularity
-
-  const subCategory = getSubCategory(category, sub);
-
-  const fishList = subCategory?.find((item) => item.value === type)?.fish || [];
-  console.log('fishList: ', fishList);
 
   // 정렬 (인기순, 최신순, 낮은가격순, 높은가격순)
   const [sort, setSort] = useState('popularity');
   console.log('sort: ', sort);
   const onChangeSort = (value: string) => {
     setSort(value);
+  };
+
+  const navigate = useNavigate();
+  const goProductDetail = (productId: number) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
@@ -67,7 +48,7 @@ const CategoryPage = () => {
           {신상품.map((item, index) => (
             <li
               key={`신상품-${item.id}`}
-              onClick={() => navigate(`/product/${item.id}`)}
+              onClick={() => goProductDetail(item.id)}
             >
               <ProductCard
                 label={String(index + 1)}

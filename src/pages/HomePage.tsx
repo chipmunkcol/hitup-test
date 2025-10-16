@@ -15,6 +15,10 @@ const slides = [img1, img2];
 const HomePage = () => {
   const navigate = useNavigate();
 
+  const goProductDetail = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
+
   return (
     <div className="w-full">
       <Tab />
@@ -37,7 +41,7 @@ const HomePage = () => {
           {신상품.slice(0, 5).map((item) => (
             <li
               key={`신상품-${item.id}`}
-              onClick={() => navigate(`/product/${item.id}`)}
+              onClick={() => goProductDetail(item.id)}
             >
               <ProductCard label="new" color="blue" data={item} />
             </li>
@@ -54,7 +58,7 @@ const HomePage = () => {
           {신상품.slice(0, 5).map((item, index) => (
             <li
               key={`인기상품-${item.id}`}
-              onClick={() => navigate(`/product/${item.id}`)}
+              onClick={() => goProductDetail(item.id)}
             >
               <ProductCard
                 label={String(index + 1)}
