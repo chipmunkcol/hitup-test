@@ -1,10 +1,10 @@
 import CryptoJS from 'crypto-js';
 
+// const accessKey = import.meta.env.VITE_ACCESS_KEY;
+// const seedKey = import.meta.env.VITE_SEED_KEY;
+
 const accessKey = 'kR8vZ2nP9xQ5mL3hF7jK1dS6wE4tY0uI2oA8cB5gH9v=';
 const seedKey = '8MpaHtB0/D54GlNuo8Tk+B1+fObDUPGc071tfny2nVU=';
-
-// const accessKey = 'test';
-// const seedKey = 'test';
 
 // IV 생성 (timestamp + key)
 export function generateIv(timestamp: number, key: string) {
@@ -74,3 +74,38 @@ console.log('encryptedData: ', encryptedData);
 
 const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
 console.log('decryptedData: ', decryptedData);
+
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// 임시로 개발해봄 Node.js 내장 crypto 모듈 사용 (AES-256-CCM)
+// const encryptTemp = (data: string, key: string, iv: string) => {
+//   const strData = JSON.stringify(data).trim();
+
+//   // AES128/CBC/PKCS7 암호화
+//   const cipher = crypto.createCipheriv(
+//     'aes-256-ccm',
+//     Buffer.from(key),
+//     Buffer.from(iv)
+//   );
+//   let encrypted = cipher.update(strData, 'utf-8', 'base64');
+//   encrypted += cipher.final('base64');
+
+//   return encrypted;
+// };
+
+// const decryptTemp = (encryptedData: string, key: string, iv: string) => {
+//   const decipher = crypto.createDecipheriv(
+//     'aes-256-ccm',
+//     Buffer.from(key),
+//     Buffer.from(iv)
+//   );
+//   let decrypted = decipher.update(encryptedData, 'base64', 'binary');
+//   decrypted += decipher.final('binary');
+
+//   decrypted = JSON.parse(decrypted);
+//   return decrypted;
+// };
