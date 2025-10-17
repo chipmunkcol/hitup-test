@@ -10,10 +10,6 @@ const Header = () => {
   const navigate = useNavigate();
   const pathname = window.location.pathname;
 
-  const toggleCategoryVisible = useModalStore(
-    (state) => state.toggleCategoryVisible
-  );
-
   const goMain = () => {
     if (pathname === '/') {
       window.location.reload();
@@ -34,7 +30,7 @@ const Header = () => {
   return (
     <header className="p-[20px] flex justify-between">
       <div className="flex  items-center gap-[33px]">
-        <HamburgerBtn onClick={toggleCategoryVisible} />
+        <HamburgerBtn />
         <Logo onClick={goMain} />
       </div>
       <div className="flex gap-[26px]">

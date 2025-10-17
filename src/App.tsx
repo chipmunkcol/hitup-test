@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/common/layout/Layout';
 import BestPage from './pages/BestPage';
@@ -21,13 +21,11 @@ import { useAuthStore } from './store/useAuthStore';
 import PurchaseDetail from './pages/purchase/PurchaseDetail';
 import PurchaseHistory from './pages/purchase/PurchaseHistory';
 import CategoryPage from './pages/CategoryPage';
-import { useModalStore } from './store/useModalStore';
-import useCategory from './hooks/useCategory';
+import CategoryBig from './components/common/widgets/CategoryBig';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
   console.log('user: ', user);
-  const isCategoryVisible = useModalStore((state) => state.isCategoryVisible);
 
   useEffect(() => {
     // 로그인 체크
@@ -38,31 +36,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
-        {isCategoryVisible && (
-          <div
-            className="fixed top-[80px] left-0 right-0 mx-auto w-[100%] bg-Grey-30 z-10"
-            onClick={() => {
-              const setIsCategoryVisible =
-                useModalStore.getState().setIsCategoryVisible;
-              setIsCategoryVisible(false);
-            }}
-          >
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <div>바다</div>
-                <div>바다</div>
-                <div>바다</div>
-                <div>바다</div>
-                <div>바다</div>
-              </div>
-              <div className="flex-4">
-                <div>선상</div>
-                <div>갯바위</div>
-                <div>방파제</div>
-              </div>
-            </div>
-          </div>
-        )}
+        <CategoryBig />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route

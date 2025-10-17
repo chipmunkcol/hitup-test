@@ -35,6 +35,14 @@ const useCategory = () => {
     navigate(`/category/${category}/sub/${sub}?type=all`);
   };
 
+  const handleCategoryType = (
+    category: keyof typeof CATEGORY,
+    sub: string,
+    type: string
+  ) => {
+    navigate(`/category/${category}/sub/${sub}?type=${type}`);
+  };
+
   const handleType = (type: string) => {
     setSearchParams({ type });
   };
@@ -60,6 +68,7 @@ const useCategory = () => {
     fish,
     subCategory,
     handleCategory,
+    handleCategoryType,
     handleType,
     handleFish,
     fishList,
