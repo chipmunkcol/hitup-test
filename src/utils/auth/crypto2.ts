@@ -90,7 +90,8 @@ function arrayBufferToBase64(buf: ArrayBuffer): string {
   return btoa(binary);
 }
 
-const requestTime = String(Date.now()); // 자바와 동일하게 "문자열"로 보냄
+// const requestTime = String(Date.now()); // 자바와 동일하게 "문자열"로 보냄
+const requestTime = String(1760607802106);
 
 (async () => {
   // const lvKey = import.meta.env.VITE_ACCESS_KEY; // 백엔드의 applicationConfig.getAccessKey()
