@@ -1,7 +1,7 @@
 import mainImage from '@/assets/images/detail_page/detail_main.png';
 import subImage2 from '@/assets/images/detail_page/detail_sub2.png';
 
-export interface ReviewableProduct {
+export interface Review {
   id: number; // 상품 ID
   브랜드명: string;
   상품명: string; // 상품명
@@ -18,7 +18,7 @@ export interface ReviewableProduct {
   };
 }
 
-export const reviewableData: ReviewableProduct[] = [
+export const reviewableData: Review[] = [
   {
     id: 4,
     브랜드명: 'CR',
@@ -32,7 +32,7 @@ export const reviewableData: ReviewableProduct[] = [
     작성된리뷰: {
       별점: 5,
       내용: '아주 만족합니다!',
-      리뷰이미지: [mainImage],
+      리뷰이미지: [mainImage, subImage2],
     },
   },
   {

@@ -38,3 +38,7 @@ export function getSubCategory(
 
   return categoryObj[sub as keyof (typeof CATEGORY)[CategoryKey]];
 }
+
+export function alertComingSoon() {
+  alert('Coming soon!');
+}

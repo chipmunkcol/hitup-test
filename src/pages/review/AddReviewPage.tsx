@@ -1,10 +1,13 @@
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import { reviewableData } from '@/data/reviewableProductData';
+import { alertComingSoon } from '@/utils/function';
 import { Button, Input, Rate } from 'antd';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
 const AddReviewPage = () => {
+  const navigate = useNavigate();
   const id = 4;
   const data = reviewableData.find((item) => item.id === id);
 
@@ -33,7 +36,7 @@ const AddReviewPage = () => {
     );
 
     if (res.isConfirmed) {
-      console.log('리뷰 작성 취소');
+      navigate('/review/writable');
     }
     // 아마 팝업으로 띄울 예정이니 팝업 닫기 처리
   };
@@ -126,7 +129,12 @@ const AddReviewPage = () => {
           <Button style={{ flex: 1 }} onClick={handleReviewCancel}>
             취소
           </Button>
-          <Button style={{ flex: 1 }} type="primary" className="ml-4">
+          <Button
+            onClick={alertComingSoon}
+            style={{ flex: 1 }}
+            type="primary"
+            className="ml-4"
+          >
             등록
           </Button>
         </div>

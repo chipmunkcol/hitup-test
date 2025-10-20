@@ -3,6 +3,7 @@ import type { CartItem } from '../../data/CartData';
 import type { Address } from '../../data/addressesData';
 import type { Product, ProductContact } from '../../data/productDetailData';
 import type { Coupon } from '@/data/couponData';
+import type { Review } from '@/data/reviewableProductData';
 
 // axios 기본 설정
 export const apiRequest = axios.create({
@@ -70,6 +71,19 @@ export const getCoupons = (): Promise<Coupon[]> =>
 
 export const addToCoupon = (code: string) => {
   return apiRequest.post('/coupon/my', { code });
+};
+
+// 리뷰 (GET)
+export const getReviews = async (): Promise<Review[]> => {
+  return apiRequest.get('/review').then((res) => res.data);
+};
+
+export const getReview = async (id: string | undefined): Promise<Review> => {
+  return apiRequest.get(`/review/${id}`).then((res) => res.data);
+};
+
+export const deleteReview = (id: string | undefined) => {
+  return apiRequest.delete(`/review/${id}`);
 };
 
 // apiRequest.interceptors.request.use(

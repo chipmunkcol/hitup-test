@@ -20,6 +20,10 @@ const Mypage = () => {
     navigate('/purchase/history');
   };
 
+  const goReviewManage = () => {
+    navigate('/review/writable');
+  };
+
   return (
     <div className="max-w-2xl m-auto px-4 py-10">
       <div className="flex flex-col gap-4">
@@ -44,11 +48,14 @@ const Mypage = () => {
             onClick={goPurchaseHistory}
             className="flex flex-col gap-2 items-center"
           >
-            <div className="w-[50px] h-[50px] bg-HITUP_Blue"></div>
+            <div className="w-[50px] h-[50px] bg-HITUP_Blue cursor-pointer"></div>
             <div>주문/배송</div>
           </div>
-          <div className="flex flex-col gap-2 items-center">
-            <div className="w-[50px] h-[50px] bg-Bgrey-20"></div>
+          <div
+            onClick={goReviewManage}
+            className="flex flex-col gap-2 items-center"
+          >
+            <div className="w-[50px] h-[50px] bg-HITUP_Blue cursor-pointer"></div>
             <div>리뷰</div>
           </div>
           <div className="flex flex-col gap-2 items-center">

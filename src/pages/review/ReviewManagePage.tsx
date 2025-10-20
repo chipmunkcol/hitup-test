@@ -1,91 +1,62 @@
-import { reviewableData } from '@/data/reviewableProductData';
-import { Button, Rate } from 'antd';
+import { getReviews } from '@/utils/api/api';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-const data = reviewableData;
+import { Outlet, useNavigate } from 'react-router-dom';
+// const data = reviewableData;
 
 const ReviewManagePage = () => {
-  const navigate = useNavigate();
-  const [rateValue, setRateValue] = useState<{ value: number | null }[]>([]);
-  console.log('rateValue: ', rateValue);
+  const { data } = useQuery({
+    queryKey: ['reviews'],
+    queryFn: getReviews,
+  });
 
   const today = dayjs();
-  // 리뷰 작성 가능한 data filter
-  const writableData = useMemo(
-    () =>
-      data.filter((item) => today.diff(dayjs(item.배송완료일), 'day') <= 90),
-    [data]
-  );
+  const 작성가능리뷰갯수 =
+    data?.filter((item) => {
+      const 배송완료일 = dayjs(item.배송완료일);
+      return !item.작성여부 && today.diff(배송완료일, 'day') <= 90;
+    }).length || 0;
+  const 작성한리뷰갯수 = data?.filter((item) => item.작성여부).length || 0;
 
-  useEffect(() => {
-    if (writableData.length > 0) {
-      // writableData 만큼의 배열에 별점 초기값 설정 { value: 0 }
-      const initialRateValues = writableData.map(() => ({ value: null }));
-      console.log('initialRateValues: ', initialRateValues);
-      setRateValue(initialRateValues);
-    }
-  }, [writableData]);
-  // 이미 작성한 리뷰 data filter
-  const writtenData = data.filter((item) => item.작성여부);
+  const navigate = useNavigate();
+  const path = window.location.pathname;
+  console.log('path: ', path);
+  const currentTab = path.includes('written') ? 'written' : 'writable';
 
-  // const today = dayjs
+  const goWritable = () => {
+    navigate('/review/writable');
+  };
 
-  const 남은일수구하기 = (배송완료일: string) => {
-    const 작성기한 = dayjs(배송완료일).add(90, 'day');
-    return 작성기한.diff(today, 'day');
+  const goWritten = () => {
+    navigate('/review/written');
   };
 
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">리뷰 관리 페이지</h1>
-      <div className="flex gap-4 py-4">
-        <Button>
+      <div className="flex justify-center gap-4 px-6 py-4">
+        <Button
+          className="flex-1"
+          type={currentTab === 'writable' ? 'primary' : 'default'}
+          onClick={goWritable}
+        >
           리뷰 작성
-          {writableData.length > 0 && ' (' + writableData.length + ')'}
+          {' (' + 작성가능리뷰갯수 + ')'}
         </Button>
-        <Button>
+        <Button
+          className="flex-1"
+          type={currentTab === 'written' ? 'primary' : 'default'}
+          onClick={goWritten}
+        >
           작성한 리뷰 {'('}
-          {writtenData.length}
+          {작성한리뷰갯수}
           {')'}
         </Button>
       </div>
       <div>
-        <div className="py-2 px-4 bg-Grey-10">
-          리뷰는 배송 완료 일 기준 최대 90일 이내에 작성이 가능해요
-        </div>
-        <ul>
-          {writableData.map((item, index) => (
-            <li className="flex gap-4 border border-Grey-20 p-6">
-              <div>
-                <div>작성 기한 D-{남은일수구하기(item.배송완료일)}일</div>
-
-                <div className="w-[140px] h-[140px]">
-                  <img className="w-full h-full" src={item.이미지} />
-                </div>
-              </div>
-              <div>
-                <div>상품명</div>
-                <div>옵션: {item.옵션}</div>
-                {/* <div >{'☆'.repeat(5)}</div> */}
-                {/* <StarRate value={rateValue[index]?.value} /> */}
-                <Rate
-                  value={rateValue[index]?.value || 0}
-                  onChange={(value) => {
-                    const newRateValues = [...rateValue];
-                    newRateValues[index] = { value };
-                    setRateValue(newRateValues);
-                  }}
-                />
-                {rateValue[index]?.value !== null && (
-                  <div onClick={() => navigate(`/review/add/${item.id}`)}>
-                    <Button>자세한 리뷰 작성하기</Button>
-                  </div>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+        {/* 하위 라우트 (리뷰 작성 / 작성한 리뷰) */}
+        <Outlet />
       </div>
     </div>
   );

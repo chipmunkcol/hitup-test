@@ -124,7 +124,7 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
       alert('장바구니 수량 변경 실패: ' + err);
     },
     onSuccess: () => {
-      alert('장바구니 수량 변경 성공');
+      // alert('장바구니 수량 변경 성공');
     },
     // onSettled: () => {
     //   서버와 동기화

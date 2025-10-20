@@ -25,6 +25,8 @@ import CategoryBig from './components/common/widgets/CategoryBig';
 import ReviewManagePage from './pages/review/ReviewManagePage';
 import AddReviewPage from './pages/review/AddReviewPage';
 import EditReviewPage from './pages/review/EditReviewPage';
+import Writable from './pages/review/reviewManage/Writable';
+import Written from './pages/review/reviewManage/Written';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -64,7 +66,11 @@ function App() {
           <Route path="/address/edit/:id" element={<EditAddressPage />} />
 
           {/* 리뷰 관리 */}
-          <Route path="/review" element={<ReviewManagePage />} />
+          <Route path="/review" element={<ReviewManagePage />}>
+            {/* 하위 라우트 */}
+            <Route path="writable" element={<Writable />} />
+            <Route path="written" element={<Written />} />
+          </Route>
           <Route path="/review/add/:id" element={<AddReviewPage />} />
           <Route path="/review/edit/:id" element={<EditReviewPage />} />
 

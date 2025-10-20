@@ -6,10 +6,12 @@ import {
   productDetailData,
   type ProductContact,
 } from './data/productDetailData';
+import { reviewableData } from './data/reviewableProductData';
 
 let cart = [...cardData];
 let addresses = [...addressesData];
 let productDetail = { ...productDetailData };
+let reviewableProduct = [...reviewableData];
 
 const myCoupons = [...couponData];
 
@@ -171,5 +173,24 @@ export const mockApiHandlers = [
     };
     myCoupons.push(newCoupon);
     return HttpResponse.json(newCoupon, { status: 201 });
+  }),
+
+  // GET 리뷰
+  http.get('/review', async () => {
+    return HttpResponse.json(reviewableProduct);
+  }),
+
+  http.get('/review/:id', async ({ params }) => {
+    const { id } = params;
+    const data = reviewableProduct.find((item) => item.id === Number(id));
+    return HttpResponse.json(data);
+  }),
+
+  http.delete('/review/:id', ({ params }) => {
+    const { id } = params;
+    reviewableProduct = reviewableProduct.filter(
+      (item) => item.id !== Number(id)
+    );
+    return HttpResponse.json({ message: `리뷰 ${id}가 삭제되었습니다.` });
   }),
 ];

@@ -1,12 +1,23 @@
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import { reviewableData } from '@/data/reviewableProductData';
 import { Button, Input, Rate } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Trash2 } from 'lucide-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleteReview, getReview } from '@/utils/api/api';
+import { alertComingSoon } from '@/utils/function';
 
 const { TextArea } = Input;
 const EditReviewPage = () => {
-  const id = 4;
-  const data = reviewableData.find((item) => item.id === id);
+  // const id = 4;
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ['review', id],
+    queryFn: () => getReview(id),
+  });
+  console.log('data: ', data);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const onClickFileRef = () => {
@@ -14,6 +25,12 @@ const EditReviewPage = () => {
     console.log('fileRef: ', fileRef.current?.files);
   };
   const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (data && data.작성된리뷰) {
+      setImages(data.작성된리뷰?.리뷰이미지);
+    }
+  }, [data]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -24,23 +41,47 @@ const EditReviewPage = () => {
     }
   };
 
-  const handleReviewCancel = async () => {
+  const handleEditReview = () => {
+    alertComingSoon();
+    // 편집 mutation 처리 및 팝업 닫기
+  };
+
+  const queryClient = useQueryClient();
+  const handleRemoveReview = async (id: string | undefined) => {
+    if (!id) return;
+
     const res = await swalConfirm(
-      '리뷰 작성',
-      '<div>취소시 작성한 리뷰가 삭제돼요</div><br/><div>리뷰 작성을 취소하시겠어요?</div>',
+      '리뷰 삭제',
+      '<div>리뷰를 삭제시 복구 및 재작성이 불가해요<br/>삭제하시겠어요?</div>',
       '네',
       '아니요'
     );
 
     if (res.isConfirmed) {
-      console.log('리뷰 작성 취소');
+      deleteReview(id);
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      navigate('/review/written');
     }
     // 아마 팝업으로 띄울 예정이니 팝업 닫기 처리
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading review data.</div>;
+  }
+
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">리뷰 작성 페이지</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-4">리뷰 편집</h1>
+        <Trash2
+          className="cursor-pointer"
+          onClick={() => handleRemoveReview(id)}
+        />
+      </div>
       <div className="border border-Grey-30 rounded-lg p-4">
         <div className="flex gap-3">
           <div className="w-[100px] h-[100px]">
@@ -61,10 +102,7 @@ const EditReviewPage = () => {
 
         {/* 이전 페이지에서 선택한 별점 (팝업이면 전역 상태 안만들어도 될듯) */}
         <div className="py-4">
-          <Rate
-            style={{ fontSize: 36 }}
-            // className="text-4xl"
-          />
+          <Rate style={{ fontSize: 36 }} value={data?.작성된리뷰?.별점 || 0} />
         </div>
 
         <div>어떤 점이 좋았나요?</div>
@@ -72,6 +110,7 @@ const EditReviewPage = () => {
           <TextArea
             autoSize={{ minRows: 3, maxRows: 6 }}
             style={{ minWidth: '400px', width: '100%' }}
+            defaultValue={data?.작성된리뷰?.내용}
           />
         </div>
 
@@ -123,11 +162,8 @@ const EditReviewPage = () => {
         </div>
 
         <div className="w-full flex gap-4">
-          <Button style={{ flex: 1 }} onClick={handleReviewCancel}>
-            취소
-          </Button>
-          <Button style={{ flex: 1 }} type="primary" className="ml-4">
-            등록
+          <Button style={{ flex: 1 }} onClick={handleEditReview} type="primary">
+            편집하기
           </Button>
         </div>
       </div>
