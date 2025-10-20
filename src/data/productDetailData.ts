@@ -47,7 +47,7 @@ export interface Product {
 export const productDetailData: Product = {
   id: 4,
   브랜드명: 'CCCC',
-  상품명: 'C',
+  상품명: 'CR-다이닝릴',
   가격: 10000,
   할인율: 10,
   이미지: [
