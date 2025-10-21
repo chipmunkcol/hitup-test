@@ -1,10 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import useCart from '../hooks/useCart';
-import { getAddresses, getCart } from '../utils/api/api';
+import {
+  addToAvailableCoupon,
+  getAddresses,
+  getAvailableCoupons,
+  getCart,
+} from '../utils/api/api';
 import Loading from './utils/Loading';
+import { alertComingSoon } from '@/utils/function';
 
 const CartPage = () => {
   const {
@@ -15,6 +21,12 @@ const CartPage = () => {
     queryKey: ['cart'],
     queryFn: getCart,
   });
+
+  const { data: availableCoupons } = useQuery({
+    queryKey: ['coupons-available'],
+    queryFn: getAvailableCoupons,
+  });
+  console.log('availableCoupons: ', availableCoupons);
 
   const {
     allChecked,
@@ -32,6 +44,7 @@ const CartPage = () => {
     총할인금액,
     총배송비,
     handleUpdateCartItem,
+    handleRemoveCartItem,
   } = useCart({ data: cartItems || [] });
 
   const {
@@ -69,34 +82,84 @@ const CartPage = () => {
     setIsLoadingRefetch(false);
   };
 
+  const getCoupon = async () => {
+    if (!availableCoupons) return;
+
+    if (availableCoupons?.length === 0) {
+      return alert('발급 가능한 쿠폰이 없습니다.');
+    }
+    // availableCoupons 중에서 코드값이 있다고 가정
+    // const couponCode = availableCoupons;
+    const couponCode = 'TEMP20251021';
+    // post 쿠폰 받기 API 호출
+    getCouponMutate(couponCode);
+  };
+
+  const [couponBtnText, setCouponBtnText] = useState('쿠폰 받기');
+
+  const queryClient = useQueryClient();
+  const { mutate: getCouponMutate } = useMutation({
+    mutationFn: (code: string) => addToAvailableCoupon(code),
+    onSuccess: () => {
+      alert('쿠폰이 발급되었습니다.');
+      queryClient.invalidateQueries({ queryKey: ['coupons-available'] });
+      setCouponBtnText('쿠폰 받기 완료');
+    },
+  });
+
   if (isLoading || isLoadingAddresses || isLoadingRefetch) return <Loading />;
   if (isError) return <div>Error...</div>;
-  if (!cartItems) return <div>장바구니가 비어있습니다.</div>;
 
   return (
     <div className="w-full py-10">
       <div className="max-w-2xl mx-auto flex flex-col gap-5">
         <div className="font-bold text-xl">장바구니</div>
-        <div className="flex gap-2">
-          <input
-            type="checkbox"
-            checked={allChecked}
-            onChange={(e) => toggleAll(e.target.checked)}
-          />
-          <div>전체 선택</div>
+        <div className="flex justify-between">
+          <div className="flex gap-2 items-center">
+            <input
+              type="checkbox"
+              checked={allChecked}
+              onChange={(e) => toggleAll(e.target.checked)}
+            />
+            <div>전체 선택</div>
+          </div>
+          <div className="w-auto">
+            <Button
+              props={{
+                disabled: couponBtnText === '쿠폰 받기 완료' ? true : false,
+              }}
+              onClick={getCoupon}
+              variant="grey"
+            >
+              {couponBtnText}
+            </Button>
+          </div>
         </div>
         {/* 장바구니 상품 */}
         <div className="flex flex-col gap-5">
           {/* 브랜드별 */}
+          {brandNames.length === 0 && (
+            <div className="py-6 text-center text-xl">
+              장바구니에 담긴 상품이 없습니다.
+            </div>
+          )}
+
           {brandNames.map((brand, index) => (
             <div className="bg-Grey-20 p-4" key={index}>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="checkbox"
-                  checked={brandChecked(brand)}
-                  onChange={(e) => toggleBrand(brand, e.target.checked)}
-                />
-                <div>브랜드: {brand}</div>
+              <div className="flex justify-between items-center">
+                <div className="flex gap-2">
+                  <input
+                    type="checkbox"
+                    checked={brandChecked(brand)}
+                    onChange={(e) => toggleBrand(brand, e.target.checked)}
+                  />
+                  <div>브랜드: {brand}</div>
+                </div>
+                <div>
+                  <Button variant="grey" onClick={alertComingSoon}>
+                    브랜드 쿠폰 받기
+                  </Button>
+                </div>
               </div>
               {/* 상품 목록 */}
               <ul className="flex flex-col gap-2">
@@ -166,7 +229,7 @@ const CartPage = () => {
                         </div>
                       </div>
                       <div
-                        onClick={() => handleUpdateCartItem.remove(item)}
+                        onClick={() => handleRemoveCartItem(item.id)}
                         className="cursor-pointer"
                       >
                         X

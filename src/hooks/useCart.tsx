@@ -147,11 +147,12 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
     // },
   };
 
-  const { mutate: removeCartItem } = useMutation({
+  const { mutate: handleRemoveCartItem } = useMutation({
     mutationFn: (id: number) => {
       return axios.delete(`/cart/${id}`);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
       alert('장바구니에서 상품이 삭제되었습니다.');
     },
   });
@@ -177,6 +178,7 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
     주문상품금액,
 
     handleUpdateCartItem,
+    handleRemoveCartItem,
   };
 };
 export default useCart;

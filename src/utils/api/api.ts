@@ -69,6 +69,14 @@ export const deleteContact = (productId: number, contactId: number) => {
 export const getCoupons = (): Promise<Coupon[]> =>
   apiRequest.get('/coupon/my').then((res) => res.data);
 
+export const getAvailableCoupons = () => {
+  return apiRequest.get('/coupon/available').then((res) => res.data);
+};
+
+export const addToAvailableCoupon = (code: string) => {
+  return apiRequest.post('/coupon/available', { code });
+};
+
 export const addToCoupon = (code: string) => {
   return apiRequest.post('/coupon/my', { code });
 };

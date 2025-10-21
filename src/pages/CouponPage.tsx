@@ -62,7 +62,6 @@ const CouponPage = () => {
                 <Button
                   onClick={handleRegisterCoupon}
                   type={code.trim() === '' ? 'default' : 'primary'}
-                  disabled={code.trim() === ''}
                 >
                   등록
                 </Button>
@@ -81,14 +80,22 @@ const CouponPage = () => {
                 >
                   <div className="flex justify-between">
                     <div className="text-xl font-semibold">
-                      {coupon?.할인율 > 0
-                        ? `${coupon?.할인율}% 할인`
-                        : `무료 배송`}
+                      {coupon?.할인?.값 === 0 && '무료 배송'}
+                      {coupon?.할인?.값 > 0 &&
+                        coupon?.할인?.타입 === '정액' &&
+                        `${coupon?.할인?.값}원 할인`}
+                      {coupon?.할인?.값 > 0 &&
+                        coupon?.할인?.타입 === '정률' &&
+                        `${coupon?.할인?.값}% 할인`}
                     </div>
                     <div>{남은일수(coupon?.유효기간)}일 남음</div>
                   </div>
                   <div className="text-lg">
-                    {coupon?.설명} {coupon?.할인율}% 쿠폰
+                    {coupon?.설명}{' '}
+                    {coupon?.할인?.타입 === '정률'
+                      ? `${coupon?.할인?.값}%`
+                      : `${coupon?.할인?.값}원`}{' '}
+                    쿠폰
                   </div>
                   {/* <div>DIAMOND등급 전상품 15% 쿠폰</div> */}
                   <div className="text-Grey-60">

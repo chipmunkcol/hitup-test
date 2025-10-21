@@ -66,7 +66,7 @@ const CategoryBig = () => {
     <>
       {isCategoryVisible && (
         <div
-          className="fixed top-[80px] left-0 right-0 mx-auto w-[100%] bg-Grey-20 z-100"
+          className="fixed top-[80px] left-0 right-0 mx-auto max-w-[1280px] w-[100%] bg-Grey-20 z-100"
           // onClick={() => {
           //   const setIsCategoryVisible =
           //     useModalStore.getState().setIsCategoryVisible;
@@ -84,7 +84,7 @@ const CategoryBig = () => {
                 >
                   <div className="flex-1 flex flex-col gap-3">
                     <div
-                      className={`${visableCateroy.find((cate) => cate.name === category && cate.isVisable) ? 'text-Grey-90' : 'text-Grey-60'} text-2xl font-semibold`}
+                      className={`${visableCateroy.find((cate) => cate.name === category && cate.isVisable) ? 'text-Grey-90' : 'text-Grey-60'} text-2xl font-semibold cursor-pointer`}
                       key={`category-${category}`}
                     >
                       {getKoCategory(category)}
@@ -102,7 +102,7 @@ const CategoryBig = () => {
                               onClick={() =>
                                 handleSubController(category, subCategory)
                               }
-                              className="text-lg font-semibold"
+                              className="text-lg font-semibold cursor-pointer"
                             >
                               {getKoCategory(subCategory)}
                             </div>
@@ -117,6 +117,7 @@ const CategoryBig = () => {
                                     )
                                   }
                                   key={`type-${t.value}`}
+                                  className="cursor-pointer"
                                 >
                                   <div>{t.label}</div>
                                 </div>

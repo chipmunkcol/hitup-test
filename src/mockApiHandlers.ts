@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { cardData, type CartItem } from './data/CartData';
 import { addressesData, type Address } from './data/addressesData';
-import { couponData } from './data/couponData';
+import { availableCouponData, couponData } from './data/couponData';
 import {
   productDetailData,
   type ProductContact,
@@ -14,6 +14,7 @@ let productDetail = { ...productDetailData };
 let reviewableProduct = [...reviewableData];
 
 const myCoupons = [...couponData];
+let availableCoupons = [...availableCouponData];
 
 // await delay(2000); // 2초 지연
 export const mockApiHandlers = [
@@ -151,13 +152,41 @@ export const mockApiHandlers = [
 
   // GET 쿠폰
 
-  http.get('coupon/my', () => {
+  http.get('/coupon/my', () => {
     return HttpResponse.json(myCoupons);
   }),
 
+  http.get('/coupon/available', () => {
+    // availableCoupons = [];
+
+    return HttpResponse.json(availableCoupons);
+  }),
+
+  http.post('/coupon/available', async ({ request }) => {
+    const newAvailableCoupon = (await request.json()) as Promise<{
+      code: string;
+    }>;
+
+    // code -> 쿠폰 데이터 변환하는 로직
+    const newCoupon = {
+      id: myCoupons.length + 1,
+      코드: 'DIAMOND15',
+      할인율: 15,
+      설명: 'DIAMOND 등급 쿠폰',
+      특이사항: '1만원 이상 15% 할인 최대 10만원 할인',
+      유효기간: '2026.03.31',
+      적용상품: ['productId1', 'productId2'],
+      사용여부: false,
+    };
+    myCoupons.push(newCoupon);
+
+    availableCoupons = []; // 가능한 쿠폰을 발급 받았으니 받은 제거해줌
+    return HttpResponse.json(newAvailableCoupon, { status: 201 });
+  }),
+
   // POST 쿠폰
-  http.post('/coupon/my', ({ request }) => {
-    const payload = request.json() as Promise<{ code: string }>;
+  http.post('/coupon/my', async ({ request }) => {
+    const payload = (await request.json()) as Promise<{ code: string }>;
     console.log('payload: ', payload);
 
     // code -> 쿠폰 데이터 변환하는 코드
