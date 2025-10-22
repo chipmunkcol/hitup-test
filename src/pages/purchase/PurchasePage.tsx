@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 
 const PurchasePage = () => {
   const {
-    data: cartItems,
+    data: CartItems,
     isError,
     isLoading,
   } = useQuery({
@@ -33,7 +33,7 @@ const PurchasePage = () => {
     주문상품금액,
     총결제금액,
     총배송비,
-  } = useCart({ data: cartItems || [] });
+  } = useCart({ data: CartItems || [] });
 
   const { data: addresses } = useQuery({
     queryKey: ['addressses'],
@@ -102,7 +102,7 @@ const PurchasePage = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
-  if (!cartItems) return <div>결제할 제품이 없습니다</div>;
+  if (!CartItems) return <div>결제할 제품이 없습니다</div>;
 
   return (
     // <div className="w-[500px] mx-auto flex flex-col gap-5 py-10">
@@ -281,7 +281,7 @@ interface TestPortalProps {
 
 const TestPortal = ({ coupons, closePortal }: TestPortalProps) => {
   const formatedCouponValueText = (coupon: Coupon) => {
-    if (coupon.할인.타입 === '정액') {
+    if (coupon.할인?.타입 === '정액') {
       return `${coupon.할인.값}원`;
     } else {
       return `${coupon.할인.값}%`;
@@ -315,7 +315,7 @@ const TestPortal = ({ coupons, closePortal }: TestPortalProps) => {
   return (
     <div
       className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
-      style={{ background: 'rgba(0, 0, 0, 0.4)' }}
+      style={{ background: 'rgba(0, 0, 0, 0.25)' }}
     >
       <div className="fixed inset-0 top-[20%]  max-w-[720px] mx-auto">
         <div className="border border-Grey-20 bg-Grey-05 rounded-2xl flex flex-col justify-center">

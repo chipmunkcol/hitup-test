@@ -8,6 +8,7 @@ import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import Button from '@/components/common/Button';
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavigate } from 'react-router-dom';
+import { TYPOGRAPHY } from '@/styles/typography';
 
 const 배송교환반품안내 =
   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -133,18 +134,30 @@ const ProductDetail = () => {
     <div className="w-full">
       <div className="flex gap-5">
         <div className="flex-4">
-          {/* <div className="w-full h-[500px] bg-Bgrey-40 mb-5">
-            상품 이미지 캐러셀
-          </div> */}
           <div className="">
             <TumbCarousel images={data.이미지} />
           </div>
-          <div className="flex justify-between px-15 py-5 text-2xl">
-            <div className="cursor-pointer" onClick={() => setTab('info')}>
-              상품정보
+          <div className="flex">
+            <div
+              className={`${TYPOGRAPHY.Heading124Bold} ${tab === 'info' ? 'border border-HITUP_Blue bg-Grey-05' : 'border border-Grey-40 bg-Grey-10'} flex-1 py-5 flex justify-center items-center cursor-pointer`}
+              onClick={() => setTab('info')}
+            >
+              {/* `font-smoothing`, `text-rendering` */}
+              {/* <span
+                className={`${tab === 'info' ? 'text-HITUP_Blue' : 'text-Grey-70'} `}
+              > */}
+              상품 정보
+              {/* </span> */}
             </div>
-            <div className="cursor-pointer" onClick={() => setTab('review')}>
-              리뷰({data?.리뷰?.length})
+            <div
+              className={`${tab === 'review' ? 'border border-HITUP_Blue bg-Grey-05' : 'border border-Grey-40 bg-Grey-10'} flex-1 py-5 flex justify-center items-center cursor-pointer`}
+              onClick={() => setTab('review')}
+            >
+              <span
+                className={`${tab === 'review' ? 'text-HITUP_Blue' : 'text-Grey-70'} ${TYPOGRAPHY.Heading124Bold}`}
+              >
+                리뷰 ({data?.리뷰?.length})
+              </span>
             </div>
           </div>
           {tab === 'info' && (
@@ -184,9 +197,14 @@ const ProductDetail = () => {
               ))}
             </ul>
           )}
-          <div className="flex justify-between text-xl py-5">
-            <div>상품문의({data?.상품문의?.length})</div>
-            <div className="cursor-pointer" onClick={goContactHistory}>
+          <div className="px-6 py-4 bg-Blue-05 flex justify-between text-xl">
+            <div className={TYPOGRAPHY.Heading124Bold}>
+              상품 문의 ({data?.상품문의?.length})
+            </div>
+            <div
+              className={`${TYPOGRAPHY.Heading222Medium} text-Grey-70 underline underline-offset-4 decoration-2 cursor-pointer`}
+              onClick={goContactHistory}
+            >
               더 보기
             </div>
           </div>
@@ -225,9 +243,75 @@ const ProductDetail = () => {
             </Button>
           </div>
           {/* <div>배송/교환/반품 안내</div> */}
-          <DropdownInfo title="배송/교환/반품 안내" data={배송교환반품안내} />
-          <DropdownInfo title="상품 고시 정보 안내" data={상품고시정보안내} />
-          <DropdownInfo title="판매자 정보" data={판매자정보} />
+          <DropdownInfo title="배송/교환/반품 안내">
+            <ul className={`text-Grey-70 ${TYPOGRAPHY.Heading222Semi}`}>
+              <li className="py-4 px-6  flex gap-4">
+                <div>• </div>
+                <div>마켓 배송 상품은 해당 마켓이 직접 배송해 드려요.</div>
+              </li>
+              <li className="pb-4 px-6 flex gap-4">
+                <div>• </div>
+                <div>마켓 배송 상품은 해당 마켓이 직접 배송해 드려요.</div>
+              </li>
+              <li className="pb-4 px-6 flex gap-4">
+                <div>• </div>
+                <div>
+                  상품 별로 교환/반품 배송비가 다를 수 있으며, 반품 접수 및 상품
+                  상세페이지에서 금액 확인 가능해요.
+                </div>
+              </li>
+              <li className="pb-4 px-6 flex gap-4">
+                <div>• </div>
+                <div>
+                  마켓 배송 상품 교환/반품 시 해당 마켓의 반품 주소로
+                  반품해주세요.
+                </div>
+              </li>
+            </ul>
+          </DropdownInfo>
+          <DropdownInfo title="상품 고시 정보 안내">
+            <div className={`text-Grey-70 ${TYPOGRAPHY.Heading222Semi}`}>
+              <div className="py-3 px-6 flex gap-4">
+                <div>품명 및 모델명 :</div>
+                <div>[data]</div>
+              </div>
+
+              <div className="py-3 px-6 flex gap-4">
+                <div>제품의 사용 목적 및 사용 방법 :</div>
+                <div>[data]</div>
+              </div>
+              <div className="py-3 px-6 flex gap-4">
+                <div>품질 보증 기준 : </div>
+                <div>[data]</div>
+              </div>
+            </div>
+          </DropdownInfo>
+          <DropdownInfo title="판매자 정보">
+            <div className={`text-Grey-70 ${TYPOGRAPHY.Heading222Semi}`}>
+              <div className="py-3 px-6 flex gap-4">
+                <div>상호명 :</div>
+                <div>[data]</div>
+              </div>
+              <div className="py-3 px-6 flex gap-4">
+                <div>대표자 :</div>
+                <div>[data]</div>
+              </div>
+              <div className="py-3 px-6 flex gap-4">
+                <div>주소 :</div>
+                <div>[data]</div>
+              </div>
+              <div className="py-3 px-6 flex gap-4">
+                <div>사업자등록번호 :</div>
+                <div>[data]</div>
+              </div>
+              <div className="py-3 px-6 flex gap-4">
+                <div>통신판매업신고번호 :</div>
+                <div>[data]</div>
+              </div>
+            </div>
+          </DropdownInfo>
+          {/* <DropdownInfo title="상품 고시 정보 안내" data={상품고시정보안내} />
+          <DropdownInfo title="판매자 정보" data={판매자정보} /> */}
         </div>
         <div className="flex flex-col gap-4 flex-3">
           <div className="text-xl font-semibold">브랜드 명 {'>'}</div>

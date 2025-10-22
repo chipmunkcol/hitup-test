@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CartItem } from '../../data/CartData';
+import type { CartItem } from '../../data/CartItem';
 import type { Address } from '../../data/addressesData';
 import type { Product, ProductContact } from '../../data/productDetailData';
 import type { Coupon } from '@/data/couponData';
@@ -30,12 +30,12 @@ export const addToCart = (newItem: CartItem) => {
   return apiRequest.post('/cart', newItem);
 };
 // 상품 수정
-export const updateCartItem = (cartItemId: number, quantity: number) =>
-  apiRequest.put(`/cart/${cartItemId}`, { quantity });
+export const updateCartItem = (CartItemId: number, quantity: number) =>
+  apiRequest.put(`/cart/${CartItemId}`, { quantity });
 
 // 상품 삭제
-export const removeCartItem = (cartItemId: number) =>
-  apiRequest.delete(`/cart/${cartItemId}`);
+export const removeCartItem = (CartItemId: number) =>
+  apiRequest.delete(`/cart/${CartItemId}`);
 
 // 배송지 관련
 export const getAddresses = (): Promise<Address[]> =>

@@ -1,28 +1,28 @@
 import { useEffect, useState } from 'react';
 import { groupByBrand } from '../utils/function';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CartItem } from '../data/CartData';
+import type { CartItem } from '@/data/CartData';
 import axios from 'axios';
 
 interface UseCartProps {
   data: CartItem[];
 }
 
-// Cartitem에 checked 속성 추가
+// CartItem에 checked 속성 추가
 export interface CartItemWithChecked extends CartItem {
   checked: boolean;
 }
 
-const useCart = ({ data: cartItems }: UseCartProps) => {
+const useCart = ({ data: CartItem }: UseCartProps) => {
   // 장바구니 상태
   const [cart, setCart] = useState<CartItemWithChecked[]>([]);
 
   useEffect(() => {
-    // if (cartItems?.length > 0) {
-    if (cartItems) {
-      setCart(cartItems.map((item) => ({ ...item, checked: true })));
+    // if (CartItem?.length > 0) {
+    if (CartItem) {
+      setCart(CartItem.map((item) => ({ ...item, checked: true })));
     }
-  }, [cartItems]);
+  }, [CartItem]);
   console.log('cart: ', cart);
 
   const groupedItems = groupByBrand(cart);
@@ -30,6 +30,7 @@ const useCart = ({ data: cartItems }: UseCartProps) => {
 
   const brandNames = Object.keys(groupedItems);
   const brandItems = Object.values(groupedItems);
+
   const 브랜드별총금액 = brandItems.map((items) =>
     items.reduce(
       (total, item) =>

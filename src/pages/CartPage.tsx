@@ -14,7 +14,7 @@ import { alertComingSoon } from '@/utils/function';
 
 const CartPage = () => {
   const {
-    data: cartItems,
+    data: CartItems,
     isError,
     isLoading,
   } = useQuery({
@@ -45,7 +45,7 @@ const CartPage = () => {
     총배송비,
     handleUpdateCartItem,
     handleRemoveCartItem,
-  } = useCart({ data: cartItems || [] });
+  } = useCart({ data: CartItems || [] });
 
   const {
     data: addresses,

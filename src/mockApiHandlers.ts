@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { cardData, type CartItem } from './data/CartData';
+import { cardData, type CartItem } from '@/data/CartData';
 import { addressesData, type Address } from './data/addressesData';
 import { availableCouponData, couponData } from './data/couponData';
 import {
