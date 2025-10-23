@@ -1,5 +1,5 @@
 // import Button from '@/components/common/Button';
-import Selectbox from '@/components/common/Selectbox';
+import Selectbox from '@/components/common/widgets/SelectboxOptions';
 import type { ProductContact } from '@/data/productDetailData';
 import { useNavi } from '@/hooks/useNavi';
 import { contactSeller, getProduct } from '@/utils/api/api';

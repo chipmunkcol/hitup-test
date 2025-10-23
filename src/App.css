@@ -138,24 +138,89 @@
 
 /* sweet alert 커스텀 */
 
-.swal2-confirm {
-  background: var(--color-HITUP_Blue) !important;
-  /* background: blue !important; */
-  border: none !important;
-  width: 150px !important;
-  text-align: center !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+.swal2-popup.swal2-modal.swal2-show {
+  border-radius: 12px !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 720px !important;
+}
 
-  /* border-radius: 25px !important; */
-  font-weight: bold !important;
-  color: var(--color-white) !important;
+.swal2-title {
+  color: #000;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.96px;
+  text-transform: capitalize;
+
+  padding: 60px 16px;
+}
+
+.swal2-actions {
+  margin: 0;
+  padding: 16px 20px;
+}
+
+.swal2-confirm {
+  display: flex;
+  height: 44px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex: 1 0 0;
+
+  border-radius: 16px;
+  background: var(--HITUP_BLUE, #007cee);
+
+  color: var(--WHITE, #fff);
+  /* Heading3 - 18 Semi */
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.45px;
+  text-transform: capitalize;
+
+  flex: 1 !important;
 }
 
 .swal2-cancel {
-  background: var(--color-black) !important;
   /* border-radius: 25px !important; */
+  flex: 1 !important;
+  border-radius: 16px;
+  border: 1px solid var(--HITUP_BLUE, #007cee);
+  background: #fff;
+  display: flex;
+  height: 44px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex: 1 0 0;
 
-  width: 150px !important;
+  color: var(--HITUP_BLUE, #007cee);
+  /* Heading3 - 18 Semi */
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.45px;
+  text-transform: capitalize;
+}
+
+/* hover 속성 */
+.swal2-confirm:hover {
+  background: #0060c0; /* hover 시 더 진한 파란색 */
+  transform: translateY(-1px);
+}
+
+.swal2-cancel:hover {
+  background: var(--HITUP_BLUE, #007cee);
+  color: var(--WHITE, #fff);
+  transform: translateY(-1px);
 }

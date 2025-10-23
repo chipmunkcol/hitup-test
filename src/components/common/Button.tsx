@@ -1,22 +1,28 @@
+import { TYPOGRAPHY } from '@/styles/typography';
+
 const Button = ({
-  variant,
+  variant = 'default',
   children,
   onClick,
+  className,
   props,
 }: {
-  variant: 'grey' | 'default';
+  variant?: 'blue' | 'grey' | 'default';
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
   props?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }) => {
+  const buttonStyles = {
+    blue: 'bg-HITUP_Blue text-white',
+    grey: 'bg-Grey-70 text-white',
+    default: `border border-HITUP_Blue bg-white text-HITUP_Blue`,
+  };
+
   return (
     <button
       onClick={onClick}
-      className={`w-full px-4 py-2 rounded-lg cursor-pointer ${
-        variant === 'grey'
-          ? ' bg-Grey-70 text-white'
-          : 'border border-Grey-20 bg-white text-black'
-      }`}
+      className={`w-full px-5 py-2  rounded-lg ${TYPOGRAPHY.Heading318Semi} ${buttonStyles[variant]} ${className} cursor-pointer`}
       {...props}
     >
       {children}

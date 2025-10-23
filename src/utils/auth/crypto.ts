@@ -115,12 +115,17 @@ export function decryptAes256(
   // 4. AES 복호화 수행
   const decrypted = CryptoJS.AES.decrypt(cipherParams, keyWA, {
     iv, // 암호화할 때 사용한 것과 동일한 IV
-    // mode: CryptoJS.mode.CBC,
-    // padding: CryptoJS.pad.Pkcs7,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
   });
 
   // 5. 복호화된 바이트를 UTF-8 문자열로 변환
-  return CryptoJS.enc.Utf8.stringify(decrypted);
+  try {
+    return CryptoJS.enc.Utf8.stringify(decrypted);
+  } catch (e) {
+    console.error('Malformed UTF-8:', decrypted.toString(CryptoJS.enc.Hex));
+    throw e;
+  }
 }
 
 // ========================================
@@ -151,16 +156,27 @@ function getKeyWordArray(base64Key: string) {
 // ========================================
 // 고정된 timestamp 사용 (디버깅 목적)
 // 실제 사용 시에는 Date.now()로 현재 시각 사용
-// const timestamp = String(1760607802106);
-const timestamp = 'long';
+export const timestamp = String(1760607802106);
+// const timestamp = 'long';
 
 // 1. 암호화 테스트
-const encryptedData = encryptAes256(timestamp, accessKey, '01071903812');
+export const encryptedData = encryptAes256(timestamp, accessKey, '01071903812');
+export const encryptedAccessKey = encryptAes256(
+  timestamp,
+  accessKey,
+  accessKey
+);
 console.log('encryptedData: ', encryptedData);
+console.log('encryptedAccessKey: ', encryptedAccessKey);
 
 // 2. 복호화 테스트 (로컬에서 확인용)
-const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
-console.log('decryptedData: ', decryptedData);
+// const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
+// const decryptedData = decryptAes256(
+//   timestamp,
+//   accessKey,
+//   '/6uAnzzWjQODenTxOeSs2g=='
+// );
+// console.log('decryptedData: ', decryptedData);
 
 // ========================================
 // API 요청
@@ -173,20 +189,53 @@ console.log('decryptedData: ', decryptedData);
  * 2. 프론트와 백엔드의 timestamp가 정확히 일치해야 복호화 가능
  * 3. accessKey와 seedKey도 양쪽이 동일해야 함
  */
-const res = await fetch(
-  'http://dev-hitup.link:27000/api/v1/authentication/client/register',
-  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // "X-Timestamp": timestamp,   // 백엔드가 복호화에 사용할 timestamp
-      'request-time': timestamp,
-    },
-    body: JSON.stringify({
-      phoneNumber: encryptedData, // Base64로 인코딩된 암호화된 전화번호
-    }),
-  }
-);
 
-const result = await res.json();
-console.log(result);
+// const res = await fetch(
+//   'http://dev-hitup.link:27000/api/v1/authentication/client/register',
+//   {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       // "X-Timestamp": timestamp,   // 백엔드가 복호화에 사용할 timestamp
+//       'request-time': timestamp,
+//       // 'access-key': encryptedAccessKey,
+//     },
+//     body: JSON.stringify({
+//       phoneNumber: encryptedData, // Base64로 인코딩된 암호화된 전화번호
+//     }),
+//   }
+// );
+
+// console.log('res: ', res);
+// const result = await res.json();
+// console.log(result);
+
+// 커머스 회원가입
+// const encryptedPhoneNumber = encryptAes256(timestamp, accessKey, '01000000814');
+// console.log('encryptedPhoneNumber: ', encryptedPhoneNumber);
+// const encryptedNickName = encryptAes256(timestamp, accessKey, 'jack');
+// console.log('encryptedNickName: ', encryptedNickName);
+
+// const res = await fetch('http://dev-hitup.link:27000/api/v1/member/signup', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     // "X-Timestamp": timestamp,   // 백엔드가 복호화에 사용할 timestamp
+//     'request-time': timestamp,
+//   },
+//   body: JSON.stringify({
+//     phoneNumber: encryptedPhoneNumber,
+//     nickName: encryptedNickName,
+//     birthDay: '1990-01-01',
+//     gender: 'MALE',
+//     interestFreshwaterFishingType: true,
+//     interestSeaFishingType: true,
+//   }),
+// });
+
+// const result = await res.json();
+// const parsedData = JSON.parse(result.data);
+
+// const decryptedData = decryptAes256(timestamp, accessKey, parsedData.nickName);
+// console.log(decryptedData);
+// ========================================

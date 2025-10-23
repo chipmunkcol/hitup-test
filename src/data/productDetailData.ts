@@ -45,7 +45,7 @@ export interface Product {
 
 // 이미지 변수들이 선언되어 있다는 가정 (mainImage, subImage2 등)
 export const productDetailData: Product = {
-  id: 4,
+  id: 2,
   브랜드명: 'CCCC',
   상품명: 'CR-다이닝릴',
   가격: 10000,

@@ -1,10 +1,9 @@
 export const TYPOGRAPHY = {
+  Heading28Bold: 'text-[28px] leading-[33px] not-italic font-bold', // line-height: 33px 체크 필요
   Heading124Bold:
     'text-2xl leading-[29px] tracking-[-0.96px] font-bold capitalize',
   Heading222Bold: 'text-xl leading-[29px] tracking-[-0.88px] font-bold',
   Heading222Semi: 'text-xl leading-[26px] tracking-[-0.88px] font-semibold',
-  Heading28Bold:
-    'text-[28px] leading-[26px] not-italic font-bold leading-normal',
   Heading222Medium: 'text-xl leading-[26px] tracking-[-0.88px] font-medium',
   Heading318Bold: 'text-lg leading-[21px] tracking-[-0.45px] font-bold',
   Heading318Semi: 'text-lg leading-[21px] tracking-[-0.72px] font-semibold',

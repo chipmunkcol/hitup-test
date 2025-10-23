@@ -94,7 +94,7 @@ const PurchasePage = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   console.log('paymentMethod: ', paymentMethod);
 
-  // react portal 테스트
+  // react portal
   const [isPortalOpen, setIsPortalOpen] = useState(false);
   const closePortal = () => {
     setIsPortalOpen(false);
@@ -317,7 +317,7 @@ const TestPortal = ({ coupons, closePortal }: TestPortalProps) => {
       className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
       style={{ background: 'rgba(0, 0, 0, 0.25)' }}
     >
-      <div className="fixed inset-0 top-[20%]  max-w-[720px] mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2  max-w-[720px] mx-auto">
         <div className="border border-Grey-20 bg-Grey-05 rounded-2xl flex flex-col justify-center">
           <div className="w-full py-4 px-5 bg-Blue-05 rounded-t-2xl flex justify-between items-center">
             <h1>쿠폰 선택</h1>
