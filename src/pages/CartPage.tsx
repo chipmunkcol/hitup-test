@@ -1,5 +1,6 @@
+import { alertComingSoon } from '@/utils/function';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import useCart from '../hooks/useCart';
@@ -10,7 +11,6 @@ import {
   getCart,
 } from '../utils/api/api';
 import Loading from './utils/Loading';
-import { alertComingSoon } from '@/utils/function';
 
 const CartPage = () => {
   const {

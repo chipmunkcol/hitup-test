@@ -1,30 +1,25 @@
-import { useState } from 'react';
-import DropdownInfo from '@/components/common/widgets/DropdownInfo';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { addToCart, getProduct } from '@/utils/api/api';
-import type { CartItem } from '@/data/CartData';
-import type { Product } from '@/data/productDetailData';
-import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
-import Button from '@/components/common/Button';
-import {
-  swalAlert,
-  swalConfirm,
-} from '@/components/common/libs/sweetalert/sweetalert';
-import { useNavigate } from 'react-router-dom';
-import { TYPOGRAPHY } from '@/styles/typography';
-import SelectboxOptions from '@/components/common/widgets/SelectboxOptions';
-import { createPortal } from 'react-dom';
 import CancelIcon from '@/assets/images/icon/CancelIcon';
-import SelectboxCheck from '@/components/common/widgets/SelectboxCheck';
+import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
+import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
+import DropdownInfo from '@/components/common/widgets/DropdownInfo';
+import SelectboxCheck from '@/components/common/widgets/SelectboxCheck';
+import SelectboxOptions from '@/components/common/widgets/SelectboxOptions';
+import type { Product } from '@/data/productDetailData';
+import { TYPOGRAPHY } from '@/styles/typography';
+import { addToCart, getProduct } from '@/utils/api/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ArrowToRight from '@/assets/images/icon/ArrowToRight';
-import StarIcon from '@/assets/images/icon/StarIcon';
 import Download from '@/assets/images/icon/Download';
 import NpayBtn from '@/assets/images/icon/NpayBtn';
-import lineDashed from '@/assets/images/lineDashed.jpg';
-import StarFill1 from '@/assets/images/icon/StarFill1';
+import StarIcon from '@/assets/images/icon/StarIcon';
 import StarFill4 from '@/assets/images/icon/StartFill4';
+import lineDashed from '@/assets/images/lineDashed.jpg';
 
 // const 배송교환반품안내 =
 //   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -46,7 +41,8 @@ const ProductDetail = () => {
 
   // 장바구니 담기
   const mutation = useMutation({
-    mutationFn: (newItem: CartItem) => addToCart(newItem),
+    // mutationFn: (newItem: CartItem) => addToCart(newItem),
+    mutationFn: addToCart,
     onSuccess: async (data) => {
       console.log('data: ', data);
       const res_confirm = await swalConfirm(
@@ -72,13 +68,12 @@ const ProductDetail = () => {
   const handleAddToCart = async (newItem: Product) => {
     mutation.mutate({
       id: newItem.id,
-      브랜드명: newItem.브랜드명,
-      상품명: newItem.상품명,
-      가격: newItem.가격,
-      할인율: newItem.할인율,
-      이미지: newItem.이미지[0],
-      옵션: '', // 선택한 옵션들을 ,로 구분하여 문자열로 넘겨줄듯
-      수량: 1,
+      title: newItem.상품명,
+      description: '',
+      price: newItem.가격,
+      discountRate: newItem.할인율,
+      img: newItem.이미지[0],
+      freeShipping: false,
     });
   };
 

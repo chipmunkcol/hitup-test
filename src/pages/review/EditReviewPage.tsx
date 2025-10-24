@@ -1,12 +1,11 @@
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
-import { reviewableData } from '@/data/reviewableProductData';
-import { Button, Input, Rate } from 'antd';
-import { useEffect, useRef, useState } from 'react';
-import { Trash2 } from 'lucide-react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
 import { deleteReview, getReview } from '@/utils/api/api';
 import { alertComingSoon } from '@/utils/function';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Input, Rate } from 'antd';
+import { Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const { TextArea } = Input;
 const EditReviewPage = () => {

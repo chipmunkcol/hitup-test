@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CartItem } from '../../data/CartItem';
+import type { CartItem } from '@/data/cardData';
 import type { Address } from '../../data/addressesData';
 import type { Product, ProductContact } from '../../data/productDetailData';
 import type { Coupon } from '@/data/couponData';

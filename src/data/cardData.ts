@@ -1,14 +1,15 @@
-export interface Product {
+export interface CartItem {
+  id: number;
   title: string;
   description: string;
   price: number;
   discountRate: number;
   img: string;
-  freeShipping?: boolean;
+  freeShipping: boolean;
   //   label: "new" | "best"
 }
 
-export const 신상품 = [
+export const 신상품: CartItem[] = [
   {
     id: 1,
     title: '아부가르시아',
@@ -25,6 +26,7 @@ export const 신상품 = [
     price: 14900,
     discountRate: 10,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ export const 신상품 = [
     price: 61800,
     discountRate: 2,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 4,
@@ -41,6 +44,7 @@ export const 신상품 = [
     price: 4500,
     discountRate: 13,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 5,
@@ -49,6 +53,7 @@ export const 신상품 = [
     price: 13000,
     discountRate: 0,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 6,
@@ -66,6 +71,7 @@ export const 신상품 = [
     price: 14900,
     discountRate: 10,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 8,
@@ -74,6 +80,7 @@ export const 신상품 = [
     price: 61800,
     discountRate: 2,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 9,
@@ -82,6 +89,7 @@ export const 신상품 = [
     price: 4500,
     discountRate: 13,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
   {
     id: 10,
@@ -90,5 +98,6 @@ export const 신상품 = [
     price: 13000,
     discountRate: 0,
     img: 'https://m.nbfs.co.kr/web/product/big/202203/f77c14b01535652a84ed1d488039a76f.jpg',
+    freeShipping: false,
   },
 ];

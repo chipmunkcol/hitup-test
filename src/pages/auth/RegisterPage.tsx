@@ -1,11 +1,8 @@
+import { useAuthStore } from '@/store/useAuthStore';
 import { checkDuplicateNickname, registerUser } from '@/utils/api/api';
-import { encryptAes256 } from '@/utils/auth/crypto';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Input, Select } from 'antd';
-import dayjs from 'dayjs';
 import { useState } from 'react';
-import TestRegister from './TestRegister';
-import { useAuthStore } from '@/store/useAuthStore';
 
 export interface RegisterForm {
   phoneNumber: string;

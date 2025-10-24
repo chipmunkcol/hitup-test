@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import HamburgerBtn from '../HamburgerBtn';
 import CartIcon from '../../../assets/images/icon/CartIcon';
 import ProfileIcon from '../../../assets/images/icon/ProfileIcon';
+import HamburgerBtn from '../HamburgerBtn';
 import Logo from '../Logo';
 import SearchField from './SearchField';
-import { useModalStore } from '@/store/useModalStore';
 
 const Header = () => {
   const navigate = useNavigate();

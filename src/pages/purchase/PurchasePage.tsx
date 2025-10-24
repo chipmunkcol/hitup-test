@@ -1,19 +1,14 @@
+import type { Coupon } from '@/data/couponData';
+import { TYPOGRAPHY } from '@/styles/typography';
 import { useQuery } from '@tanstack/react-query';
+import { Button, Radio } from 'antd';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { useDeliveryStore } from '../../store/useDeliveryStore';
-import {
-  getAddresses,
-  getAvailableCoupons,
-  getCart,
-  getCoupons,
-} from '../../utils/api/api';
-import { Button, Radio } from 'antd';
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { TYPOGRAPHY } from '@/styles/typography';
-import type { Coupon } from '@/data/couponData';
-import dayjs from 'dayjs';
+import { getAddresses, getCart, getCoupons } from '../../utils/api/api';
 
 const PurchasePage = () => {
   const {
@@ -298,7 +293,7 @@ const TestPortal = ({ coupons, closePortal }: TestPortalProps) => {
   }, [coupons]);
 
   const onChangeRadio = (index: number) => {
-    const updatedOptions = radioOptions.map((option, i) => ({
+    const updatedOptions = radioOptions.map((_, i) => ({
       checked: i === index,
     }));
     setRadioOptions(updatedOptions);

@@ -1,5 +1,5 @@
 import { TYPOGRAPHY } from '@/styles/typography';
-import { use, useState } from 'react';
+import { useState } from 'react';
 import ArrowToBottom from '../../../assets/images/icon/ArrowToBottom';
 import ArrowToTop from '../../../assets/images/icon/ArrowToTop';
 

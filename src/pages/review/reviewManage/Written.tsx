@@ -1,4 +1,3 @@
-import { reviewableData } from '@/data/reviewableProductData';
 import { getReviews } from '@/utils/api/api';
 import { useQuery } from '@tanstack/react-query';
 import { Button, Rate } from 'antd';

@@ -1,7 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { cardData, type CartItem } from '@/data/CartData';
 import { addressesData, type Address } from './data/addressesData';
-import { availableCouponData, couponData } from './data/couponData';
+import {
+  availableCouponData,
+  couponData,
+  type Coupon,
+} from './data/couponData';
 import {
   productDetailData,
   type ProductContact,
@@ -168,10 +172,13 @@ export const mockApiHandlers = [
     }>;
 
     // code -> 쿠폰 데이터 변환하는 로직
-    const newCoupon = {
+    const newCoupon: Coupon = {
       id: myCoupons.length + 1,
       코드: 'DIAMOND15',
-      할인율: 15,
+      할인: {
+        타입: '정률',
+        값: 15,
+      },
       설명: 'DIAMOND 등급 쿠폰',
       특이사항: '1만원 이상 15% 할인 최대 10만원 할인',
       유효기간: '2026.03.31',
@@ -190,10 +197,13 @@ export const mockApiHandlers = [
     console.log('payload: ', payload);
 
     // code -> 쿠폰 데이터 변환하는 코드
-    const newCoupon = {
+    const newCoupon: Coupon = {
       id: myCoupons.length + 1,
       코드: 'DIAMOND15',
-      할인율: 15,
+      할인: {
+        타입: '정률',
+        값: 15,
+      },
       설명: 'DIAMOND 등급 쿠폰',
       특이사항: '1만원 이상 15% 할인 최대 10만원 할인',
       유효기간: '2026.03.31',

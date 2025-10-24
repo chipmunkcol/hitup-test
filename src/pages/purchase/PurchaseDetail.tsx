@@ -2,7 +2,6 @@ import { purchaseDetail } from '@/data/purchaseData';
 import { trackingData } from '@/data/trackingData';
 import { useModalStore } from '@/store/useModalStore';
 import { Button } from 'antd';
-import { useState } from 'react';
 
 const PurchaseDetail = () => {
   // 데이터 가져오기 (api: purchase/:orderId)

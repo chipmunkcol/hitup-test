@@ -1,34 +1,34 @@
 import './App.css';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/common/layout/Layout';
+import CategoryBig from './components/common/widgets/CategoryBig';
+import AddAddressPage from './pages/address/AddAddressPage';
+import AddressPage from './pages/address/AddressPage';
+import EditAddressPage from './pages/address/EditAddressPage';
+import Login from './pages/auth/Login';
+import RegisterPage from './pages/auth/RegisterPage';
 import BestPage from './pages/BestPage';
 import CartPage from './pages/CartPage';
+import CategoryPage from './pages/CategoryPage';
 import CouponPage from './pages/CouponPage';
 import HomePage from './pages/HomePage';
 import Mypage from './pages/Mypage';
 import NewPage from './pages/NewPage';
 import PartnershipPage from './pages/PartnershipPage';
-import PurchasePage from './pages/purchase/PurchasePage';
-import AddAddressPage from './pages/address/AddAddressPage';
-import AddressPage from './pages/address/AddressPage';
-import EditAddressPage from './pages/address/EditAddressPage';
 import ContactHistory from './pages/productDetail/ContactHistory';
-import ContactSeller from './pages/productDetail/ContactSeller';
+// import ContactSeller from './pages/productDetail/ContactSeller';
 import ProductDetail from './pages/productDetail/ProductDetail';
-import { useAuthStore } from './store/useAuthStore';
 import PurchaseDetail from './pages/purchase/PurchaseDetail';
 import PurchaseHistory from './pages/purchase/PurchaseHistory';
-import CategoryPage from './pages/CategoryPage';
-import CategoryBig from './components/common/widgets/CategoryBig';
-import ReviewManagePage from './pages/review/ReviewManagePage';
+import PurchasePage from './pages/purchase/PurchasePage';
 import AddReviewPage from './pages/review/AddReviewPage';
 import EditReviewPage from './pages/review/EditReviewPage';
 import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
-import RegisterPage from './pages/auth/RegisterPage';
-import Login from './pages/auth/Login';
+import ReviewManagePage from './pages/review/ReviewManagePage';
+import { useAuthStore } from './store/useAuthStore';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -61,7 +61,9 @@ function App() {
 
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/product/:id/contacts" element={<ContactHistory />} />
-          <Route path="/product/:id/contact/add" element={<ContactSeller />} />
+
+          {/* 팝업으로 변경 */}
+          {/* <Route path="/product/:id/contact/add" element={<ContactSeller />} /> */}
           <Route
             path="/product/:id/contact/edit/:contactId:"
             element={<div></div>}

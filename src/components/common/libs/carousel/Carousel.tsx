@@ -1,12 +1,11 @@
+import { TYPOGRAPHY } from '@/styles/typography';
+import type { EmblaCarouselType } from 'embla-carousel';
+import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 import './carousel.css';
-import useEmblaCarousel from 'embla-carousel-react';
-import type { EmblaCarouselType } from 'embla-carousel';
-import Autoplay from 'embla-carousel-autoplay';
-import { TYPOGRAPHY } from '@/styles/typography';
 import {
-  PrevButton,
   NextButton,
+  PrevButton,
   usePrevNextButtons,
 } from './EmblaCarouselArrowButtons';
 

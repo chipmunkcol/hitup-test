@@ -1,11 +1,11 @@
-import type { Product } from '../../data/cardData';
+import type { CartItem } from '../../data/cardData';
 import { TYPOGRAPHY } from '../../styles/typography';
 import { formatNumber } from '../../utils/function';
 
 interface ProductCardProps {
   label: string;
   color?: 'blue' | 'red' | 'black' | 'grey' | 'none';
-  data: Product;
+  data: CartItem;
 }
 
 const ProductCard = ({ label, color = 'none', data }: ProductCardProps) => {
