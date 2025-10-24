@@ -22,6 +22,7 @@ import ArrowToRight from '@/components/common/icon/ArrowToRight';
 import StarIcon from '@/components/common/icon/StarIcon';
 import Download from '@/components/common/icon/Download';
 import NpayBtn from '@/components/common/icon/NpayBtn';
+import lineDashed from '@/assets/images/lineDashed.jpg';
 
 // const 배송교환반품안내 =
 //   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -79,9 +80,9 @@ const ProductDetail = () => {
     });
   };
 
-  const goContactSellerPortal = (productId: number) => {
-    navigate(`/product/${productId}/contact/add`);
-  };
+  // const goContactSellerPortal = (productId: number) => {
+  //   navigate(`/product/${productId}/contact/add`);
+  // };
 
   const goContactHistory = () => {
     navigate(`/product/${id}/contacts`);
@@ -91,6 +92,20 @@ const ProductDetail = () => {
   const [isPortalOpen, setIsPortalOpen] = useState(false);
   const closePortal = () => {
     setIsPortalOpen(false);
+  };
+
+  const openContactSellerPortal = () => {
+    setIsPortalOpen(true);
+  };
+
+  // 쿠폰 포탈
+  const [isCouponPortalOpen, setIsCouponPortalOpen] = useState(false);
+  const openCouponPortal = () => {
+    setIsCouponPortalOpen(true);
+  };
+
+  const closeCouponPortal = () => {
+    setIsCouponPortalOpen(false);
   };
 
   const 할인가 = data ? data.가격 - (data.가격 * data.할인율) / 100 : 0;
@@ -219,7 +234,7 @@ const ProductDetail = () => {
             )}
           </div>
           <div className="px-4 py-4">
-            <Button onClick={() => setIsPortalOpen(true)} variant="default">
+            <Button onClick={openContactSellerPortal} variant="default">
               판매자에게 문의하기
             </Button>
           </div>
@@ -349,7 +364,10 @@ const ProductDetail = () => {
 
             {/* 쿠폰 받기 */}
             <div className="flex justify-end">
-              <button className="border border-HITUP_Blue rounded-lg bg-Blue-05 py-1 px-5 flex gap-5 items-center">
+              <button
+                onClick={openCouponPortal}
+                className="border border-HITUP_Blue rounded-lg bg-Blue-05 py-1 px-5 flex gap-5 items-center"
+              >
                 <div
                   className={`${TYPOGRAPHY.Subheading16Bold} text-HITUP_Blue`}
                 >
@@ -414,6 +432,13 @@ const ProductDetail = () => {
           <ContactSellerPortal closePortal={closePortal} />,
           document.body
         )}
+
+      {/* 할인 쿠폰 받기 portal */}
+      {isCouponPortalOpen &&
+        createPortal(
+          <GetCouponPortal closePortal={closeCouponPortal} />,
+          document.body
+        )}
     </div>
   );
 };
@@ -430,7 +455,7 @@ const ContactSellerPortal = ({ closePortal }: ContactSellerPortalProps) => {
       className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
       style={{ background: 'rgba(0, 0, 0, 0.25)' }}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2  max-w-[720px] mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[90%] max-w-[720px] mx-auto">
         <div className="border border-Grey-20 bg-Grey-05 rounded-2xl flex flex-col justify-center">
           <div className="w-full py-4 px-5 bg-Blue-05 rounded-t-2xl flex justify-between items-center">
             <h1 className={`${TYPOGRAPHY.Heading124Bold}`}>
@@ -551,5 +576,122 @@ function DividerSvg() {
     >
       <path d="M0 0.5H680" stroke="#606060" />
     </svg>
+  );
+}
+
+function GetCouponPortal({ closePortal }: { closePortal: () => void }) {
+  return (
+    <div
+      className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
+      style={{ background: 'rgba(0, 0, 0, 0.25)' }}
+    >
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[90%] max-w-[720px] mx-auto">
+        <div className="rounded-2xl flex flex-col justify-center">
+          <div className="w-full py-4 px-5 bg-Blue-05 rounded-t-2xl flex justify-between items-center">
+            <h1 className={`${TYPOGRAPHY.Heading124Bold}`}>할인 쿠폰 받기</h1>
+            <div className="cursor-pointer" onClick={closePortal}>
+              <CancelIcon />
+            </div>
+          </div>
+          <div className="px-5 rounded-b-2xl bg-Grey-05 ">
+            <ul className="py-3 flex flex-col gap-6">
+              <li className="py-4 px-5 flex  justify-between rounded-xl border border-Grey-60 shadow-[0_0_8px_0_rgba(0,0,0,0.40)]">
+                <div className="flex flex-col gap-5">
+                  <div
+                    className={`${TYPOGRAPHY.Heading124Bold} text-HITUP_Blue`}
+                  >
+                    20% 할인
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <div className={`${TYPOGRAPHY.Heading318Medium}`}>
+                      PLATINUM 등급 전상품 20% 할인 쿠폰
+                    </div>
+                    <div className={`${TYPOGRAPHY.Body14Semi} text-Grey-70`}>
+                      2025. 11. 20일까지 사용가능
+                    </div>
+                    <div
+                      className={`${TYPOGRAPHY.Subheading16Regular} text-Grey-70`}
+                    >
+                      최대 할인 가능 금액 : 20,000원
+                    </div>
+                  </div>
+                </div>
+                <div className=" flex items-center justify-center gap-5">
+                  <img src={lineDashed} />
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
+                        fill="#007CEE"
+                      />
+                    </svg>
+                    <div
+                      className={`${TYPOGRAPHY.Heading318Bold} text-HITUP_Blue`}
+                    >
+                      쿠폰 받기
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li className="py-4 px-5 flex  justify-between rounded-xl border border-Grey-60 shadow-[0_0_8px_0_rgba(0,0,0,0.40)]">
+                <div className="flex flex-col gap-5">
+                  <div
+                    className={`${TYPOGRAPHY.Heading124Bold} text-HITUP_Blue`}
+                  >
+                    20% 할인
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <div className={`${TYPOGRAPHY.Heading318Medium}`}>
+                      PLATINUM 등급 전상품 20% 할인 쿠폰
+                    </div>
+                    <div className={`${TYPOGRAPHY.Body14Semi} text-Grey-70`}>
+                      2025. 11. 20일까지 사용가능
+                    </div>
+                    <div
+                      className={`${TYPOGRAPHY.Subheading16Regular} text-Grey-70`}
+                    >
+                      최대 할인 가능 금액 : 20,000원
+                    </div>
+                  </div>
+                </div>
+                <div className=" flex items-center justify-center gap-5">
+                  <img src={lineDashed} />
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
+                        fill="#007CEE"
+                      />
+                    </svg>
+                    <div
+                      className={`${TYPOGRAPHY.Heading318Bold} text-HITUP_Blue`}
+                    >
+                      쿠폰 받기
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div className="py-4">
+              <Button className={`${TYPOGRAPHY.Heading318Bold}`} variant="blue">
+                쿠폰 한번에 받기
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

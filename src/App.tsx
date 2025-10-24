@@ -28,6 +28,7 @@ import EditReviewPage from './pages/review/EditReviewPage';
 import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import RegisterPage from './pages/auth/RegisterPage';
+import Login from './pages/auth/Login';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -48,6 +49,8 @@ function App() {
 
           {/* 인증 */}
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<Login />} />
+
           <Route
             path="/category/:category/sub/:sub"
             element={<CategoryPage />}

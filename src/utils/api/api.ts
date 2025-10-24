@@ -107,6 +107,33 @@ export const deleteReview = (id: string | undefined) => {
 };
 
 // Auth (인증)
+
+interface LoginData {
+  phoneNumber: string;
+  authenticationCode: string;
+}
+
+export const loginUser = async (loginData: LoginData) => {
+  const encryptedPhoneNumber = encryptAes256(
+    timestamp,
+    import.meta.env.VITE_ACCESS_KEY,
+    loginData.phoneNumber
+  );
+
+  const newData = {
+    ...loginData,
+    phoneNumber: encryptedPhoneNumber,
+  };
+
+  return await apiRequest.post('/api/v1/member/login', newData, {
+    headers: {
+      'Content-Type': 'application/json',
+      'request-time': timestamp,
+      'access-key': encryptedAccessKey,
+    },
+  });
+};
+
 export const checkDuplicateNickname = async (nickName: string) => {
   return await apiRequest
     .post(
