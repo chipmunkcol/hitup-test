@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TYPOGRAPHY } from '../../../styles/typography';
-import CancelIcon from '../icon/CancelIcon';
+import CancelIcon from '../../../assets/images/icon/CancelIcon';
 import Searchbar from '../Searchbar';
 
 const 인기검색어 = [

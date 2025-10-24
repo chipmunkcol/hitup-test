@@ -1,7 +1,7 @@
 import { TYPOGRAPHY } from '@/styles/typography';
 import { use, useState } from 'react';
-import ArrowToBottom from '../icon/ArrowToBottom';
-import ArrowToTop from '../icon/ArrowToTop';
+import ArrowToBottom from '../../../assets/images/icon/ArrowToBottom';
+import ArrowToTop from '../../../assets/images/icon/ArrowToTop';
 
 const SelectboxCheck = ({ placeholder }: { placeholder: string }) => {
   const [isOpen, setIsOpen] = useState(false);

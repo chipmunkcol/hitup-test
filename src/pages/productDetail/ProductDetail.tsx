@@ -14,15 +14,17 @@ import { useNavigate } from 'react-router-dom';
 import { TYPOGRAPHY } from '@/styles/typography';
 import SelectboxOptions from '@/components/common/widgets/SelectboxOptions';
 import { createPortal } from 'react-dom';
-import CancelIcon from '@/components/common/icon/CancelIcon';
+import CancelIcon from '@/assets/images/icon/CancelIcon';
 import SelectboxCheck from '@/components/common/widgets/SelectboxCheck';
 import Input from '@/components/common/Input';
 
-import ArrowToRight from '@/components/common/icon/ArrowToRight';
-import StarIcon from '@/components/common/icon/StarIcon';
-import Download from '@/components/common/icon/Download';
-import NpayBtn from '@/components/common/icon/NpayBtn';
+import ArrowToRight from '@/assets/images/icon/ArrowToRight';
+import StarIcon from '@/assets/images/icon/StarIcon';
+import Download from '@/assets/images/icon/Download';
+import NpayBtn from '@/assets/images/icon/NpayBtn';
 import lineDashed from '@/assets/images/lineDashed.jpg';
+import StarFill1 from '@/assets/images/icon/StarFill1';
+import StarFill4 from '@/assets/images/icon/StartFill4';
 
 // const 배송교환반품안내 =
 //   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
@@ -154,29 +156,75 @@ const ProductDetail = () => {
           {tab === 'review' && (
             <ul className="space-y-4">
               {data.리뷰.map((item) => (
-                <li className="w-full py-2 border-b flex gap-4" key={item?.id}>
-                  <div className="flex flex-4 gap-2">
-                    <div className=" w-[40px] h-[40px] rounded-full">
-                      <img
-                        className="w-full h-full rounded-full"
-                        src={item?.작성자프로필}
-                      />
-                    </div>
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2">
+                // <li className="w-full py-2 border-b flex gap-4" key={item?.id}>
+                //   <div className="flex flex-4 gap-2">
+                //     <div className=" w-[40px] h-[40px] rounded-full">
+                //       <img
+                //         className="w-full h-full rounded-full"
+                //         src={item?.작성자프로필}
+                //       />
+                //     </div>
+                //     <div className="flex-1 flex flex-col gap-2">
+                //       <div className="flex gap-2">
+                //         <div>{item?.작성자}</div>
+                //         <div>
+                //           {item?.별점.toFixed(0)}*⭐ {item?.별점}
+                //         </div>
+                //       </div>
+                //       <div>옵션</div>
+                //       <div>{item?.내용}</div>
+                //     </div>
+                //   </div>
+                //   <div className="h-[128px] relative flex-1">
+                //     <img className="h-full" src={item?.리뷰이미지[0]} />
+                //     <div className="absolute bottom-0 right-0 z-10 text-white bg-Grey-70 px-2">
+                //       {item?.리뷰이미지.length > 0 && item?.리뷰이미지.length}
+                //     </div>
+                //   </div>
+                // </li>
+                <li className="px-5 ">
+                  {/* 상단 */}
+                  <div className="py-3 flex justify-between items-center">
+                    <div className="flex gap-5">
+                      <div className="w-[60px] h-[60px] bg-Grey-20 rounded-full" />
+                      <div className="flex flex-col justify-between">
                         <div>{item?.작성자}</div>
-                        <div>
-                          {item?.별점.toFixed(0)}*⭐ {item?.별점}
+                        <div className="flex gap-5 justify-center ">
+                          <div>
+                            <StarFill4 />
+                          </div>
+                          <div className={`${TYPOGRAPHY.Heading222Semi}`}>
+                            2025.10.14
+                          </div>
                         </div>
                       </div>
-                      <div>옵션</div>
-                      <div>{item?.내용}</div>
+                    </div>
+                    <div className="relative">
+                      <div className="w-[100px] h-[100px] bg-Grey-20" />
+                      <div
+                        className={`absolute bottom-0 right-0 bg-Grey-70 text-white pl-[6px] pr-[7px] py-[2px] ${TYPOGRAPHY.Subheading16Bold}`}
+                      >
+                        4
+                      </div>
                     </div>
                   </div>
-                  <div className="h-[128px] relative flex-1">
-                    <img className="h-full" src={item?.리뷰이미지[0]} />
-                    <div className="absolute bottom-0 right-0 z-10 text-white bg-Grey-70 px-2">
-                      {item?.리뷰이미지.length > 0 && item?.리뷰이미지.length}
+
+                  {/* 중단 */}
+                  <div className={`${TYPOGRAPHY.Heading222Semi}`}>
+                    {data?.상품명}
+                  </div>
+
+                  {/* 하단 */}
+                  <div className="py-3 flex flex-col gap-1">
+                    <div
+                      className={`line-clamp-2 ${TYPOGRAPHY.Heading222Medium}`}
+                    >
+                      {item?.내용}
+                    </div>
+                    <div
+                      className={`flex justify-end underline underline-offset-5 ${TYPOGRAPHY.Heading222Semi}`}
+                    >
+                      더보기
                     </div>
                   </div>
                 </li>

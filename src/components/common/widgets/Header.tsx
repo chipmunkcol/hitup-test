@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import HamburgerBtn from '../HamburgerBtn';
-import CartIcon from '../icon/CartIcon';
-import ProfileIcon from '../icon/ProfileIcon';
+import CartIcon from '../../../assets/images/icon/CartIcon';
+import ProfileIcon from '../../../assets/images/icon/ProfileIcon';
 import Logo from '../Logo';
 import SearchField from './SearchField';
 import { useModalStore } from '@/store/useModalStore';
