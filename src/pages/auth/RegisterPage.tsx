@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, Input, Select } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import TestRegister from './TestRegister';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export interface RegisterForm {
   phoneNumber: string;
@@ -15,7 +17,13 @@ export interface RegisterForm {
 }
 
 const RegisterPage = () => {
-  const [nickNameValue, setNickNameValue] = useState('');
+  const {
+    isCheckDuplicatedNickname,
+    isDuplicatedNickname,
+    setIsCheckDuplicatedNickname,
+    setIsDuplicatedNickname,
+  } = useAuthStore();
+  // const [nickNameValue, setNickNameValue] = useState('');
 
   const [form, setForm] = useState<RegisterForm>({
     phoneNumber: '',
@@ -26,9 +34,9 @@ const RegisterPage = () => {
     interestSeaFishingType: false,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickNameValue(e.target.value);
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setNickNameValue(e.target.value);
+  // };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,6 +71,15 @@ const RegisterPage = () => {
     mutationFn: checkDuplicateNickname,
     onSuccess: (data) => {
       console.log('닉네임 중복 확인 성공:', data);
+      if (data.isDuplicate === false) {
+        setIsCheckDuplicatedNickname(true);
+        setIsDuplicatedNickname(false);
+      }
+
+      if (data?.isDuplicate) {
+        setIsCheckDuplicatedNickname(false);
+        setIsDuplicatedNickname(true);
+      }
     },
     onError: (error) => {
       console.error('닉네임 중복 확인 실패:', error);
@@ -71,12 +88,18 @@ const RegisterPage = () => {
   });
 
   const handleCheckDuplicate = () => {
-    if (!nickNameValue.trim()) {
+    // 여러번 가능해야 될듯 (다른 닉네임으로 시도할 경우)
+    // if (isCheckDuplicatedNickname) {
+    //   alert('이미 닉네임 중복확인을 하셨습니다.');
+    //   return;
+    // }
+
+    if (!form.nickName.trim()) {
       alert('닉네임을 입력해주세요.');
       return;
     }
 
-    duplicateMutate(nickNameValue);
+    duplicateMutate(form.nickName);
   };
 
   const { mutate: registerMutate } = useMutation({
@@ -93,8 +116,13 @@ const RegisterPage = () => {
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // if (닉네임 중복확인 안됐으면 return) <-- 전역상태 필요
+    if (!isCheckDuplicatedNickname) {
+      alert('닉네임 중복확인을 해주세요.');
+      return;
+    }
+
     if (
-      nickNameValue?.trim() === '' ||
+      form.nickName?.trim() === '' ||
       form?.phoneNumber === '' ||
       form?.birthDay === '' ||
       form?.gender === '' ||
@@ -104,44 +132,29 @@ const RegisterPage = () => {
       return;
     }
 
-    const timestamp = Date.now().toString();
-    const encrytedNickName = encryptAes256(
-      timestamp,
-      import.meta.env.VITE_ACCESS_KEY,
-      nickNameValue
-    );
-    const encryptedPhoneNumber = encryptAes256(
-      timestamp,
-      import.meta.env.VITE_ACCESS_KEY,
-      form.phoneNumber
-    );
-    const newForm: RegisterForm = {
-      ...form,
-
-      birthDay: dayjs(form.birthDay).format('YYYY-MM-DD'),
-      nickName: encrytedNickName,
-      phoneNumber: encryptedPhoneNumber,
-    };
-
-    registerMutate(newForm);
+    registerMutate(form);
   };
-
-  // const handleTesting = () => {
-  //   testingAPI();
-  // };
 
   return (
     <div className="max-w-xl mx-auto p-6">
       <form onSubmit={handleRegister} className="flex flex-col gap-6">
         <div>회원가입</div>
         <div>닉네임을 설정해 주세요</div>
-        <div className="flex gap-4">
-          <Input
-            name="nickName"
-            value={nickNameValue}
-            onChange={handleInputChange}
-          />
-          <Button onClick={handleCheckDuplicate}>중복확인</Button>
+        <div>
+          <div className="flex gap-4">
+            <Input
+              name="nickName"
+              value={form.nickName}
+              onChange={onChangeInput}
+            />
+            <Button onClick={handleCheckDuplicate}>중복확인</Button>
+          </div>
+          {isCheckDuplicatedNickname && !isDuplicatedNickname && (
+            <div>사용 가능한 닉네임이에요</div>
+          )}
+          {isDuplicatedNickname && (
+            <div className="text-HITUP_Red">사용 불가능한 닉네임이에요</div>
+          )}
         </div>
 
         {/* <div> */}

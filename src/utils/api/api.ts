@@ -11,6 +11,7 @@ import {
   encryptedData,
   timestamp,
 } from '../auth/crypto';
+import dayjs from 'dayjs';
 
 // axios 기본 설정
 export const fakeApi = axios.create({
@@ -107,25 +108,85 @@ export const deleteReview = (id: string | undefined) => {
 
 // Auth (인증)
 export const checkDuplicateNickname = async (nickName: string) => {
-  return await apiRequest.post(`api/v1/member/check/nickname`, {
-    nickName,
-  });
+  return await apiRequest
+    .post(
+      `api/v1/member/check/nickname`,
+      {
+        nickName,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'request-time': timestamp,
+          'access-key': encryptedAccessKey,
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data.data) {
+        return JSON.parse(res.data.data);
+      }
+    });
 };
 
-export const registerUser = async (data: RegisterForm) => {
+interface RegisterUserResponse {
+  memberId: string;
+  nickName: string;
+  birthDay: string;
+  gender: string;
+  age: number;
+  memberToken: {
+    accessTokenExpiredDate: number;
+    refreshTokenExpiredDate: number;
+    accessToken: string;
+    refreshToken: string;
+  };
+}
+
+export const registerUser = async (
+  data: RegisterForm
+): Promise<RegisterUserResponse> => {
+  // const timestamp = Date.now().toString();
+  const encrytedNickName = encryptAes256(
+    timestamp,
+    import.meta.env.VITE_ACCESS_KEY,
+    data.nickName
+  );
   const encryptedPhoneNumber = encryptAes256(
-    Date.now().toString(),
+    timestamp,
     import.meta.env.VITE_ACCESS_KEY,
     data.phoneNumber
   );
 
-  return await apiRequest.post(`api/v1/member/signup`, data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'request-time': Date.now().toString(),
-      'access-key': encryptedPhoneNumber,
-    },
-  });
+  // const encryptedAccessKey = encryptAes256(
+  //   timestamp,
+  //   import.meta.env.VITE_ACCESS_KEY,
+  //   import.meta.env.VITE_ACCESS_KEY
+  // );
+
+  const newForm: RegisterForm = {
+    ...data,
+
+    birthDay: dayjs(data.birthDay).format('YYYY-MM-DD'),
+    nickName: encrytedNickName,
+    phoneNumber: encryptedPhoneNumber,
+  };
+
+  return await apiRequest
+    .post(`api/v1/member/signup`, newForm, {
+      headers: {
+        'Content-Type': 'application/json',
+        'request-time': timestamp,
+        'access-key': encryptedAccessKey,
+      },
+    })
+    .then((res) => {
+      if (res.data.code === 200) {
+        return JSON.parse(res.data.data);
+      } else {
+        throw new Error(res.data.message);
+      }
+    });
 };
 
 // fakeApi.interceptors.request.use(

@@ -7,14 +7,34 @@ export interface User {
 }
 
 interface AuthState {
+  lastRequestTimestamp: string;
+  setLastRequestTimestamp: (timestamp: string) => void;
+
+  isCheckDuplicatedNickname: boolean;
+  isDuplicatedNickname: boolean;
+  setIsCheckDuplicatedNickname: (status: boolean) => void;
+  setIsDuplicatedNickname: (status: boolean) => void;
+
   user: User | null;
+  setUser: (user: User | null) => void;
   fetchUser: () => Promise<void>;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  // accesstoken 에서 디코딩한 사용자 정보
+  // 암호화 복호화 관련
+  lastRequestTimestamp: '',
+  setLastRequestTimestamp: (timestamp: string) =>
+    set({ lastRequestTimestamp: timestamp }),
 
+  // 닉네임 중복 확인
+  isCheckDuplicatedNickname: false,
+  isDuplicatedNickname: false,
+  setIsCheckDuplicatedNickname: (status: boolean) =>
+    set({ isCheckDuplicatedNickname: status }),
+  setIsDuplicatedNickname: (status: boolean) =>
+    set({ isDuplicatedNickname: status }),
+  // accesstoken 에서 디코딩한 사용자 정보
   user: null,
   setUser: (user: User | null) => set({ user: user }),
   fetchUser: async () => {

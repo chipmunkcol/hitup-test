@@ -160,7 +160,7 @@ export const timestamp = String(1760607802106);
 // const timestamp = 'long';
 
 // 1. 암호화 테스트
-export const encryptedData = encryptAes256(timestamp, accessKey, '01071903812');
+export const encryptedData = encryptAes256(timestamp, accessKey, 'jack957');
 export const encryptedAccessKey = encryptAes256(
   timestamp,
   accessKey,
