@@ -1,17 +1,14 @@
-import CancelIcon from '@/assets/images/icon/CancelIcon';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import DropdownInfo from '@/components/common/widgets/DropdownInfo';
-import SelectboxCheck from '@/components/common/widgets/SelectboxCheck';
 import SelectboxOptions from '@/components/common/widgets/SelectboxOptions';
 import type { Product } from '@/data/productDetailData';
 import { TYPOGRAPHY } from '@/styles/typography';
 import { addToCart, getProduct } from '@/utils/api/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import ArrowToRight from '@/assets/images/icon/ArrowToRight';
@@ -19,14 +16,9 @@ import Download from '@/assets/images/icon/Download';
 import NpayBtn from '@/assets/images/icon/NpayBtn';
 import StarIcon from '@/assets/images/icon/StarIcon';
 import StarFill4 from '@/assets/images/icon/StartFill4';
-import lineDashed from '@/assets/images/lineDashed.jpg';
-
-// const 배송교환반품안내 =
-//   '고객님께서 주문하신 상품은 결제 완료 후 순차 발송되며, 배송은 평균 2~3일 소요됩니다. 상품에 하자가 있거나 단순 변심으로 인한 교환·반품은 수령 후 7일 이내 고객센터를 통해 접수해 주셔야 하며, 단순 변심의 경우 왕복 배송비가 발생할 수 있습니다.';
-// const 상품고시정보안내 =
-//   '본 상품은 전자상거래법 및 관련 법률에 따른 상품 고시 정보를 제공합니다. 제조사, 원산지, 주요 소재, 품질보증 기준 및 A/S 안내 등 필수 정보는 상세페이지 하단에서 확인하실 수 있으며, 정확한 정보를 제공하기 위해 노력하고 있습니다.';
-// const 판매자정보 =
-//   '본 상품은 해당 판매자가 직접 등록·관리하고 있으며, 판매자 상호, 대표자명, 사업자등록번호, 통신판매업 신고번호, 소재지 및 고객센터 연락처 등 필수 정보는 관련 법령에 따라 상세페이지 하단 ‘판매자 정보’에서 확인하실 수 있습니다.';
+import PortalLayout from '@/components/common/layout/PortalLayout';
+import ContactSellerPortal from '@/components/common/modals/Contacteller';
+import GetCouponPortal from '@/components/common/modals/GetCoupon';
 
 const id = 2;
 const ProductDetail = () => {
@@ -114,7 +106,8 @@ const ProductDetail = () => {
 
   return (
     <div className="w-full">
-      <div className="flex gap-5">
+      <Input placeholder="hello worlds" />
+      <div className="flex flex-col md:flex-row gap-5">
         <div className="flex-4">
           {/* <div className="max-w-[736px] px-5"> */}
           <div className=" px-5">
@@ -352,8 +345,8 @@ const ProductDetail = () => {
           {/* <DropdownInfo title="상품 고시 정보 안내" data={상품고시정보안내} />
           <DropdownInfo title="판매자 정보" data={판매자정보} /> */}
         </div>
-        <div className="flex-3">
-          <div className="flex flex-col gap-5 ">
+        <div className="relative flex-3">
+          <div className="fixed flex flex-col gap-5 ">
             {/* 999피싱부터 별점까지 */}
             <div className="flex flex-col gap-2">
               <div className="flex gap-4 items-center">
@@ -470,271 +463,20 @@ const ProductDetail = () => {
       </div>
 
       {/* 판매자에게 문의하기 portal */}
-      {isPortalOpen &&
-        createPortal(
-          <ContactSellerPortal closePortal={closePortal} />,
-          document.body
-        )}
+      {isPortalOpen && (
+        <PortalLayout title="판매자에게 문의하기" closePortal={closePortal}>
+          <ContactSellerPortal closePortal={closePortal} />
+        </PortalLayout>
+      )}
 
       {/* 할인 쿠폰 받기 portal */}
-      {isCouponPortalOpen &&
-        createPortal(
-          <GetCouponPortal closePortal={closeCouponPortal} />,
-          document.body
-        )}
+      {isCouponPortalOpen && (
+        <PortalLayout title="할인 쿠폰 받기" closePortal={closeCouponPortal}>
+          <GetCouponPortal />
+        </PortalLayout>
+      )}
     </div>
   );
 };
 
 export default ProductDetail;
-
-interface ContactSellerPortalProps {
-  closePortal: () => void;
-}
-
-const ContactSellerPortal = ({ closePortal }: ContactSellerPortalProps) => {
-  return (
-    <div
-      className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
-      style={{ background: 'rgba(0, 0, 0, 0.25)' }}
-    >
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[90%] max-w-[720px] mx-auto">
-        <div className="border border-Grey-20 bg-Grey-05 rounded-2xl flex flex-col justify-center">
-          <div className="w-full py-4 px-5 bg-Blue-05 rounded-t-2xl flex justify-between items-center">
-            <h1 className={`${TYPOGRAPHY.Heading124Bold}`}>
-              판매자에게 문의하기
-            </h1>
-            <div className="cursor-pointer" onClick={closePortal}>
-              <CancelIcon />
-            </div>
-          </div>
-          <div className="px-5">
-            <div className="py-4 flex gap-8">
-              <div className="w-[100px] h-[100px] ">
-                <img className="w-full h-full bg-Grey-20 rounded-xl" />
-              </div>
-              <div className="flex flex-col gap-4 justify-center">
-                <div>상품명 : [data]</div>
-                <div className="flex gap-3">
-                  <div>10%</div>
-                  <div className="line-through">89,000 원</div>
-                  <div>80,100원</div>
-                </div>
-              </div>
-            </div>
-
-            {/* border-svg */}
-            <DividerSvg />
-            <div className="py-2 flex items-center gap-7">
-              <div className={`w-[78px] ${TYPOGRAPHY.Heading222Semi}`}>
-                문의 유형
-              </div>
-              <div className="flex-1">
-                <SelectboxCheck placeholder="문의 유형을 선택해주세요" />
-              </div>
-            </div>
-            {/* border-svg */}
-            <DividerSvg />
-            <div className="py-2 flex items-center gap-7">
-              <div className={`w-[78px] ${TYPOGRAPHY.Heading222Semi}`}>
-                제목
-              </div>
-              <div className="flex-1">
-                <Input placeholder="제목을 입력해주세요." />
-              </div>
-            </div>
-
-            {/* border-svg */}
-            <DividerSvg />
-            <div className="py-3 flex justify-between">
-              <div className={`w-[78px] ${TYPOGRAPHY.Heading222Semi}`}>
-                문의 내용
-              </div>
-              <div className="flex justify-center gap-3">
-                <input type="checkbox" />
-                <div className={`${TYPOGRAPHY.Heading222Medium} text-Grey-70`}>
-                  비밀글
-                </div>
-              </div>
-            </div>
-            <div className="py-3">
-              <textarea
-                className={`w-full min-h-[128px] border border-Grey-60 rounded-xl px-4 py-3 ${TYPOGRAPHY.Heading318Medium} text-Grey-60 focus:outline-none focus:border-Grey-60`}
-              />
-            </div>
-
-            {/* <DividerSvg /> */}
-            <DividerSvg />
-
-            <div>
-              <div className={`py-4 ${TYPOGRAPHY.Heading222Semi}`}>
-                사진 첨부
-              </div>
-              <div className="flex py-2 gap-6 items-center">
-                <div className="w-[100px] h-[100px] flex justify-center items-center bg-Grey-10 border border-Grey-60 rounded-xl cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M18 12.998H13V17.998C13 18.2633 12.8946 18.5176 12.7071 18.7052C12.5196 18.8927 12.2652 18.998 12 18.998C11.7348 18.998 11.4804 18.8927 11.2929 18.7052C11.1054 18.5176 11 18.2633 11 17.998V12.998H6C5.73478 12.998 5.48043 12.8927 5.29289 12.7052C5.10536 12.5176 5 12.2633 5 11.998C5 11.7328 5.10536 11.4785 5.29289 11.2909C5.48043 11.1034 5.73478 10.998 6 10.998H11V5.99805C11 5.73283 11.1054 5.47848 11.2929 5.29094C11.4804 5.1034 11.7348 4.99805 12 4.99805C12.2652 4.99805 12.5196 5.1034 12.7071 5.29094C12.8946 5.47848 13 5.73283 13 5.99805V10.998H18C18.2652 10.998 18.5196 11.1034 18.7071 11.2909C18.8946 11.4785 19 11.7328 19 11.998C19 12.2633 18.8946 12.5176 18.7071 12.7052C18.5196 12.8927 18.2652 12.998 18 12.998Z"
-                      fill="#9A9A9A"
-                    />
-                  </svg>
-                </div>
-                <div className={`${TYPOGRAPHY.Heading222Semi}`}>최대 5장</div>
-              </div>
-            </div>
-
-            <div className="flex gap-4 py-4">
-              <Button onClick={closePortal} className="flex-1 ">
-                닫기
-              </Button>
-              <Button
-                // onClick={handleApplyCoupon}
-                className="flex-1"
-                variant="grey"
-              >
-                등록하기
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-function DividerSvg() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="680"
-      height="1"
-      viewBox="0 0 680 1"
-      fill="none"
-    >
-      <path d="M0 0.5H680" stroke="#606060" />
-    </svg>
-  );
-}
-
-function GetCouponPortal({ closePortal }: { closePortal: () => void }) {
-  return (
-    <div
-      className="z-[1000] w-full h-full fixed inset-0 flex justify-center items-start"
-      style={{ background: 'rgba(0, 0, 0, 0.25)' }}
-    >
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[90%] max-w-[720px] mx-auto">
-        <div className="rounded-2xl flex flex-col justify-center">
-          <div className="w-full py-4 px-5 bg-Blue-05 rounded-t-2xl flex justify-between items-center">
-            <h1 className={`${TYPOGRAPHY.Heading124Bold}`}>할인 쿠폰 받기</h1>
-            <div className="cursor-pointer" onClick={closePortal}>
-              <CancelIcon />
-            </div>
-          </div>
-          <div className="px-5 rounded-b-2xl bg-Grey-05 ">
-            <ul className="py-3 flex flex-col gap-6">
-              <li className="py-4 px-5 flex  justify-between rounded-xl border border-Grey-60 shadow-[0_0_8px_0_rgba(0,0,0,0.40)]">
-                <div className="flex flex-col gap-5">
-                  <div
-                    className={`${TYPOGRAPHY.Heading124Bold} text-HITUP_Blue`}
-                  >
-                    20% 할인
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className={`${TYPOGRAPHY.Heading318Medium}`}>
-                      PLATINUM 등급 전상품 20% 할인 쿠폰
-                    </div>
-                    <div className={`${TYPOGRAPHY.Body14Semi} text-Grey-70`}>
-                      2025. 11. 20일까지 사용가능
-                    </div>
-                    <div
-                      className={`${TYPOGRAPHY.Subheading16Regular} text-Grey-70`}
-                    >
-                      최대 할인 가능 금액 : 20,000원
-                    </div>
-                  </div>
-                </div>
-                <div className=" flex items-center justify-center gap-5">
-                  <img src={lineDashed} />
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
-                        fill="#007CEE"
-                      />
-                    </svg>
-                    <div
-                      className={`${TYPOGRAPHY.Heading318Bold} text-HITUP_Blue`}
-                    >
-                      쿠폰 받기
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li className="py-4 px-5 flex  justify-between rounded-xl border border-Grey-60 shadow-[0_0_8px_0_rgba(0,0,0,0.40)]">
-                <div className="flex flex-col gap-5">
-                  <div
-                    className={`${TYPOGRAPHY.Heading124Bold} text-HITUP_Blue`}
-                  >
-                    20% 할인
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className={`${TYPOGRAPHY.Heading318Medium}`}>
-                      PLATINUM 등급 전상품 20% 할인 쿠폰
-                    </div>
-                    <div className={`${TYPOGRAPHY.Body14Semi} text-Grey-70`}>
-                      2025. 11. 20일까지 사용가능
-                    </div>
-                    <div
-                      className={`${TYPOGRAPHY.Subheading16Regular} text-Grey-70`}
-                    >
-                      최대 할인 가능 금액 : 20,000원
-                    </div>
-                  </div>
-                </div>
-                <div className=" flex items-center justify-center gap-5">
-                  <img src={lineDashed} />
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
-                        fill="#007CEE"
-                      />
-                    </svg>
-                    <div
-                      className={`${TYPOGRAPHY.Heading318Bold} text-HITUP_Blue`}
-                    >
-                      쿠폰 받기
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <div className="py-4">
-              <Button className={`${TYPOGRAPHY.Heading318Bold}`} variant="blue">
-                쿠폰 한번에 받기
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}

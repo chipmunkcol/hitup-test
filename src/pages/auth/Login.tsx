@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import PurchaseItemCard from '@/components/common/widgets/PurchaseItemCard';
 import { loginUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';
 import { Input } from 'antd';
@@ -29,6 +30,7 @@ const Login = () => {
 
   return (
     <div className="max-w-xl mx-auto">
+      {/* <PurchaseItemCard /> */}
       <form onSubmit={handleLogin} className="flex flex-col gap-6 p-6">
         <div>
           <label>전화번호</label>

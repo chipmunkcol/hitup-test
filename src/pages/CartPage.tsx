@@ -11,6 +11,9 @@ import {
   getCart,
 } from '../utils/api/api';
 import Loading from './utils/Loading';
+import { TYPOGRAPHY } from '@/styles/typography';
+import OptionPlusMinusBtn from '@/components/common/OptionPlusMinusBtn';
+import SelectBox from '@/components/common/SelectBox';
 
 const CartPage = () => {
   const {
@@ -111,32 +114,25 @@ const CartPage = () => {
   if (isError) return <div>Error...</div>;
 
   return (
-    <div className="w-full py-10">
-      <div className="max-w-2xl mx-auto flex flex-col gap-5">
-        <div className="font-bold text-xl">장바구니</div>
-        <div className="flex justify-between">
-          <div className="flex gap-2 items-center">
+    <div className="max-w-7xl mask-auto">
+      <div className="">
+        <div className={`${TYPOGRAPHY.Heading28Bold} p-5`}>장바구니</div>
+        <div className="px-5 py-3 flex justify-between">
+          <div className="flex gap-4 items-center">
             <input
+              className="w-[18px]"
               type="checkbox"
               checked={allChecked}
               onChange={(e) => toggleAll(e.target.checked)}
             />
-            <div>전체 선택</div>
+            <div className={`${TYPOGRAPHY.Heading124Bold}`}>전체 선택</div>
           </div>
           <div className="w-auto">
-            <Button
-              props={{
-                disabled: couponBtnText === '쿠폰 받기 완료' ? true : false,
-              }}
-              onClick={getCoupon}
-              variant="grey"
-            >
-              {couponBtnText}
-            </Button>
+            <div className={`${TYPOGRAPHY.Heading318Bold}`}>선택 삭제</div>
           </div>
         </div>
         {/* 장바구니 상품 */}
-        <div className="flex flex-col gap-5">
+        <div className="">
           {/* 브랜드별 */}
           {brandNames.length === 0 && (
             <div className="py-6 text-center text-xl">
@@ -145,42 +141,42 @@ const CartPage = () => {
           )}
 
           {brandNames.map((brand, index) => (
-            <div className="bg-Grey-20 p-4" key={index}>
-              <div className="flex justify-between items-center">
-                <div className="flex gap-2">
+            <div className="" key={index}>
+              <div className="px-5 py-3 bg-Grey-10 flex justify-between items-center">
+                <div className={`${TYPOGRAPHY.Heading222Bold}`}>{brand}</div>
+                <div>
+                  <Button variant="blue" onClick={alertComingSoon}>
+                    쿠폰 받기
+                  </Button>
+                </div>
+
+                {/*
                   <input
                     type="checkbox"
                     checked={brandChecked(brand)}
                     onChange={(e) => toggleBrand(brand, e.target.checked)}
-                  />
-                  <div>브랜드: {brand}</div>
-                </div>
-                <div>
-                  <Button variant="grey" onClick={alertComingSoon}>
-                    브랜드 쿠폰 받기
-                  </Button>
-                </div>
+                  /> */}
               </div>
               {/* 상품 목록 */}
-              <ul className="flex flex-col gap-2">
+              <ul className="">
                 {brandItems[index]?.map((item) => {
                   return (
-                    <li
-                      className="flex justify-between bg-white py-4 px-2 rounded-md"
-                      key={item.id}
-                    >
-                      <div className="flex gap-2  ">
-                        <input
-                          type="checkbox"
-                          checked={item.checked}
-                          onChange={(e) =>
-                            toggleItem(item.id, e.target.checked)
-                          }
-                        />
-                        <div className="flex gap-2 ">
+                    <li className="py-3 px-5" key={item.id}>
+                      {/* <div className=" flex gap-4"></div> */}
+                      <div className="border border-Grey-60 rounded-[20px] px-4 py-5 flex gap-4  ">
+                        <div>
+                          <input
+                            type="checkbox"
+                            checked={item.checked}
+                            onChange={(e) =>
+                              toggleItem(item.id, e.target.checked)
+                            }
+                          />
+                        </div>
+                        <div className="">
                           <div
                             onClick={() => navigate(`/product/${item.id}`)}
-                            className="w-[150px] h-[150px]"
+                            className="w-[140px] h-[140px]"
                           >
                             <img
                               src="https://picsum.photos/200"
@@ -188,25 +184,79 @@ const CartPage = () => {
                               className="w-full h-full object-cover"
                             />
                           </div>
+                        </div>
+
+                        {/* 상품 소개 */}
+                        <div className="flex-1 flex flex-col gap-5">
                           <div className="flex flex-col gap-2">
-                            <div>{item.상품명}</div>
-                            <div>옵션: 옵션1</div>
-                            <div className="flex gap-2">
-                              {item.할인율 > 0 && (
-                                <div className="text-HITUP_Red">
-                                  {item.할인율}%
-                                </div>
-                              )}
-                              {item.할인율 > 0 && (
-                                <div className={'line-through text-Grey-40'}>
-                                  {item.가격}원
-                                </div>
-                              )}
-                              <div>
-                                {item.가격 - (item.가격 * item.할인율) / 100}원
+                            <div className="flex gap-5">
+                              <div
+                                className={`flex-1 ${TYPOGRAPHY.Heading318Bold}`}
+                              >
+                                {item.브랜드명}
+                              </div>
+                              <div
+                                onClick={() => handleRemoveCartItem(item.id)}
+                                className="cursor-pointer"
+                              >
+                                X
                               </div>
                             </div>
-                            <div className="w-[300px] border border-Grey-20 px-2 rounded-md flex items-center justify-between">
+                            <div className="flex flex-col gap-1">
+                              <div className={`${TYPOGRAPHY.Subheading16Bold}`}>
+                                {item.상품명}
+                              </div>
+                              <div
+                                className={`${TYPOGRAPHY.Subheading16Medium} text-Grey-70`}
+                              >
+                                옵션: 옵션1
+                              </div>
+                            </div>
+                          </div>
+                          <div className="w-full">
+                            <SelectBox
+                              placeholder="수량 선택"
+                              options={[
+                                { value: '1', label: '1개', price: item.가격 },
+                                {
+                                  value: '2',
+                                  label: '2개',
+                                  price: item.가격 * 2,
+                                },
+                                {
+                                  value: '3',
+                                  label: '3개',
+                                  price: item.가격 * 3,
+                                },
+                              ]}
+                            />
+                          </div>
+                          <div className="flex justify-between">
+                            <div className="w-[100px]">
+                              <OptionPlusMinusBtn quantity={1} />
+                            </div>
+                            <div className="flex gap-5">
+                              <div className="flex gap-2">
+                                <div
+                                  className={`text-HITUP_Red ${TYPOGRAPHY.Heading318Bold}`}
+                                >
+                                  {' '}
+                                  10%
+                                </div>
+                                <div
+                                  className={`line-through text-Grey-60 ${TYPOGRAPHY.Subheading16Medium}`}
+                                >
+                                  89,000 원
+                                </div>
+                              </div>
+                              <div
+                                className={`text-HITUP_Blue ${TYPOGRAPHY.Heading318Bold}`}
+                              >
+                                80,000원
+                              </div>
+                            </div>
+                          </div>
+                          {/* <div className="w-[300px] border border-Grey-20 px-2 rounded-md flex items-center justify-between">
                               <button
                                 onClick={() =>
                                   handleUpdateCartItem.decrease(item)
@@ -225,64 +275,108 @@ const CartPage = () => {
                                 +
                               </button>
                             </div>
-                          </div>
+                            <div className="flex gap-2">
+                              {item.할인율 > 0 && (
+                                <div className="text-HITUP_Red">
+                                  {item.할인율}%
+                                </div>
+                              )}
+                              {item.할인율 > 0 && (
+                                <div className={'line-through text-Grey-40'}>
+                                  {item.가격}원
+                                </div>
+                              )}
+                              <div>
+                                {item.가격 - (item.가격 * item.할인율) / 100}원
+                              </div>
+                            </div> */}
                         </div>
-                      </div>
-                      <div
-                        onClick={() => handleRemoveCartItem(item.id)}
-                        className="cursor-pointer"
-                      >
-                        X
                       </div>
                     </li>
                   );
                 })}
               </ul>
-
-              {/* 브랜드별 총 가격 */}
-              <div className="flex flex-col text-end p-2">
-                <div>
-                  <span>상품 {총선택상품금액[index]}원</span>
-                  <span>+</span>
-                  <span>배송비 {브랜드별배송비[index]}원</span>
-                  <span>=</span>
-                  <span>{총선택상품금액[index] + 브랜드별배송비[index]}원</span>
-                </div>
-                <div>(30,000원 이상 주문 시 무료배송)</div>
-              </div>
             </div>
           ))}
 
           {/* 결제 예상 금액 */}
-          <div className="text-xl font-semibold">결제 예상 금액</div>
-          <div className="flex justify-between">
-            <div>총 선택 상품 금액</div>
-            <div>{총상품금액} 원</div>
+          <div className={`px-5 py-4 bg-Grey-10 ${TYPOGRAPHY.Heading222Bold}`}>
+            결제 예상 금액
           </div>
-          <div className="flex justify-between">
-            <div>총 배송비</div>
-            <div>{총배송비} 원</div>
-          </div>
-          <div className="flex justify-between">
-            <div>총 할인 금액</div>
-            <div>{총할인금액} 원</div>
-          </div>
+          <div className="p-5 flex flex-col gap-5">
+            <div className="flex justify-between">
+              <div className={`${TYPOGRAPHY.Heading222Medium}`}>
+                총 선택 상품 금액
+              </div>
+              <div className={`${TYPOGRAPHY.Heading318Bold}`}>
+                {총상품금액} 원
+              </div>
+            </div>
 
-          {/* 구분선 */}
-          <div className="text-center font-semibold text-lg">
-            쿠폰은 주문/결제할 때 사용 가능해요
-          </div>
-          <hr className="border border-Grey-30" />
+            <div className="flex justify-between">
+              <div className={`${TYPOGRAPHY.Heading222Medium}`}>
+                상품 할인 금액
+              </div>
+              <div className={`text-HITUP_Red ${TYPOGRAPHY.Heading318Bold}`}>
+                -{총할인금액} 원
+              </div>
+            </div>
 
-          <div className="flex justify-between text-2xl">
-            <div>총 결제 금액</div>
-            <div>{총결제금액} 원</div>
+            <div className="flex justify-between">
+              <div className={`${TYPOGRAPHY.Heading222Medium}`}>
+                쿠폰 할인 적용 시
+              </div>
+              <div className={`text-HITUP_Blue ${TYPOGRAPHY.Heading318Bold}`}>
+                {/* -{총할인금액} 원 */}
+                -0 원
+              </div>
+            </div>
+
+            {/* 쿠폰 메시지 */}
+            <div className="flex justify-end">
+              <span
+                className={`text-HITUP_Blue ${TYPOGRAPHY.Heading318Medium}`}
+              >
+                쿠폰은 주문/결제할 때 사용 가능합니다.{' '}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <div className={`${TYPOGRAPHY.Heading222Medium}`}>
+                최종 배송비
+              </div>
+              <div className={`${TYPOGRAPHY.Heading318Bold}`}>
+                {총배송비} 원
+              </div>
+            </div>
+
+            <ul className="flex flex-col gap-5">
+              {brandNames.map((brandName, index) => (
+                <li
+                  className="text-Grey-70 flex justify-between"
+                  key={`cartPage-배송비-brands-${index}`}
+                >
+                  <div>• &nbsp; &nbsp; {brandName}</div>
+                  <div>{브랜드별배송비[index]}원</div>
+                </li>
+              ))}
+            </ul>
+
+            {/* 구분선 */}
+            <hr className="border border-Grey-30" />
+
+            <div className="flex justify-between">
+              <div className={`${TYPOGRAPHY.Heading222Bold}`}>총 결제 금액</div>
+              <div className={`${TYPOGRAPHY.Heading318Bold}`}>
+                {총결제금액} 원
+              </div>
+            </div>
           </div>
         </div>
 
         <div>
-          <Button onClick={handlePurchase} variant="grey">
-            주문하기
+          <Button onClick={handlePurchase} variant="blue">
+            {총결제금액 || 0}원 주문하기
           </Button>
         </div>
       </div>
@@ -291,3 +385,15 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+{
+  /* <Button
+              props={{
+                disabled: couponBtnText === '쿠폰 받기 완료' ? true : false,
+              }}
+              onClick={getCoupon}
+              variant="grey"
+            >
+              {couponBtnText}
+            </Button> */
+}

@@ -5,6 +5,7 @@ import { TYPOGRAPHY } from '@/styles/typography';
 import CancelIcon from '../../../assets/images/icon/CancelIcon';
 import PlusBtn from '../../../assets/images/icon/PlusBtn';
 import MinusBtn from '../../../assets/images/icon/MinusBtn';
+import OptionPlusMinusBtn from '../OptionPlusMinusBtn';
 
 type SelectedOption = {
   name: string;
@@ -126,7 +127,7 @@ const SelectboxOptions = ({
                 </div>
               </div>
               <div className="py-3 px-4 flex justify-between">
-                <div className="border border-Grey-60 bg-Grey-05 rounded-sm flex ">
+                {/* <div className="border border-Grey-60 bg-Grey-05 rounded-sm flex ">
                   <button
                     onClick={() => subtractOptionQuantity(selectedOption)}
                     className="pl-[7px] pr-[5px]"
@@ -144,7 +145,12 @@ const SelectboxOptions = ({
                   >
                     <PlusBtn />
                   </button>
-                </div>
+                </div> */}
+                <OptionPlusMinusBtn
+                  quantity={selectedOption.quantity}
+                  onAdd={() => addOptionQuantity(selectedOption)}
+                  onSubtract={() => subtractOptionQuantity(selectedOption)}
+                />
                 <div className={`${TYPOGRAPHY.Heading318Semi}`}>
                   {selectedOption.price * selectedOption.quantity}원
                 </div>
