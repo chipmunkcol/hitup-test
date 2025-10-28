@@ -1,8 +1,13 @@
+import {
+  swalAlert,
+  swalConfirm,
+} from '@/components/common/libs/sweetalert/sweetalert';
 import { useAuthStore } from '@/store/useAuthStore';
 import { checkDuplicateNickname, registerUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Input, Select } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface RegisterForm {
   phoneNumber: string;
@@ -14,6 +19,7 @@ export interface RegisterForm {
 }
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const {
     isCheckDuplicatedNickname,
     isDuplicatedNickname,
@@ -101,8 +107,12 @@ const RegisterPage = () => {
 
   const { mutate: registerMutate } = useMutation({
     mutationFn: registerUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log('회원가입 성공:', data);
+      const res = await swalAlert('회원가입 성공', '로그인 하러가기');
+      if (res.isConfirmed) {
+        navigate('/login');
+      }
     },
     onError: (error) => {
       console.error('회원가입 실패:', error);

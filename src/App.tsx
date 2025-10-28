@@ -29,6 +29,7 @@ import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import ReviewManagePage from './pages/review/ReviewManagePage';
 import { useAuthStore } from './store/useAuthStore';
+import AddProduct from './pages/partner/AddProduct';
 
 function App() {
   const { user, fetchUser } = useAuthStore();
@@ -96,6 +97,9 @@ function App() {
           <Route path="/purchase/:id" element={<PurchaseDetail />} />
 
           <Route path="*" element={<div>없는 페이지</div>} />
+
+          {/* 브랜드 파트너 페이지 */}
+          <Route path="partner" element={<AddProduct />} />
         </Routes>
       </Layout>
     </BrowserRouter>

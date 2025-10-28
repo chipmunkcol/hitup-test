@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="max-w-[1280px] mx-auto flex flex-col">
       <Header />
       {/* <main className="flex-1 relative">{children}</main> */}
-      <main className="relative min-h-screen">{children}</main>
+      <main className="relative min-h-[calc(100vh-80px)]">{children}</main>
       <Footer />
     </div>
   );

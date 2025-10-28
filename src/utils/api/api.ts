@@ -208,7 +208,7 @@ export const registerUser = async (
       },
     })
     .then((res) => {
-      if (res.data.code === 200) {
+      if (res.data.code === '200') {
         return JSON.parse(res.data.data);
       } else {
         throw new Error(res.data.message);

@@ -19,9 +19,14 @@ export const swalConfirm = async (
   });
 };
 
-export const swalAlert = async (title: string, confirmButtonText?: string) => {
+export const swalAlert = async (
+  title: string,
+  text?: string,
+  confirmButtonText?: string
+) => {
   return await Swal.fire({
     title: title,
+    text: text,
     confirmButtonText: confirmButtonText || '확인',
   });
 };
