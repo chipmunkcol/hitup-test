@@ -106,7 +106,6 @@ const ProductDetail = () => {
 
   return (
     <div className="w-full">
-      <Input placeholder="hello worlds" />
       <div className="flex flex-col md:flex-row gap-5">
         <div className="flex-4">
           {/* <div className="max-w-[736px] px-5"> */}

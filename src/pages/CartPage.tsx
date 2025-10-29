@@ -116,8 +116,10 @@ const CartPage = () => {
   return (
     <div className="max-w-7xl mask-auto">
       <div className="">
-        <div className={`${TYPOGRAPHY.Heading28Bold} p-5`}>장바구니</div>
-        <div className="px-5 py-3 flex justify-between">
+        <div className={`bg-Blue-05 ${TYPOGRAPHY.Heading28Bold} p-5`}>
+          장바구니
+        </div>
+        <div className="bg-Blue-05 px-5 py-3 flex justify-between">
           <div className="flex gap-4 items-center">
             <input
               className="w-[18px]"
@@ -352,13 +354,24 @@ const CartPage = () => {
 
             <ul className="flex flex-col gap-5">
               {brandNames.map((brandName, index) => (
-                <li
-                  className="text-Grey-70 flex justify-between"
-                  key={`cartPage-배송비-brands-${index}`}
-                >
-                  <div>• &nbsp; &nbsp; {brandName}</div>
-                  <div>{브랜드별배송비[index]}원</div>
-                </li>
+                <>
+                  <li
+                    className="text-Grey-70 flex justify-between"
+                    key={`cartPage-배송비-brands-${index}`}
+                  >
+                    {/* <div>• &nbsp; &nbsp; {brandName}</div> */}
+                    <div>• &nbsp; &nbsp; 아부가르시아</div>
+                    <div>{브랜드별배송비[index]}원</div>
+                  </li>
+                  <li
+                    className="text-Grey-70 flex justify-between"
+                    key={`cartPage-배송비-brands-${index}`}
+                  >
+                    {/* <div>• &nbsp; &nbsp; {brandName}</div> */}
+                    <div>• &nbsp; &nbsp; 시마노</div>
+                    <div>{브랜드별배송비[index]}원</div>
+                  </li>
+                </>
               ))}
             </ul>
 
@@ -374,7 +387,7 @@ const CartPage = () => {
           </div>
         </div>
 
-        <div>
+        <div className="py-4 px-5">
           <Button onClick={handlePurchase} variant="blue">
             {총결제금액 || 0}원 주문하기
           </Button>

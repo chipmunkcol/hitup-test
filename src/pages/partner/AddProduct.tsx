@@ -1,13 +1,91 @@
 import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { CATEGORY, getKoCategory } from '@/data/const/const';
-import { Input } from 'antd';
-import { useRef, useState } from 'react';
+import {
+  Button,
+  Input,
+  Select,
+  Table,
+  type TableColumnsType,
+  type TableProps,
+} from 'antd';
+import Column from 'antd/es/table/Column';
+import ColumnGroup from 'antd/es/table/ColumnGroup';
+import { useEffect, useRef, useState } from 'react';
 
 type Category = {
   category: keyof typeof CATEGORY | '';
   subCategory: string;
   type: string;
   fish: string[];
+};
+
+interface AddProductProps {
+  cartegory: Category;
+  productName: string;
+  price: {
+    original: number;
+    instantDiscount: {
+      isApplied: boolean;
+      type: 'percent' | 'fixed';
+      value: number;
+    };
+    taxType: '과세';
+  };
+  stock: number;
+  option: {
+    isEnabled: boolean;
+    optionType: '단독형' | '조합형';
+    optionNameCount: number;
+    sortOrder: number;
+    options: {
+      key: React.Key;
+      id: string;
+      name: string;
+      value: string;
+      price: number;
+      stock: number;
+    }[];
+  };
+  customOption: {
+    isEnabled: boolean;
+    optionNameCount: number;
+    options: {
+      name: string;
+      value: string;
+    }[];
+  };
+}
+
+const initialProductForm: AddProductProps = {
+  cartegory: {
+    category: '',
+    subCategory: '',
+    type: '',
+    fish: [],
+  },
+  productName: '',
+  price: {
+    original: 0,
+    instantDiscount: {
+      isApplied: false,
+      type: 'percent',
+      value: 0,
+    },
+    taxType: '과세',
+  },
+  stock: 0,
+  option: {
+    isEnabled: false,
+    optionType: '단독형',
+    optionNameCount: 1,
+    sortOrder: 1,
+    options: [],
+  },
+  customOption: {
+    isEnabled: false,
+    optionNameCount: 1,
+    options: [],
+  },
 };
 
 const AddProduct = () => {
@@ -18,6 +96,13 @@ const AddProduct = () => {
     fish: [],
   });
   console.log('category: ', category.fish);
+
+  const fishList =
+    category.category && category.subCategory && category.type
+      ? CATEGORY[category.category][category.subCategory]?.filter(
+          (v) => v.value === category.type
+        )[0]?.fish
+      : [];
 
   const onClickCategory = (name: string, value: string) => {
     setCategory((prev) => ({ ...prev, [name]: value }));
@@ -33,35 +118,254 @@ const AddProduct = () => {
       newCategory.fish = [...newCategory.fish, fish];
       setCategory(newCategory);
     }
-
-    // setCategory((prev) => {
-    //   if (prev.fish.includes(fish)) {
-    //     return {
-    //       ...prev,
-    //       fish: prev.fish.filter((f) => f !== fish),
-    //     };
-    //   } else {
-    //     return {
-    //       ...prev,
-    //       fish: [...prev.fish, fish],
-    //     };
-    //   }
-    // });
   };
-
-  const fishList =
-    category.category && category.subCategory && category.type
-      ? CATEGORY[category.category][category.subCategory]?.filter(
-          (v) => v.value === category.type
-        )[0]?.fish
-      : [];
 
   // console.log('fishList: ', fishList);
 
   // form
-  // const [form, setForm] = useState({
+  const [form, setForm] = useState(initialProductForm);
+  console.log('form: ', form.option.optionNameCount);
 
-  // })
+  const onChangeInput = (name: string, value: string) => {
+    // const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const changeOptionType = (type: '단독형' | '조합형') => {
+    setForm((prev) => ({
+      ...prev,
+      option: {
+        ...prev.option,
+        optionType: type,
+      },
+    }));
+  };
+
+  const changeOptionNameCount = (count: number) => {
+    setForm((prev) => ({
+      ...prev,
+      option: {
+        ...prev.option,
+        optionNameCount: count,
+      },
+    }));
+  };
+
+  const isOptionEnabled = (isEnabled: boolean) => {
+    setForm((prev) => ({
+      ...prev,
+      option: {
+        ...prev.option,
+        isEnabled: isEnabled,
+      },
+    }));
+  };
+
+  const isCustomOptionEnabled = (isEnabled: boolean) => {
+    setForm((prev) => ({
+      ...prev,
+      customOption: {
+        ...prev.customOption,
+        isEnabled: isEnabled,
+      },
+    }));
+  };
+
+  const initialOptionInput = {
+    key: '',
+    id: '',
+    name: '',
+    value: '',
+    price: 0,
+    stock: 0,
+  };
+
+  type OptionInputType = typeof initialOptionInput;
+
+  const [optionInput, setOptionInput] = useState<OptionInputType[]>([]);
+  const [customOptionInput, setCustomOptionInput] = useState([]);
+
+  useEffect(() => {
+    const count = form?.option?.optionNameCount || 1;
+
+    // 초기화 하지말고 이전에 작성했던 input 내용은 유지하도록 수정 필요
+    setOptionInput((prev) => {
+      const newInputs = [...prev];
+
+      if (count > prev.length) {
+        for (let i = prev.length; i < count; i++) {
+          newInputs.push({ ...initialOptionInput });
+        }
+      }
+
+      if (count < prev.length) {
+        newInputs.splice(count);
+      }
+      return newInputs;
+    });
+  }, [form?.option?.optionNameCount]);
+
+  useEffect(() => {
+    const count = form?.customOption?.optionNameCount || 1;
+    setOptionInput(
+      Array.from({ length: count }, () => ({ ...initialOptionInput }))
+    );
+  }, [form?.customOption?.optionNameCount]);
+  console.log('form.option.optionNameCount: ', form.option.optionNameCount);
+  console.log('optionInput: ', optionInput);
+
+  const onChangeOptionInput = (index: number, name: string, value: string) => {
+    // setOptionInput((prev) => ({ ...prev, [name]: value }));
+    setOptionInput((prev) =>
+      prev.map((opt, i) => (i === index ? { ...opt, [name]: value } : opt))
+    );
+  };
+
+  const onClickAddOption = () => {
+    let newOptions: any[] = [];
+    optionInput.forEach((opt, i) => {
+      const options = opt.value.split(',').map((val, j) => {
+        return {
+          key: `option-key-${i}-${j}`,
+          id: `option-key-${i}-${j}`,
+          name: opt.name,
+          value: val.trim(),
+          price: opt.price,
+          stock: opt.stock,
+        };
+      });
+      newOptions = [...newOptions, ...options];
+    });
+
+    // 반복문 안에서 옵션값으로 반복문을 돌려야할듯
+
+    setForm((prev) => ({
+      ...prev,
+      option: {
+        ...prev.option,
+        options: [...prev.option.options, ...newOptions],
+      },
+    }));
+  };
+
+  const onClickAddCombiOption = () => {
+    let newOptions: any[] = [];
+    optionInput.forEach((opt, i) => {
+      const options = opt.value.split(',').map((val, j) => {
+        return {
+          key: `option-key-${i}-${j}`,
+          id: `option-key-${i}-${j}`,
+          [opt.name]: opt.value,
+          [val.trim()]: val.trim(),
+          price: opt.price,
+          stock: opt.stock,
+        };
+      });
+      newOptions = [...newOptions, ...options];
+    });
+
+    // 반복문 안에서 옵션값으로 반복문을 돌려야할듯
+
+    setForm((prev) => ({
+      ...prev,
+      option: {
+        ...prev.option,
+        options: [...prev.option.options, ...newOptions],
+      },
+    }));
+  };
+
+  interface OptionType {
+    key?: React.Key;
+    id: string;
+    name: string;
+    value: string;
+    price: number;
+    stock: number;
+  }
+
+  const optionsTableColumns: TableColumnsType<OptionType> = [
+    {
+      title: '옵션명',
+      dataIndex: 'name',
+      render: (value: string) => <div>{value}</div>,
+    },
+    {
+      title: '옵션값',
+      dataIndex: 'value',
+    },
+    {
+      title: '삭제',
+      dataIndex: 'id',
+      render: (id: string) => (
+        <div>
+          <Button onClick={() => onClickDeleteOption(id)}>X</Button>
+        </div>
+      ),
+    },
+  ];
+
+  // interface OptionCombiType {
+  //   key?: React.Key;
+  //   id: string;
+  //   color: string;
+  //   size: string;
+  //   price: number;
+  //   stock: number;
+  //   status: string; // 판매중 || 품절
+  // }
+
+  // const tempData: OptionCombiType[] = [
+  const tempData = [
+    {
+      key: '1',
+      id: 'option-combi-1',
+      color: '빨강',
+      size: 'M',
+      price: 1000,
+      stock: 10,
+      status: '판매중',
+    },
+    {
+      key: '2',
+      id: 'option-combi-2',
+      color: '파랑',
+      size: 'L',
+      price: 2000,
+      stock: 5,
+      status: '품절',
+    },
+  ];
+
+  const rowSelection: TableProps<OptionType>['rowSelection'] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: OptionType[]) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        'selectedRows: ',
+        selectedRows
+      );
+    },
+
+    // disable 처리 부분 따로 구분해서 정리하자
+    // getCheckboxProps: (record: OptionType) => ({
+    //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    //   name: record.name,
+    // }),
+  };
+
+  const onClickDeleteOption = (id: string) => {
+    setForm((prev) => {
+      const newOptions = [...prev.option.options];
+      const filteredOptions = newOptions.filter((opt) => opt.id !== id);
+      return {
+        ...prev,
+        option: {
+          ...prev.option,
+          options: filteredOptions,
+        },
+      };
+    });
+  };
 
   return (
     <div className="h-full w-full ">
@@ -206,15 +510,247 @@ const AddProduct = () => {
 
           {/* 옵션 */}
           <div className="p-4 ">
-            <div className="border border-Grey-30 rounded-md p-4">
+            <div className="border border-Grey-30 rounded-md p-4 flex flex-col gap-5">
               <div>옵션</div>
-              <div>선택형 설정안함</div>
-              <div>직접입력형 설정안함</div>
+              <div className="flex gap-5">
+                <div>선택형</div>
+                <div className="flex gap-2">
+                  <Button
+                    type={form.option.isEnabled ? 'primary' : 'default'}
+                    onClick={() => isOptionEnabled(true)}
+                  >
+                    설정함
+                  </Button>
+                  <Button
+                    type={form.option.isEnabled ? 'default' : 'primary'}
+                    onClick={() => isOptionEnabled(false)}
+                  >
+                    설정안함
+                  </Button>
+                </div>
+              </div>
+
+              {/* 옵션 설정함 상태인 경우 */}
+              {/* 옵션 설정함 상태인 경우 */}
+              {form.option.isEnabled && (
+                <>
+                  <div className="flex gap-5">
+                    <div>옵션 입력방식</div>
+                    <div className="flex gap-2">
+                      <input type="radio" checked />
+                      <div>직접 입력하기</div>
+                    </div>
+                  </div>
+
+                  {/* 옵션 구성타입 */}
+                  <div className="flex gap-5">
+                    <div>옵션 구성타입</div>
+                    <div className="flex gap-2">
+                      <input
+                        type="radio"
+                        checked={form.option.optionType === '단독형'}
+                        onChange={() => changeOptionType('단독형')}
+                        id="option-type-single"
+                      />
+                      <label htmlFor="option-type-single">단독형</label>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="radio"
+                        checked={form.option.optionType === '조합형'}
+                        onChange={() => changeOptionType('조합형')}
+                        id="option-type-combination"
+                      />
+                      <label htmlFor="option-type-combination">조합형</label>
+                    </div>
+                  </div>
+
+                  {/* 옵션명 개수 */}
+                  <div className="flex gap-5">
+                    <div>옵션명 개수</div>
+                    <Select
+                      onChange={changeOptionNameCount}
+                      style={{ width: 100 }}
+                      defaultValue={1}
+                      options={[
+                        { label: '1개', value: 1 },
+                        { label: '2개', value: 2 },
+                        { label: '3개', value: 3 },
+                      ]}
+                    />
+                  </div>
+
+                  {/* 정렬 순서 */}
+                  <div className="flex gap-5">
+                    <div>정렬 순서</div>
+                    <Select
+                      style={{ width: 100 }}
+                      defaultValue={{ label: '등록순', value: '등록순' }}
+                      options={[
+                        { label: '등록순', value: '등록순' },
+                        { label: '가나다순', value: '가나다순' },
+                      ]}
+                    />
+                  </div>
+
+                  {/* 옵션 입력 */}
+                  <div className="flex gap-5">
+                    <div>옵션입력</div>
+                    <div className="flex flex-col gap-2">
+                      {form.option.optionNameCount &&
+                        // [1, 2].map((_, index) => (
+                        Array.from(
+                          { length: form.option.optionNameCount },
+                          (_, i) => i
+                        ).map((_, index) => (
+                          <>
+                            <div
+                              key={`상품등록-optionName-${index}`}
+                              className="flex gap-5"
+                            >
+                              <div className="flex gap-3">
+                                <div>옵션명</div>
+                                <Input
+                                  onChange={(e) =>
+                                    onChangeOptionInput(
+                                      index,
+                                      'name',
+                                      e.target.value
+                                    )
+                                  }
+                                  style={{ flex: 1 }}
+                                  placeholder="예) 사이즈"
+                                />
+                              </div>
+                              <div className="flex gap-3">
+                                <div>옵션값</div>
+                                <Input
+                                  onChange={(e) =>
+                                    onChangeOptionInput(
+                                      index,
+                                      'value',
+                                      e.target.value
+                                    )
+                                  }
+                                  style={{ flex: 1 }}
+                                  placeholder="예) M, L, XL, XL"
+                                />
+                              </div>
+
+                              {/* <Button onClick={() => onClickAddOption()}>
+                                +
+                              </Button> */}
+                            </div>
+                          </>
+                        ))}
+                      <div>
+                        <Button
+                          style={{ width: 200 }}
+                          onClick={() => onClickAddOption()}
+                        >
+                          옵션목록으로 적용
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 옵션목록 */}
+                  <div>옵션목록 (총 1개)</div>
+
+                  <Button style={{ width: 200 }}>선택삭제</Button>
+
+                  {/* 옵션 테이블 */}
+                  {form.option.optionType === '단독형' && (
+                    <Table
+                      rowSelection={{ type: 'checkbox', ...rowSelection }}
+                      columns={optionsTableColumns}
+                      dataSource={form.option.options}
+                      pagination={false}
+                    />
+                  )}
+
+                  {form.option.optionType === '조합형' && (
+                    <Table
+                      dataSource={tempData}
+                      rowSelection={{ type: 'checkbox', ...rowSelection }}
+                      bordered
+                      pagination={false}
+                    >
+                      <ColumnGroup title="옵션명">
+                        <Column
+                          title="색상"
+                          dataIndex="color"
+                          key={'firstOption'}
+                        />
+                        <Column
+                          title="사이즈"
+                          dataIndex="size"
+                          key={'secondOption'}
+                        />
+                      </ColumnGroup>
+                      <Column title="옵션가격" dataIndex="price" key="price" />
+                      <Column title="재고수량" dataIndex="stock" key="stock" />
+                      <Column
+                        title="판매상태"
+                        dataIndex="status"
+                        key="status"
+                      />
+                    </Table>
+                  )}
+                </>
+              )}
+              {/* option 상태에 따라 렌더링 */}
+
+              {/* 직접입력형 */}
+              <div className="flex gap-5">
+                <div>직접입력형</div>
+                <div className="flex gap-2">
+                  <Button
+                    type={form.customOption.isEnabled ? 'primary' : 'default'}
+                    onClick={() => isCustomOptionEnabled(true)}
+                  >
+                    설정함
+                  </Button>
+                  <Button
+                    type={!form.customOption.isEnabled ? 'primary' : 'default'}
+                    onClick={() => isCustomOptionEnabled(false)}
+                  >
+                    설정안함
+                  </Button>
+                </div>
+              </div>
+
+              {form.customOption.isEnabled && (
+                <>
+                  {/* 옵션명 개수  */}
+                  <div className="flex gap-5">
+                    <div>옵션명 개수</div>
+                    <div className="flex gap-2">
+                      <Select
+                        style={{ width: 100 }}
+                        defaultValue={{ label: '1개', value: 1 }}
+                        options={[
+                          { label: '1개', value: 1 },
+                          { label: '2개', value: 2 },
+                        ]}
+                      />
+                    </div>
+                  </div>
+
+                  {/* 옵션목록(총 1개) */}
+                  <div className="flex gap-5">
+                    <div>옵션목록 (총 1개)</div>
+                    <div className="flex-1 flex flex-col gap-2">
+                      <div>옵션명</div>
+                      <div className="">
+                        <Input placeholder="예) 컬러" />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
-
-          {/* 옵션 설정함 상태인 경우 */}
-          {/* 옵션 설정함 상태인 경우 */}
 
           <div className="p-4 ">
             <div className="border border-Grey-30 rounded-md p-4">
