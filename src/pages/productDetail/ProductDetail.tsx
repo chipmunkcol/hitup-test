@@ -1,5 +1,4 @@
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
 import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import DropdownInfo from '@/components/common/widgets/DropdownInfo';

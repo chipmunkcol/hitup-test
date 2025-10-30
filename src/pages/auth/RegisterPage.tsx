@@ -1,7 +1,4 @@
-import {
-  swalAlert,
-  swalConfirm,
-} from '@/components/common/libs/sweetalert/sweetalert';
+import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useAuthStore } from '@/store/useAuthStore';
 import { checkDuplicateNickname, registerUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';

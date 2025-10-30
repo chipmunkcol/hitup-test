@@ -111,6 +111,7 @@ const Option = () => {
 
   const rowSelection: TableProps<OptionType>['rowSelection'] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: OptionType[]) => {
+      console.log('selectedRowKeys: ', selectedRowKeys);
       const selectedIds = selectedRows.map((row) => row.id);
       setSelectedOptionsId(selectedIds);
     },
@@ -519,16 +520,16 @@ const Option = () => {
               onChange={onChangeTable}
             >
               <ColumnGroup title="옵션명">
-                {option.options.length > 0 &&
-                  optionInput.length > 0 &&
-                  optionInput.map((opt) => (
-                    <Column
-                      title={opt.name}
-                      dataIndex={opt.name}
-                      key={`option-${opt.name}`}
-                      sorter={(a, b) => a[opt.name].localeCompare(b[opt.name])}
-                    />
-                  ))}
+                {optionInput.map((opt) => (
+                  <Column
+                    title={opt.name}
+                    dataIndex={opt.name}
+                    key={`option-${opt.name}`}
+                    sorter={(a: any, b: any) =>
+                      String(a[opt.name]).localeCompare(String(b[opt.name]))
+                    }
+                  />
+                ))}
                 {/* <Column
                           title="색상"
                           dataIndex="color"

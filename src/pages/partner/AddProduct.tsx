@@ -3,7 +3,7 @@ import Category from '@/components/partner/addProduct/Category';
 import Option from '@/components/partner/addProduct/Option';
 import OptionCustom from '@/components/partner/addProduct/OptionCustom';
 import Product from '@/components/partner/addProduct/Product';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const AddProduct = () => {
   return (

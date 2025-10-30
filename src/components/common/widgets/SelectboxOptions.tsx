@@ -1,10 +1,8 @@
+import { TYPOGRAPHY } from '@/styles/typography';
 import { useState } from 'react';
 import ArrowToBottom from '../../../assets/images/icon/ArrowToBottom';
 import ArrowToTop from '../../../assets/images/icon/ArrowToTop';
-import { TYPOGRAPHY } from '@/styles/typography';
 import CancelIcon from '../../../assets/images/icon/CancelIcon';
-import PlusBtn from '../../../assets/images/icon/PlusBtn';
-import MinusBtn from '../../../assets/images/icon/MinusBtn';
 import OptionPlusMinusBtn from '../OptionPlusMinusBtn';
 
 type SelectedOption = {

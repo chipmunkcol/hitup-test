@@ -1,16 +1,13 @@
 import PortalLayout from '@/components/common/layout/PortalLayout';
-import type { Coupon } from '@/data/couponData';
-import { TYPOGRAPHY } from '@/styles/typography';
+import AddressInfoPortal from '@/components/common/modals/AddressInfo';
+import SelectCouponPortal from '@/components/common/modals/SelectCoupon';
 import { useQuery } from '@tanstack/react-query';
 import { Button, Radio } from 'antd';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { useDeliveryStore } from '../../store/useDeliveryStore';
 import { getAddresses, getCart, getCoupons } from '../../utils/api/api';
-import SelectCouponPortal from '@/components/common/modals/SelectCoupon';
-import AddressInfoPortal from '@/components/common/modals/AddressInfo';
 
 const PurchasePage = () => {
   const {

@@ -18,9 +18,13 @@ const Category = () => {
 
   const fishList =
     category.category && category.subCategory && category.type
-      ? CATEGORY[category.category][category.subCategory]?.filter(
-          (v) => v.value === category.type
-        )[0]?.fish
+      ? (((
+          CATEGORY[category.category] as Record<
+            string,
+            { value: string; label: string; fish: string[] }[]
+          >
+        )[category.subCategory]?.filter((v) => v.value === category.type) ??
+          [])[0]?.fish ?? [])
       : [];
 
   const onClickCategory = (name: string, value: string) => {
@@ -78,17 +82,20 @@ const Category = () => {
             <ul>
               {category.category &&
                 category.subCategory &&
-                CATEGORY[category.category][category.subCategory]?.map(
-                  (type) => (
-                    <li
-                      key={`category-대분류-${type.value}`}
-                      className={`${type.value === category.type ? 'bg-Grey-20' : ''} p-2`}
-                      onClick={() => onClickCategory('type', type.value)}
-                    >
-                      {type.label}
-                    </li>
-                  )
-                )}
+                (
+                  CATEGORY[category.category] as Record<
+                    string,
+                    { value: string; label: string; fish: string[] }[]
+                  >
+                )[category.subCategory]?.map((type) => (
+                  <li
+                    key={`category-대분류-${type.value}`}
+                    className={`${type.value === category.type ? 'bg-Grey-20' : ''} p-2`}
+                    onClick={() => onClickCategory('type', type.value)}
+                  >
+                    {type.label}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

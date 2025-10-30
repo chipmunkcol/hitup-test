@@ -1,5 +1,4 @@
 import Button from '@/components/common/Button';
-import PurchaseItemCard from '@/components/common/widgets/PurchaseItemCard';
 import { loginUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';
 import { Input } from 'antd';

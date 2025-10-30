@@ -1,19 +1,14 @@
+import OptionPlusMinusBtn from '@/components/common/OptionPlusMinusBtn';
+import SelectBox from '@/components/common/SelectBox';
+import { TYPOGRAPHY } from '@/styles/typography';
 import { alertComingSoon } from '@/utils/function';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import useCart from '../hooks/useCart';
-import {
-  addToAvailableCoupon,
-  getAddresses,
-  getAvailableCoupons,
-  getCart,
-} from '../utils/api/api';
+import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
 import Loading from './utils/Loading';
-import { TYPOGRAPHY } from '@/styles/typography';
-import OptionPlusMinusBtn from '@/components/common/OptionPlusMinusBtn';
-import SelectBox from '@/components/common/SelectBox';
 
 const CartPage = () => {
   const {
@@ -33,20 +28,16 @@ const CartPage = () => {
 
   const {
     allChecked,
-    brandChecked,
     brandItems,
     brandNames,
     toggleAll,
-    toggleBrand,
     toggleItem,
     브랜드별배송비,
-    총선택상품금액,
     // 총선택상품금액,
     총결제금액,
     총상품금액,
     총할인금액,
     총배송비,
-    handleUpdateCartItem,
     handleRemoveCartItem,
   } = useCart({ data: CartItems || [] });
 
@@ -85,30 +76,30 @@ const CartPage = () => {
     setIsLoadingRefetch(false);
   };
 
-  const getCoupon = async () => {
-    if (!availableCoupons) return;
+  // const getCoupon = async () => {
+  //   if (!availableCoupons) return;
 
-    if (availableCoupons?.length === 0) {
-      return alert('발급 가능한 쿠폰이 없습니다.');
-    }
-    // availableCoupons 중에서 코드값이 있다고 가정
-    // const couponCode = availableCoupons;
-    const couponCode = 'TEMP20251021';
-    // post 쿠폰 받기 API 호출
-    getCouponMutate(couponCode);
-  };
+  //   if (availableCoupons?.length === 0) {
+  //     return alert('발급 가능한 쿠폰이 없습니다.');
+  //   }
+  //   // availableCoupons 중에서 코드값이 있다고 가정
+  //   // const couponCode = availableCoupons;
+  //   const couponCode = 'TEMP20251021';
+  //   // post 쿠폰 받기 API 호출
+  //   getCouponMutate(couponCode);
+  // };
 
-  const [couponBtnText, setCouponBtnText] = useState('쿠폰 받기');
+  // const [, setCouponBtnText] = useState('쿠폰 받기');
 
-  const queryClient = useQueryClient();
-  const { mutate: getCouponMutate } = useMutation({
-    mutationFn: (code: string) => addToAvailableCoupon(code),
-    onSuccess: () => {
-      alert('쿠폰이 발급되었습니다.');
-      queryClient.invalidateQueries({ queryKey: ['coupons-available'] });
-      setCouponBtnText('쿠폰 받기 완료');
-    },
-  });
+  // const queryClient = useQueryClient();
+  // const { mutate: getCouponMutate } = useMutation({
+  //   mutationFn: (code: string) => addToAvailableCoupon(code),
+  //   onSuccess: () => {
+  //     alert('쿠폰이 발급되었습니다.');
+  //     queryClient.invalidateQueries({ queryKey: ['coupons-available'] });
+  //     setCouponBtnText('쿠폰 받기 완료');
+  //   },
+  // });
 
   if (isLoading || isLoadingAddresses || isLoadingRefetch) return <Loading />;
   if (isError) return <div>Error...</div>;
@@ -353,7 +344,7 @@ const CartPage = () => {
             </div>
 
             <ul className="flex flex-col gap-5">
-              {brandNames.map((brandName, index) => (
+              {brandNames.map((_, index) => (
                 <>
                   <li
                     className="text-Grey-70 flex justify-between"
