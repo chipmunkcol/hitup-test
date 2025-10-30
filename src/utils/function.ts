@@ -42,3 +42,15 @@ export function getSubCategory(
 export function alertComingSoon() {
   alert('Coming soon!');
 }
+
+export function detectLanguage(str: string) {
+  // 한글 정규식: 가-힣
+  const hasKorean = /[가-힣]/.test(str);
+  // 영어 정규식: a-zA-Z
+  const hasEnglish = /[a-zA-Z]/.test(str);
+
+  if (hasKorean && !hasEnglish) return 'ko'; // 한국어
+  if (hasEnglish && !hasKorean) return 'en'; // 영어
+  if (hasKorean && hasEnglish) return 'mixed'; // 혼합
+  return 'other'; // 숫자, 기호 등
+}
