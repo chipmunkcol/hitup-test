@@ -4,6 +4,7 @@ import ProfileIcon from '../../../assets/images/icon/ProfileIcon';
 import HamburgerBtn from '../HamburgerBtn';
 import Logo from '../Logo';
 import SearchField from './SearchField';
+import { Button } from 'antd';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const Header = () => {
         <HamburgerBtn />
         <Logo onClick={goMain} />
       </div>
+      <Button onClick={() => navigate('/partner')}>파트너(new!)</Button>
       <div className="flex gap-[26px]">
         <div className="hidden md:block">
           <SearchField />

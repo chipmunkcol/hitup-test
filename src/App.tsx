@@ -99,7 +99,7 @@ function App() {
           <Route path="*" element={<div>없는 페이지</div>} />
 
           {/* 브랜드 파트너 페이지 */}
-          <Route path="partner" element={<AddProduct />} />
+          <Route path="/partner" element={<AddProduct />} />
         </Routes>
       </Layout>
     </BrowserRouter>
