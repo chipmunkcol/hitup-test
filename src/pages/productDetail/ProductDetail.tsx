@@ -344,7 +344,7 @@ const ProductDetail = () => {
           <DropdownInfo title="판매자 정보" data={판매자정보} /> */}
         </div>
         <div className="relative flex-3">
-          <div className="fixed flex flex-col gap-5 ">
+          <div className="sticky top-5 flex flex-col gap-5 ">
             {/* 999피싱부터 별점까지 */}
             <div className="flex flex-col gap-2">
               <div className="flex gap-4 items-center">
