@@ -1,18 +1,18 @@
 import { TYPOGRAPHY } from '@/styles/typography';
 
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'blue' | 'grey' | 'default';
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}
+
 const Button = ({
   variant = 'default',
   children,
   onClick,
   className,
-  props,
-}: {
-  variant?: 'blue' | 'grey' | 'default';
-  children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-  props?: React.ButtonHTMLAttributes<HTMLButtonElement>;
-}) => {
+}: ButtonProps) => {
   const buttonStyles = {
     blue: 'bg-HITUP_Blue text-white',
     grey: 'bg-Grey-70 text-white',
@@ -23,7 +23,7 @@ const Button = ({
     <button
       onClick={onClick}
       className={`w-full px-5 py-2  rounded-lg ${TYPOGRAPHY.Heading318Semi} ${buttonStyles[variant]} ${className} cursor-pointer`}
-      {...props}
+      // {...props}
     >
       {children}
     </button>

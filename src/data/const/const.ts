@@ -1,3 +1,20 @@
+export type ProductType =
+  | '스포츠용품'
+  | '의류'
+  | '신발' // '구두/신발'
+  | '상품권' // '상품권/쿠폰'
+  | '기타재화';
+
+export const enum_options = {
+  addProduct상품군: [
+    { value: '스포츠용품', label: '스포츠용품' },
+    { value: '의류', label: '의류' },
+    { value: '신발', label: '구두/신발' },
+    { value: '상품권', label: '상품권/쿠폰' },
+    { value: '기타재화', label: '기타 재화' },
+  ],
+};
+
 // category -> sub -> type -> fish (추가예정)
 const 선상물고기 = [
   '갈치',

@@ -3,11 +3,13 @@ import CryptoJS from 'crypto-js';
 
 // ========================================
 // 설정값
-// ========================================ls
+// ========================================
 // accessKey: IV(Initialization Vector) 생성에 사용되는 키
 // seedKey: 실제 AES 암호화/복호화에 사용되는 비밀키 (Base64 인코딩된 32바이트 = 256비트)
-const accessKey = 'kR8vZ2nP9xQ5mL3hF7jK1dS6wE4tY0uI2oA8cB5gH9v=';
-const seedKey = '8MpaHtB0/D54GlNuo8Tk+B1+fObDUPGc071tfny2nVU=';
+// const accessKey = 'cmFuZG9tIGRhdGEgZW5jb2RlZCBpbiBiYXNlNjQgZm9ybWF0';
+// const seedKey = 'dGVzdCBzdHJpbmcgZm9yIGJhc2U2NCBlbmNvZGluZyB0ZXN0';
+const accessKey = import.meta.env.VITE_ACCESS_KEY_PARTNERS;
+const seedKey = import.meta.env.VITE_SEED_KEY_PARTNERS;
 
 // ========================================
 // IV(Initialization Vector) 생성 함수
@@ -84,13 +86,9 @@ export function encryptAes256(
   return res;
 }
 
-export const tempEncryptedController = (text: string, timestamp: string) => {
+export const encryptedPartnerController = (text: string, timestamp: string) => {
   // const timeStamp = String(Date.now());
-  const encryptedText = encryptAes256(
-    timestamp,
-    import.meta.env.VITE_ACCESS_KEY_PARTNERS,
-    text
-  );
+  const encryptedText = encryptAes256(timestamp, accessKey, text);
 
   // useAuthStore.getState().setLastRequestTimestamp(timestamp);
   return encryptedText;
@@ -98,11 +96,7 @@ export const tempEncryptedController = (text: string, timestamp: string) => {
 
 export const encryptedController = (text: string) => {
   const timeStamp = String(Date.now());
-  const encryptedText = encryptAes256(
-    timeStamp,
-    import.meta.env.VITE_ACCESS_KEY,
-    text
-  );
+  const encryptedText = encryptAes256(timeStamp, accessKey, text);
 
   useAuthStore.getState().setLastRequestTimestamp(timeStamp);
   return encryptedText;
@@ -195,7 +189,7 @@ export const encryptedAccessKey = encryptAes256(
 // console.log('encryptedAccessKey: ', encryptedAccessKey);
 
 // 2. 복호화 테스트 (로컬에서 확인용)
-// const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
+const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
 // const decryptedData = decryptAes256(
 //   timestamp,
 //   accessKey,

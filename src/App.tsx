@@ -1,6 +1,5 @@
 import './App.css';
 
-import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/common/layout/Layout';
 import CategoryBig from './components/common/widgets/CategoryBig';
@@ -19,6 +18,7 @@ import NewPage from './pages/NewPage';
 import PartnershipPage from './pages/PartnershipPage';
 import ContactHistory from './pages/productDetail/ContactHistory';
 // import ContactSeller from './pages/productDetail/ContactSeller';
+import AddProduct from './pages/partner/AddProduct';
 import ProductDetail from './pages/productDetail/ProductDetail';
 import PurchaseDetail from './pages/purchase/PurchaseDetail';
 import PurchaseHistory from './pages/purchase/PurchaseHistory';
@@ -28,18 +28,9 @@ import EditReviewPage from './pages/review/EditReviewPage';
 import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import ReviewManagePage from './pages/review/ReviewManagePage';
-import { useAuthStore } from './store/useAuthStore';
-import AddProduct from './pages/partner/AddProduct';
 
 function App() {
-  const { user, fetchUser } = useAuthStore();
-  console.log('user: ', user);
-
-  useEffect(() => {
-    // 로그인 체크
-    // 토큰에 expired 시간 있으면 체크해서 로그아웃
-    fetchUser();
-  }, []);
+  // const { user } = useAuthStore();
 
   return (
     <BrowserRouter>

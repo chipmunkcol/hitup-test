@@ -9,6 +9,7 @@ export const swalConfirm = async (
 ) => {
   return await Swal.fire({
     title: `<div className=${TYPOGRAPHY.Heading124Bold}>${title}</div>`,
+    // title: title,
     html: text,
     showCloseButton: true,
     showCancelButton: true,
@@ -48,5 +49,17 @@ export const swalToast = (icon: IconProps, title: string) => {
   swal.fire({
     icon: icon,
     title: title,
+  });
+};
+
+export const swalLawAlert = async () => {
+  return Swal.fire({
+    // title: '',
+    html: `
+    <div style="padding: 20px">
+      법률에 근거하지 않은 판매자의 임의적인 청약철회 기준 안내 시 <br/> 이용정지 및 관련 법에 의거하여 제재될 수 있습니다.<br/>
+      청약철회(반품/교환/취소) 규정에 대한 <br/> 자세한 내용은 자주묻는질문을 통해 확인 가능합니다.
+    </div>`,
+    confirmButtonText: '확인',
   });
 };

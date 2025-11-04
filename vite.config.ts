@@ -14,7 +14,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://dev-hitup.link:27000/api',
+        // target: 'http://dev-hitup.link:27000/api',
+        target: 'http://dev-hitup.link:29000/api',
         changeOrigin: true,
         secure: false,
       },

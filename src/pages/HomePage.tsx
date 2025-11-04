@@ -9,6 +9,8 @@ import Category from '@/components/common/widgets/Category';
 import img1 from '../assets/images/Banner_carousel_desktop1.png';
 import img2 from '../assets/images/Banner_carousel_desktop2.png';
 import { Carousel } from '../components/common/libs/carousel/Carousel';
+import { useTokenStore } from '@/store/useAuthStore';
+import { useEffect } from 'react';
 
 const slides = [img1, img2];
 
@@ -18,6 +20,19 @@ const HomePage = () => {
   const goProductDetail = (productId: number) => {
     navigate(`/product/${productId}`);
   };
+
+  function checkExpiredToken(expiredTime: string, callback: () => void) {
+    const currentTime = new Date().toISOString();
+    if (expiredTime < currentTime) {
+      callback();
+    }
+  }
+
+  const { token, clearAccessToken } = useTokenStore();
+  useEffect(() => {
+    if (token.accessToken)
+      checkExpiredToken(token.accessTokenExpiredDate, clearAccessToken);
+  }, [token.accessToken]);
 
   return (
     <div className="w-full">

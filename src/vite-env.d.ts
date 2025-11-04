@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_ACCESS_KEY: string;
   readonly VITE_SEED_KEY: string;
   // 다른 환경 변수들에 대한 타입 정의...
+  readonly VITE_ACCESS_KEY_PARTNERS: string;
+  readonly VITE_SEED_KEY_PARTNERS: string;
 }
 
 interface ImportMeta {

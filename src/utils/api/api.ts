@@ -8,10 +8,13 @@ import type { RegisterForm } from '@/pages/auth/RegisterPage';
 import {
   encryptAes256,
   encryptedAccessKey,
+  encryptedController,
   encryptedData,
   timestamp,
 } from '../auth/crypto';
 import dayjs from 'dayjs';
+import { useAuthStore } from '@/store/useAuthStore';
+import { encryptedPartnerController } from '../auth/cryptoPartners';
 
 // axios 기본 설정
 export const fakeApi = axios.create({
@@ -21,6 +24,34 @@ export const fakeApi = axios.create({
 export const apiRequest = axios.create({
   baseURL: 'http://dev-hitup.link:27000',
 });
+
+export const apiRequestPartners = axios.create({
+  baseURL: 'http://dev-hitup.link:29000',
+});
+
+export const apiRequestEncrypted = axios.create({
+  baseURL: 'http://dev-hitup.link:27000',
+});
+
+apiRequestEncrypted.interceptors.request.use(
+  (config) => {
+    const timestamp = useAuthStore.getState().lastRequestTimestamp;
+    const encryptedAccessKey = encryptAes256(
+      timestamp,
+      import.meta.env.VITE_ACCESS_KEY,
+      import.meta.env.VITE_ACCESS_KEY
+    );
+
+    config.headers['Content-Type'] = 'application/json';
+    config.headers['request-time'] = timestamp;
+    config.headers['access-key'] = encryptedAccessKey;
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const getProduct = async (id: number): Promise<Product> => {
   try {
@@ -113,27 +144,6 @@ interface LoginData {
   authenticationCode: string;
 }
 
-export const loginUser = async (loginData: LoginData) => {
-  const encryptedPhoneNumber = encryptAes256(
-    timestamp,
-    import.meta.env.VITE_ACCESS_KEY,
-    loginData.phoneNumber
-  );
-
-  const newData = {
-    ...loginData,
-    phoneNumber: encryptedPhoneNumber,
-  };
-
-  return await apiRequest.post('/api/v1/member/login', newData, {
-    headers: {
-      'Content-Type': 'application/json',
-      'request-time': timestamp,
-      'access-key': encryptedAccessKey,
-    },
-  });
-};
-
 export const checkDuplicateNickname = async (nickName: string) => {
   return await apiRequest
     .post(
@@ -216,6 +226,50 @@ export const registerUser = async (
     });
 };
 
+// 휴대폰 로그인 시 인증코드 생성
+export const createAuthCode = async (phoneNumber: string) => {
+  const encryptedPhoneNumber = encryptedController(phoneNumber);
+
+  return await apiRequestEncrypted
+    .post('/api/v1/authentication/client/register', {
+      phoneNumber: encryptedPhoneNumber,
+    })
+    .then((res) => {
+      if (res.data?.code === '200') {
+        return res.data.message === 'ok' ? true : false;
+      } else {
+        throw new Error(res.data.message);
+      }
+    });
+};
+
+export const loginUser = async (loginData: LoginData) => {
+  const encryptedPhoneNumber = encryptedController(loginData.phoneNumber);
+
+  const newData = {
+    ...loginData,
+    phoneNumber: encryptedPhoneNumber,
+  };
+
+  return await apiRequestEncrypted
+    .post('/api/v1/member/login', newData)
+    .then((res) => {
+      if (res.data?.code === '200') {
+        return JSON.parse(res.data.data);
+      } else {
+        throw new Error(res.data.message);
+      }
+    });
+
+  // return await apiRequest.post('/api/v1/member/login', newData, {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'request-time': timestamp,
+  //     'access-key': encryptedAccessKey,
+  //   },
+  // });
+};
+
 // fakeApi.interceptors.request.use(
 //     (config) => {
 //         const token = localStorage.getItem("token");
@@ -228,6 +282,62 @@ export const registerUser = async (
 //         return Promise.reject(error);
 //     }
 // );
+
+export const 파트너스등록 = async () => {
+  const ts = Date.now().toString();
+  const accesskey = import.meta.env.VITE_ACCESS_KEY_PARTNERS;
+
+  const encryptedAccessKey = encryptedPartnerController(
+    // import.meta.env.VITE_ACCESS_KEY_PARTNERS,
+    accesskey,
+    ts
+  );
+
+  await apiRequestPartners
+    .post(
+      '/api/v1/partners/member/apply',
+      {
+        loginId: encryptedPartnerController('jack957', ts),
+        loginPassword: encryptedPartnerController('1234', ts),
+        brandNameKo: 'string',
+        brandNameEn: 'string',
+        brandHomePage: 'string',
+        companyType: 'CORPORATION',
+        companyNumber: 'string',
+        companyName: encryptedPartnerController('산호', ts),
+        companyOwnerName: encryptedPartnerController('산호산호', ts),
+        companyOwnerPhoneNumber: encryptedPartnerController('01012345678', ts),
+        companyContactName: encryptedPartnerController('홍길동', ts),
+        companyContactPhoneNumber: encryptedPartnerController(
+          '01098765432',
+          ts
+        ),
+        companyContactEmail: encryptedPartnerController(
+          'honggildong@example.com',
+          ts
+        ),
+        applyDetail: 'string',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'request-time': ts,
+          'access-key': encryptedAccessKey,
+        },
+      }
+    )
+    .then((res) => {
+      console.log('res: ', res);
+      // if (res.data.code === '200') {
+      //   return JSON.parse(res.data.data);
+      // } else {
+      //   throw new Error(res.data.message);
+      // }
+    })
+    .catch((error) => {
+      console.error('파트너스 등록 오류:', error);
+    });
+};
 
 export const testingAPI = async () => {
   const res = await fetch(

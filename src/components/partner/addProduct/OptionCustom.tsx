@@ -18,7 +18,7 @@ const OptionCustom = () => {
   const [customOptionInput, setCustomOptionInput] = useState<
     CustomOptionInputType[]
   >([]);
-  console.log('customOptionInput: ', customOptionInput);
+  // console.log('customOptionInput: ', customOptionInput);
 
   useEffect(() => {
     const count = customOption?.OptionLength || 1;
@@ -38,7 +38,7 @@ const OptionCustom = () => {
       return newInputs;
     });
   }, [customOption?.OptionLength]);
-  console.log('form.option.OptionLength: ', customOption);
+  // console.log('form.option.OptionLength: ', customOption);
   // console.log('optionInput: ', optionInput);
 
   const onChangeCustomOptionInput = (index: number, value: string) => {
