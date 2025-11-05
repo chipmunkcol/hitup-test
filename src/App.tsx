@@ -7,6 +7,7 @@ import AddAddressPage from './pages/address/AddAddressPage';
 import AddressPage from './pages/address/AddressPage';
 import EditAddressPage from './pages/address/EditAddressPage';
 import Login from './pages/auth/Login';
+import ParterLogin from './pages/partner/Login';
 import RegisterPage from './pages/auth/RegisterPage';
 import BestPage from './pages/BestPage';
 import CartPage from './pages/CartPage';
@@ -28,6 +29,9 @@ import EditReviewPage from './pages/review/EditReviewPage';
 import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import ReviewManagePage from './pages/review/ReviewManagePage';
+import Register from './pages/partner/Register';
+import FindPassword from './pages/partner/FindPassword';
+import FindId from './pages/partner/FindId';
 
 function App() {
   // const { user } = useAuthStore();
@@ -90,7 +94,16 @@ function App() {
           <Route path="*" element={<div>없는 페이지</div>} />
 
           {/* 브랜드 파트너 페이지 */}
-          <Route path="/partner" element={<AddProduct />} />
+          <Route path="/partner">
+            {/* 하위 라우트 */}
+            <Route index element={<AddProduct />} />
+            <Route path="register" element={<Register />} />
+            <Route path="login" element={<ParterLogin />} />
+
+            {/* 아이디 비밀번호 찾기 */}
+            <Route path="find-id" element={<FindId />} />
+            <Route path="find-password" element={<FindPassword />} />
+          </Route>
         </Routes>
       </Layout>
     </BrowserRouter>

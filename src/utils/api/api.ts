@@ -283,7 +283,92 @@ export const loginUser = async (loginData: LoginData) => {
 //     }
 // );
 
-export const 파트너스등록 = async () => {
+type PartnerFindAccountPayload = {
+  name: string;
+  phoneNumber: string;
+  code: string;
+};
+export const 파트너스계정찾기 = async (payload: PartnerFindAccountPayload) => {
+  const { name, phoneNumber, code } = payload;
+
+  const ts = Date.now().toString();
+  const encryptedAccessKey = encryptedPartnerController(
+    import.meta.env.VITE_ACCESS_KEY_PARTNERS,
+    ts
+  );
+
+  try {
+    const response = await apiRequestPartners.post(
+      '/api/v1/partners/member/find/id',
+      {
+        companyOwnerName: encryptedPartnerController(name, ts),
+        companyOwnerPhoneNumber: encryptedPartnerController(phoneNumber, ts),
+        authenticationCode: code,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'request-time': ts,
+          'access-key': encryptedAccessKey,
+        },
+      }
+    );
+
+    if (response.data.code === '200') {
+      return JSON.parse(response.data.data);
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.log('파트너스 계정찾기 오류:', error);
+    throw error;
+  }
+};
+
+type Temp = {
+  id: string;
+  pw: string;
+};
+// 임시 id: jack957 pw: 1234
+export const 파트너스로그인 = async (payload: Temp) => {
+  const { id, pw } = payload;
+
+  const ts = Date.now().toString();
+  const encryptedAccessKey = encryptedPartnerController(
+    import.meta.env.VITE_ACCESS_KEY_PARTNERS,
+    ts
+  );
+
+  try {
+    const response = await apiRequestPartners.post(
+      '/api/v1/partners/member/login',
+      {
+        loginId: encryptedPartnerController(id, ts),
+        loginPassword: encryptedPartnerController(pw, ts),
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'request-time': ts,
+          'access-key': encryptedAccessKey,
+        },
+      }
+    );
+    if (response.data.code === '200') {
+      // console.log('ts: ', ts);
+      return JSON.parse(response.data.data);
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.log('파트너스 로그인 오류:', error);
+    throw error;
+  }
+};
+
+export const 파트너스등록 = async (payload: Temp) => {
+  const { id, pw } = payload;
+
   const ts = Date.now().toString();
   const accesskey = import.meta.env.VITE_ACCESS_KEY_PARTNERS;
 
@@ -293,30 +378,30 @@ export const 파트너스등록 = async () => {
     ts
   );
 
-  await apiRequestPartners
-    .post(
+  try {
+    const resposne = await apiRequestPartners.post(
       '/api/v1/partners/member/apply',
       {
-        loginId: encryptedPartnerController('jack957', ts),
-        loginPassword: encryptedPartnerController('1234', ts),
-        brandNameKo: 'string',
-        brandNameEn: 'string',
-        brandHomePage: 'string',
+        loginId: encryptedPartnerController(id, ts),
+        loginPassword: encryptedPartnerController(pw, ts),
+        brandNameKo: 'temp2',
+        brandNameEn: 'temp2',
+        brandHomePage: 'temp2',
         companyType: 'CORPORATION',
-        companyNumber: 'string',
-        companyName: encryptedPartnerController('산호', ts),
-        companyOwnerName: encryptedPartnerController('산호산호', ts),
-        companyOwnerPhoneNumber: encryptedPartnerController('01012345678', ts),
-        companyContactName: encryptedPartnerController('홍길동', ts),
+        companyNumber: '12345678',
+        companyName: encryptedPartnerController('산호2', ts),
+        companyOwnerName: encryptedPartnerController('산호산호2', ts),
+        companyOwnerPhoneNumber: encryptedPartnerController('01012345679', ts),
+        companyContactName: encryptedPartnerController('홍길동2', ts),
         companyContactPhoneNumber: encryptedPartnerController(
-          '01098765432',
+          '01098765439',
           ts
         ),
         companyContactEmail: encryptedPartnerController(
-          'honggildong@example.com',
+          'honggildong2@example.com',
           ts
         ),
-        applyDetail: 'string',
+        applyDetail: 'temp2',
       },
       {
         headers: {
@@ -325,18 +410,31 @@ export const 파트너스등록 = async () => {
           'access-key': encryptedAccessKey,
         },
       }
-    )
-    .then((res) => {
-      console.log('res: ', res);
-      // if (res.data.code === '200') {
-      //   return JSON.parse(res.data.data);
-      // } else {
-      //   throw new Error(res.data.message);
-      // }
-    })
-    .catch((error) => {
-      console.error('파트너스 등록 오류:', error);
-    });
+    );
+
+    if (resposne.data.code === '200') {
+      console.log('ts: ', ts);
+      return JSON.parse(resposne.data.data);
+    } else {
+      throw new Error(resposne.data.message);
+    }
+  } catch (error) {
+    console.log('파트너스 등록 오류:', error);
+    throw error;
+  }
+  // .then((res) => {
+  //   console.log('res: ', res);
+  //   if (res.data.code === '200') {
+  //     return JSON.parse(res.data.data);
+  //     ts
+  //   } else {
+  //     throw new Error(res.data.message);
+  //   }
+  // })
+  // .catch((error) => {
+  //   console.log('파트너스 등록 오류:', error);
+  //   throw error;
+  // });
 };
 
 export const testingAPI = async () => {

@@ -5,5 +5,8 @@ export const useNavi = () => {
   const goBack = () => navigate(-1);
 
   const goHome = () => navigate('/');
-  return { goBack, goHome };
+
+  const goPartnerFindId = () => navigate('/partner/find-id');
+  const goPartnerFindPassword = () => navigate('/partner/find-password');
+  return { goBack, goHome, goPartnerFindId, goPartnerFindPassword };
 };
