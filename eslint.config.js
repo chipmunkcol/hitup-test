@@ -22,6 +22,16 @@ export default defineConfig([
 
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+
+      // ✅ 추가: _ 로 시작하는 변수/인자/에러 변수는 unused 예외 처리
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
 ]);

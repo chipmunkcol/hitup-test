@@ -6,8 +6,8 @@ import CryptoJS from 'crypto-js';
 // ========================================ls
 // accessKey: IV(Initialization Vector) 생성에 사용되는 키
 // seedKey: 실제 AES 암호화/복호화에 사용되는 비밀키 (Base64 인코딩된 32바이트 = 256비트)
-const accessKey = 'kR8vZ2nP9xQ5mL3hF7jK1dS6wE4tY0uI2oA8cB5gH9v=';
-const seedKey = '8MpaHtB0/D54GlNuo8Tk+B1+fObDUPGc071tfny2nVU=';
+const accessKey = import.meta.env.VITE_ACCESS_KEY;
+const seedKey = import.meta.env.VITE_SEED_KEY;
 
 // ========================================
 // IV(Initialization Vector) 생성 함수
@@ -91,6 +91,14 @@ export const tempEncryptedController = (text: string, timestamp: string) => {
     import.meta.env.VITE_ACCESS_KEY_PARTNERS,
     text
   );
+
+  // useAuthStore.getState().setLastRequestTimestamp(timestamp);
+  return encryptedText;
+};
+
+export const getEncryptedValue = (text: string, timestamp: string) => {
+  // const timeStamp = String(Date.now());
+  const encryptedText = encryptAes256(timestamp, accessKey, text);
 
   // useAuthStore.getState().setLastRequestTimestamp(timestamp);
   return encryptedText;

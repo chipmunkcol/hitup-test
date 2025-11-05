@@ -33,11 +33,16 @@ const Header = () => {
         <HamburgerBtn />
         <Logo onClick={goMain} />
       </div>
-      <Button onClick={() => navigate('/partner')}>파트너(new!)</Button>
+      <div className="flex gap-2">
+        <Button onClick={() => navigate('/partner/login')}>
+          파트너스 로그인(new!)
+        </Button>
+        <Button onClick={() => navigate('/partner')}>파트너스 상품</Button>
+      </div>
       <div className="flex gap-[26px]">
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           <SearchField />
-        </div>
+        </div> */}
         <div className="flex  items-center gap-[28px]">
           <div
             className="flex gap-[14px] items-center cursor-pointer"

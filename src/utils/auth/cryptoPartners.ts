@@ -1,4 +1,3 @@
-import { useAuthStore } from '@/store/useAuthStore';
 import CryptoJS from 'crypto-js';
 
 // ========================================
@@ -10,7 +9,6 @@ import CryptoJS from 'crypto-js';
 // const seedKey = 'dGVzdCBzdHJpbmcgZm9yIGJhc2U2NCBlbmNvZGluZyB0ZXN0';
 const accessKey = import.meta.env.VITE_ACCESS_KEY_PARTNERS;
 const seedKey = import.meta.env.VITE_SEED_KEY_PARTNERS;
-
 // ========================================
 // IV(Initialization Vector) 생성 함수
 // ========================================
@@ -86,7 +84,7 @@ export function encryptAes256(
   return res;
 }
 
-export const encryptedPartnerController = (text: string, timestamp: string) => {
+export const getEncryptedValuePartner = (text: string, timestamp: string) => {
   // const timeStamp = String(Date.now());
   const encryptedText = encryptAes256(timestamp, accessKey, text);
 
@@ -94,13 +92,13 @@ export const encryptedPartnerController = (text: string, timestamp: string) => {
   return encryptedText;
 };
 
-export const encryptedController = (text: string) => {
-  const timeStamp = String(Date.now());
-  const encryptedText = encryptAes256(timeStamp, accessKey, text);
+// export const encryptedController = (text: string) => {
+//   const timeStamp = String(Date.now());
+//   const encryptedText = encryptAes256(timeStamp, accessKey, text);
 
-  useAuthStore.getState().setLastRequestTimestamp(timeStamp);
-  return encryptedText;
-};
+//   useAuthStore.getState().setLastRequestTimestamp(timeStamp);
+//   return encryptedText;
+// };
 
 // ========================================
 // AES-256 복호화 함수

@@ -136,7 +136,7 @@ export const useTokenStore = create<TokenState>()(
         }),
     }),
     {
-      name: 'token', // name of the item in the storage (must be unique)
+      name: 'auth', // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )
