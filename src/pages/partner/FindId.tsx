@@ -9,7 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input } from 'antd';
 
 const FindId = () => {
-  const { setId } = useFindAuthStore();
+  const { setLoginId } = useFindAuthStore();
   const { goPartnerFindIdFound } = useNavi();
   const [form] = Form.useForm();
   const handleCreateAuthCode = () => {
@@ -53,8 +53,7 @@ const FindId = () => {
     mutationFn: 파트너스계정찾기,
     onSuccess: (data) => {
       console.log('파트너스계정찾기 성공: ', data);
-      // alert(`회원님의 아이디는 ${data.data.memberId} 입니다.`);
-      setId(data?.loginId);
+      setLoginId(data.loginId);
       goPartnerFindIdFound();
     },
     onError: (error) => {

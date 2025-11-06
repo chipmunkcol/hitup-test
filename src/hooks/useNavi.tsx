@@ -5,6 +5,12 @@ export const useNavi = () => {
   const goBack = () => navigate(-1);
 
   const goHome = () => navigate('/');
+  const goCart = () => {
+    navigate('/cart');
+  };
+  const goMypage = () => {
+    navigate('/mypage');
+  };
 
   // 파트너스 관련 페이지 (임시)
   const goPartnerLogin = () => navigate('/partner/login');
@@ -16,11 +22,13 @@ export const useNavi = () => {
   const goPartnerFindPasswordReset = () =>
     navigate('/partner/find-password/reset');
 
-  const goAddProduct = () => navigate('/partner/product/add');
+  const goAddProduct = () => navigate('/partner/management/product/add');
 
   return {
     goBack,
     goHome,
+    goCart,
+    goMypage,
 
     // 파트너 관련
     goPartnerLogin,

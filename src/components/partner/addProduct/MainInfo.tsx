@@ -1,4 +1,13 @@
-import { Button, DatePicker, Radio, Select } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Radio,
+  Select,
+  Space,
+  Switch,
+} from 'antd';
 import { useState } from 'react';
 const importData = {
   라틴아메리카: ['멕시코', '브라질', '아르헨티나', '칠레'],
@@ -48,6 +57,13 @@ const MainInfo = () => {
     setSubRegion(value);
   };
 
+  // KC 인증
+  // const [ ]= useState(false);
+  const [isKcChecked, setIsKcChecked] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<string | null>(null);
+
+  const isCertSelected = !!selectedCert;
+
   return (
     <div className="flex flex-col gap-4">
       {/* KC 인증 */}
@@ -55,30 +71,145 @@ const MainInfo = () => {
         <div className="flex-1">KC 인증</div>
         <div className="flex-5 flex flex-col gap-2">
           <div>
-            <Button>KC인증 있음</Button>
-            <Button type="primary">KC인증 없음</Button>
+            <Button
+              type={isKcChecked ? 'primary' : 'default'}
+              onClick={() => setIsKcChecked(true)}
+            >
+              KC인증 있음
+            </Button>
+            <Button
+              type={!isKcChecked ? 'primary' : 'default'}
+              onClick={() => setIsKcChecked(false)}
+            >
+              KC인증 없음
+            </Button>
           </div>
-          <div>
-            <Radio.Group
-              name="radiogroup"
-              defaultValue={1}
-              options={[
-                { value: 1, label: '구매대행' },
-                { value: 2, label: '안전기준 준수' },
-                { value: 3, label: 'KC 안전관리대상 아님' },
-              ]}
-            />
-          </div>
-          <div>
-            KC인증이 필요한 상품을 인증 없이 판매하는 경우 3년 이하의 징역 또는
-            3천만원 이하의 벌금형에 처해질 수 있습니다.인증대상 여부
-            문의는 국가기술표준원 또는 제품안전정보센터로 확인해주시기
-            바랍니다. 개정 전안법가이드북 보기어린이제품 및 방송통신기자재는
-            개정 전안법 특례대상이 아니므로 구매대행 / 병행수입을 선택할 수
-            없습니다.
-          </div>
+
+          {!isKcChecked && (
+            <>
+              <div>
+                <Radio.Group
+                  name="radiogroup"
+                  defaultValue={1}
+                  options={[
+                    { value: 1, label: '구매대행' },
+                    { value: 2, label: '안전기준 준수' },
+                    { value: 3, label: 'KC 안전관리대상 아님' },
+                  ]}
+                />
+              </div>
+              <div>
+                KC인증이 필요한 상품을 인증 없이 판매하는 경우 3년 이하의 징역
+                또는 3천만원 이하의 벌금형에 처해질 수 있습니다.인증대상 여부
+                문의는 국가기술표준원 또는 제품안전정보센터로 확인해주시기
+                바랍니다. 개정 전안법가이드북 보기어린이제품 및 방송통신기자재는
+                개정 전안법 특례대상이 아니므로 구매대행 / 병행수입을 선택할 수
+                없습니다.
+              </div>
+            </>
+          )}
         </div>
       </div>
+
+      {/* KC 인증 인증선택* */}
+      {isKcChecked && (
+        <div className="flex gap-2">
+          <div className="flex-1">인증선택*</div>
+          <div className="flex-5 flex flex-col gap-2">
+            {/* 1. 인증 선택 */}
+
+            {/* 2. 선택 드롭다운 */}
+
+            <div className="flex gap-2">
+              <Form.Item
+                name="certType"
+                rules={[
+                  { required: true, message: '인증 구분을 선택해주세요.' },
+                ]}
+              >
+                <Select
+                  placeholder="인증 구분을 선택하세요"
+                  onChange={(value) => setSelectedCert(value)}
+                  style={{ width: 200 }}
+                >
+                  <Select.Option value="계량기 형식승인_국가인증">
+                    계량기 형식승인_국가인증
+                  </Select.Option>
+                  <Select.Option value="[생활용품]공급자적합성확인_국가인증">
+                    [생활용품]공급자적합성확인_국가인증
+                  </Select.Option>
+                  <Select.Option value="[전기용품]공급자적합성확인_국가인증">
+                    [전기용품]공급자적합성확인_국가인증
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+
+              {/* 3. 인증기관 */}
+              <Form.Item name="certOrg">
+                <Input
+                  placeholder="인증기관을 입력하세요"
+                  disabled={!isCertSelected}
+                />
+              </Form.Item>
+
+              {/* 4-1. 인증번호 */}
+              <Form.Item name="certNumber">
+                <Input
+                  placeholder="인증번호를 입력하세요"
+                  disabled={!isCertSelected}
+                />
+              </Form.Item>
+
+              {/* 4-2. 인증상호 */}
+              <Form.Item name="certCompany">
+                <Input
+                  placeholder="인증상호를 입력하세요"
+                  disabled={!isCertSelected}
+                />
+              </Form.Item>
+
+              {/* 4-3. 인증일자 */}
+              <Form.Item name="certDate">
+                <DatePicker
+                  style={{ width: '100%' }}
+                  placeholder="인증일자를 선택하세요"
+                  disabled={!isCertSelected}
+                />
+              </Form.Item>
+            </div>
+
+            {/* 5. KC마크 사용 여부 */}
+            <Form.Item
+              name="kcMarkUsage"
+              rules={[
+                { required: true, message: 'KC마크 사용 여부를 선택해주세요.' },
+              ]}
+            >
+              <Select
+                placeholder="KC마크 사용 여부를 선택하세요"
+                disabled={!isCertSelected}
+                style={{ width: 200 }}
+              >
+                <Select.Option value="kcMarkUsed">KC 마크 사용함</Select.Option>
+                <Select.Option value="kcMarkNotUsed">
+                  KC 마크 사용안함
+                </Select.Option>
+              </Select>
+            </Form.Item>
+
+            {/* 6. 구매대행 / 병행수입 */}
+            <Form.Item
+              name="importType"
+              rules={[{ required: true, message: '유통 형태를 선택해주세요.' }]}
+            >
+              <Radio.Group>
+                <Radio value="buyingAgency">구매대행</Radio>
+                <Radio value="parallelImport">병행수입</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </div>
+        </div>
+      )}
 
       {/* 원산지 */}
       <div className="flex gap-2">

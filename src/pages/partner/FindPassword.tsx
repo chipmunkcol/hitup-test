@@ -50,16 +50,12 @@ const FindPassword = () => {
       console.log('파트너스비밀번호찾기 성공: ', data);
 
       // 파트너스 계정찾기를 위한 상태저장
-      // setterFindAuthStore();
+      setterFindAuthStore();
 
       swalAlert('비밀번호 재설정 페이지로 이동합니다.');
-      // goPartnerFindPasswordReset();
+      goPartnerFindPasswordReset();
     },
     onError: (error) => {
-      // 임시로 오류인 경우에도
-      setterFindAuthStore();
-      goPartnerFindPasswordReset();
-
       console.error('파트너스비밀번호찾기 실패: ', error);
       alert(error || '비밀번호 찾기에 실패했습니다. 다시 시도해주세요.');
     },

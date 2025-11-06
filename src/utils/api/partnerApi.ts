@@ -77,7 +77,7 @@ export const 파트너스비밀번호변경 = async (
 
   try {
     const response = await apiRequestPartners.post(
-      '/api/v1/partners/member/reset/password',
+      '/api/v1/partners/member/change/password',
       {
         loginId: getEncryptedValuePartner(loginId, ts),
         companyOwnerPhoneNumber: getEncryptedValuePartner(
@@ -91,7 +91,7 @@ export const 파트너스비밀번호변경 = async (
       { headers: getEncryptedHeader(ts, encryptedAccessKey) }
     );
     if (response.data.code === '200') {
-      return JSON.parse(response.data.data);
+      return true;
     } else {
       throw new Error(response.data.message);
     }
@@ -168,7 +168,7 @@ export const 파트너스비밀번호찾기 = async (
       }
     );
     if (response.data.code === '200') {
-      return JSON.parse(response.data.data);
+      return true;
     } else {
       throw new Error(response.data.message);
     }
@@ -183,7 +183,14 @@ type PartnerFindAccountPayload = {
   companyOwnerPhoneNumber: string;
   authenticationCode: string;
 };
-export const 파트너스계정찾기 = async (payload: PartnerFindAccountPayload) => {
+
+type PartnerFindAccountResponse = {
+  loginId: string;
+};
+
+export const 파트너스계정찾기 = async (
+  payload: PartnerFindAccountPayload
+): Promise<PartnerFindAccountResponse> => {
   const { companyOwnerName, companyOwnerPhoneNumber, authenticationCode } =
     payload;
 
@@ -255,7 +262,7 @@ export const 파트너스로그인 = async (payload: Temp) => {
 // 입점 제휴 신청 Temp 타입 변경할것!
 // 입점 제휴 신청 Temp 타입 변경할것!
 // 입점 제휴 신청 Temp 타입 변경할것!
-type CompanyTypes = 'CORPORATION' | 'SOLE-PROPRIETOR';
+type CompanyTypes = 'CORPORATION' | 'SOLE_PROPRIETOR';
 
 export interface 파트너스등록Payload {
   loginId: 'string';
@@ -304,7 +311,7 @@ export const 파트너스등록 = async (payload: 파트너스등록Payload) => 
         brandNameKo,
         brandNameEn,
         brandHomePage,
-        companyType: 'SOLE-PROPRIETOR', // 'CORPORATION' | 'SOLE-PROPRIETOR'
+        companyType: 'SOLE_PROPRIETOR', // 'CORPORATION' | 'SOLE_PROPRIETOR'
         companyNumber: getEncryptedValuePartner(companyNumber, ts),
         // companyNumber: companyNumber,
         companyName: getEncryptedValuePartner(companyName, ts),

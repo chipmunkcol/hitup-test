@@ -5,8 +5,10 @@ import HamburgerBtn from '../HamburgerBtn';
 import Logo from '../Logo';
 import SearchField from './SearchField';
 import { Button } from 'antd';
+import { useNavi } from '@/hooks/useNavi';
 
 const Header = () => {
+  const { goHome, goCart, goMypage, goAddProduct } = useNavi();
   const navigate = useNavigate();
   const pathname = window.location.pathname;
 
@@ -16,15 +18,7 @@ const Header = () => {
       return;
     }
 
-    navigate('/');
-  };
-
-  const goCart = () => {
-    navigate('/cart');
-  };
-
-  const goMypage = () => {
-    navigate('/mypage');
+    goHome();
   };
 
   return (
@@ -37,7 +31,7 @@ const Header = () => {
         <Button onClick={() => navigate('/partner/login')}>
           파트너스 로그인(new!)
         </Button>
-        <Button onClick={() => navigate('/partner')}>파트너스 상품</Button>
+        <Button onClick={goAddProduct}>파트너스 상품</Button>
       </div>
       <div className="flex gap-[26px]">
         {/* <div className="hidden md:block">

@@ -71,12 +71,25 @@ const DisclosureNotice = () => {
     setProductType(value);
   };
 
+  // 템플릿 유무
+  const [isTemplateChecked, setIsTemplateChecked] = useState(false);
+
   return (
     <div className="flex flex-col gap-4">
       <Form.Item label="설정여부*" name="disclosureSetting">
         <div className="flex gap-2 items-center">
-          <Button type="primary">설정함</Button>
-          <Button>설정안함</Button>
+          <Button
+            onClick={() => setIsTemplateChecked(false)}
+            type={!isTemplateChecked ? 'primary' : 'default'}
+          >
+            설정함
+          </Button>
+          <Button
+            onClick={() => setIsTemplateChecked(true)}
+            type={isTemplateChecked ? 'primary' : 'default'}
+          >
+            템플릿
+          </Button>
 
           {/* antd Input checkbox */}
           <Checkbox>템플릿 등록</Checkbox>

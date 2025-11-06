@@ -34,86 +34,99 @@ import FindPassword from './pages/partner/FindPassword';
 import FindId from './pages/partner/FindId';
 import FindIdFound from './pages/partner/FindIdFound';
 import ResetPassword from './pages/partner/ResetPassword';
+import CheckTokenExpired from './components/partner/common/CheckTokenExpired';
+import Sidebar from './components/partner/common/Sidebar';
+import PartersLayout from './components/common/layout/PartersLayout';
 
 function App() {
   // const { user } = useAuthStore();
 
   return (
     <BrowserRouter>
-      <Layout>
-        <CategoryBig />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
+      <Routes>
+        <Route path="/user" element={<Layout />}>
+          <Route path="" element={<HomePage />} />
 
           {/* 인증 */}
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="login" element={<Login />} />
 
           <Route
-            path="/category/:category/sub/:sub"
+            path="category/:category/sub/:sub"
             element={<CategoryPage />}
           />
 
-          <Route path="/best" element={<BestPage />} />
-          <Route path="/new" element={<NewPage />} />
+          <Route path="best" element={<BestPage />} />
+          <Route path="new" element={<NewPage />} />
 
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/product/:id/contacts" element={<ContactHistory />} />
+          <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="product/:id/contacts" element={<ContactHistory />} />
 
           {/* 팝업으로 변경 */}
           {/* <Route path="/product/:id/contact/add" element={<ContactSeller />} /> */}
           <Route
-            path="/product/:id/contact/edit/:contactId:"
+            path="product/:id/contact/edit/:contactId:"
             element={<div></div>}
           />
 
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/address" element={<AddressPage />} />
-          <Route path="/address/add" element={<AddAddressPage />} />
-          <Route path="/address/edit/:id" element={<EditAddressPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="address" element={<AddressPage />} />
+          <Route path="address/add" element={<AddAddressPage />} />
+          <Route path="address/edit/:id" element={<EditAddressPage />} />
 
           {/* 리뷰 관리 */}
-          <Route path="/review" element={<ReviewManagePage />}>
+          <Route path="review" element={<ReviewManagePage />}>
             {/* 하위 라우트 */}
             <Route path="writable" element={<Writable />} />
             <Route path="written" element={<Written />} />
           </Route>
-          <Route path="/review/add/:id" element={<AddReviewPage />} />
-          <Route path="/review/edit/:id" element={<EditReviewPage />} />
+          <Route path="review/add/:id" element={<AddReviewPage />} />
+          <Route path="review/edit/:id" element={<EditReviewPage />} />
 
           {/* 입점/제휴 신청 */}
-          <Route path="/partnership" element={<PartnershipPage />} />
+          <Route path="partnership" element={<PartnershipPage />} />
 
-          <Route path="/coupon" element={<CouponPage />} />
+          <Route path="coupon" element={<CouponPage />} />
 
-          <Route path="/mypage" element={<Mypage />} />
+          <Route path="mypage" element={<Mypage />} />
 
           {/* 주문관련 */}
-          <Route path="/purchase" element={<PurchasePage />} />
-          <Route path="/purchase/history" element={<PurchaseHistory />} />
-          <Route path="/purchase/:id" element={<PurchaseDetail />} />
+          <Route path="purchase" element={<PurchasePage />} />
+          <Route path="purchase/history" element={<PurchaseHistory />} />
+          <Route path="purchase/:id" element={<PurchaseDetail />} />
+        </Route>
 
-          <Route path="*" element={<div>없는 페이지</div>} />
+        <Route path="*" element={<div>없는 페이지</div>} />
 
-          {/* 브랜드 파트너 페이지 */}
-          <Route path="/partner">
-            {/* 하위 라우트 */}
+        {/* 브랜드 파트너 페이지 */}
+        {/* 임시로 지정 서버 나누고 나서는 /partner depth에서 로그인/회원가입 제외 */}
 
-            {/* 인증 */}
-            <Route path="register" element={<Register />} />
-            <Route path="login" element={<PartnerLogin />} />
+        <Route path="/partner" element={<PartersLayout />}>
+          {/* 하위 라우트 */}
 
-            {/* 아이디 비밀번호 찾기 */}
-            <Route path="find-id" element={<FindId />} />
-            <Route path="find-id/found" element={<FindIdFound />} />
-            <Route path="find-password" element={<FindPassword />} />
-            <Route path="find-password/reset" element={<ResetPassword />} />
+          {/* 인증 */}
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<PartnerLogin />} />
 
-            {/* 상품 */}
+          {/* 아이디 비밀번호 찾기 */}
+          <Route path="find-id" element={<FindId />} />
+          <Route path="find-id/found" element={<FindIdFound />} />
+          <Route path="find-password" element={<FindPassword />} />
+          <Route path="find-password/reset" element={<ResetPassword />} />
+
+          {/* 상품 */}
+          <Route
+            path="management"
+            element={
+              <CheckTokenExpired>
+                <Sidebar />
+              </CheckTokenExpired>
+            }
+          >
             <Route path="product/add" element={<AddProduct />} />
           </Route>
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

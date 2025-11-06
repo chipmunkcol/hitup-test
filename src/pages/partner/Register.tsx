@@ -1,3 +1,4 @@
+import { passwordRegex } from '@/data/const/regex';
 import { 파트너스등록, type 파트너스등록Payload } from '@/utils/api/partnerApi';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Checkbox, Form, Input, Radio } from 'antd';
@@ -75,7 +76,7 @@ const Register = () => {
         labelCol={{ style: { width: '150px' } }}
         labelAlign="left"
         initialValues={{
-          companyType: 'SOLE-PROPRIETOR',
+          companyType: 'SOLE_PROPRIETOR',
         }}
       >
         {/* {step === 1 && ( */}
@@ -145,7 +146,7 @@ const Register = () => {
                   <Input />
                 </Form.Item>
                 <div>
-                  <Button htmlType='button'>중복확인</Button>
+                  <Button htmlType="button">중복확인</Button>
                 </div>
               </div>
               <Form.Item
@@ -155,6 +156,10 @@ const Register = () => {
                   {
                     required: true,
                     message: '브랜드 비밀번호를 입력해주세요',
+                  },
+                  {
+                    pattern: passwordRegex,
+                    message: '숫자와 영문 조합 8~16자로 입력해주세요.',
                   },
                 ]}
               >
@@ -246,7 +251,7 @@ const Register = () => {
                 ]}
               >
                 <Radio.Group>
-                  <Radio value="SOLE-PROPRIETOR">개인사업자</Radio>
+                  <Radio value="SOLE_PROPRIETOR">개인사업자</Radio>
                   <Radio value="CORPORATION">법인사업자</Radio>
                 </Radio.Group>
               </Form.Item>
@@ -351,7 +356,9 @@ const Register = () => {
           </div>
 
           <div className="py-5 flex gap-2 justify-end">
-            <Button htmlType='button' onClick={onClickPrevStep}>이전</Button>
+            <Button htmlType="button" onClick={onClickPrevStep}>
+              이전
+            </Button>
             <Button htmlType="submit">제출</Button>
           </div>
         </div>

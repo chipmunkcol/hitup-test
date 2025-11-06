@@ -3,7 +3,7 @@ import { useFindAuthStore } from '@/store/partner/useFindAuthStore';
 import { Button } from 'antd';
 
 const FindIdFound = () => {
-  const { id } = useFindAuthStore();
+  const { loginId } = useFindAuthStore();
   const { goPartnerFindPassword } = useNavi();
 
   return (
@@ -14,7 +14,7 @@ const FindIdFound = () => {
       </div>
 
       <div className="py-10">
-        <div>아이디: {id}</div>
+        <div>아이디: {loginId}</div>
       </div>
 
       <div className="flex gap-2">
