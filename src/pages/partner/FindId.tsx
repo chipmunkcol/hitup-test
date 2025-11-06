@@ -1,3 +1,4 @@
+import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavi } from '@/hooks/useNavi';
 import { useFindAuthStore } from '@/store/partner/useFindAuthStore';
 import {
@@ -13,7 +14,10 @@ const FindId = () => {
   const [form] = Form.useForm();
   const handleCreateAuthCode = () => {
     const phoneNumber = form.getFieldValue('companyOwnerPhoneNumber');
-
+    if (!phoneNumber.trim()) {
+      swalAlert('휴대폰 번호를 입력해주세요.');
+      return;
+    }
     // phone 번호가 적절한지 validation 필요
 
     createCodeMutate({
@@ -63,7 +67,7 @@ const FindId = () => {
     <div className="max-w-sm mx-auto pt-10">
       <div>
         <h1 className="py-6 text-2xl">아이디 찾기</h1>
-        <div>
+        <div className="pb-4">
           찾으려는 계정에 등록된 대표자 이름, 휴대폰 번호로 아이디를 찾을 수
           있습니다.
         </div>

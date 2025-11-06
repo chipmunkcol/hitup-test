@@ -53,40 +53,53 @@ export const 파트너스토큰갱신 = async (refreshToken: string) => {
   }
 };
 
-// interface PartnerResetPasswordPayload {
-//   loginId: string;
-//   loginPassword: string;
-//   authenticationCode: string;
-// }
+interface PartnerResetPasswordPayload {
+  loginId: 'string';
+  companyOwnerPhoneNumber: 'string';
+  authenticationCode: 'string';
+  loginPassword: 'string';
+  loginPassword2: 'string';
+}
 
-// export const 파트너스비밀번호재설정 = async (
-//   payload: PartnerResetPasswordPayload
-// ) => {
-//   const { loginId, loginPassword, authenticationCode } = payload;
+export const 파트너스비밀번호변경 = async (
+  payload: PartnerResetPasswordPayload
+) => {
+  const {
+    loginId,
+    companyOwnerPhoneNumber,
+    authenticationCode,
+    loginPassword,
+    loginPassword2,
+  } = payload;
 
-//   const { timestamp: ts, encryptedAccessKey } =
-//     getRequiredDataForEncryptedPartner();
+  const { timestamp: ts, encryptedAccessKey } =
+    getRequiredDataForEncryptedPartner();
 
-//   try {
-//     const response = await apiRequestPartners.post(
-//       '/api/v1/partners/member/reset/password',
-//       {
-//         loginId: getEncryptedValuePartner(loginId, ts),
-//         loginPassword: getEncryptedValuePartner(loginPassword, ts),
-//         authenticationCode: authenticationCode,
-//       },
-//       { headers: getEncryptedHeader(ts, encryptedAccessKey) }
-//     );
-//     if (response.data.code === '200') {
-//       return JSON.parse(response.data.data);
-//     } else {
-//       throw new Error(response.data.message);
-//     }
-//   } catch (error) {
-//     console.log('파트너스 비밀번호재설정 오류:', error);
-//     throw error;
-//   }
-// };
+  try {
+    const response = await apiRequestPartners.post(
+      '/api/v1/partners/member/reset/password',
+      {
+        loginId: getEncryptedValuePartner(loginId, ts),
+        companyOwnerPhoneNumber: getEncryptedValuePartner(
+          companyOwnerPhoneNumber,
+          ts
+        ),
+        loginPassword: getEncryptedValuePartner(loginPassword, ts),
+        loginPassword2: getEncryptedValuePartner(loginPassword2, ts),
+        authenticationCode: authenticationCode,
+      },
+      { headers: getEncryptedHeader(ts, encryptedAccessKey) }
+    );
+    if (response.data.code === '200') {
+      return JSON.parse(response.data.data);
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.log('파트너스 비밀번호재설정 오류:', error);
+    throw error;
+  }
+};
 
 // 휴대폰 로그인 시 인증코드 받기, 생성
 export type phoneAuthenticateType = 'FIND_ID' | 'FIND_PASSWORD';
@@ -355,15 +368,15 @@ export const 파트너스등록 = async (payload: 파트너스등록Payload) => 
 //       {
 //         loginId: getEncryptedValuePartner(loginId, ts),
 //         loginPassword: getEncryptedValuePartner(loginPassword, ts),
-//         brandNameKo: 'temp2',
-//         brandNameEn: 'temp2',
-//         brandHomePage: 'temp2',
+//         brandNameKo: 'temp',
+//         brandNameEn: 'temp',
+//         brandHomePage: 'temp',
 //         companyType: 'CORPORATION',
 //         companyNumber: '12345678',
-//         companyName: getEncryptedValuePartner('산호2', ts),
-//         companyOwnerName: getEncryptedValuePartner('산호산호2', ts),
+//         companyName: getEncryptedValuePartner('산호', ts),
+//         companyOwnerName: getEncryptedValuePartner('산호산호', ts),
 //         companyOwnerPhoneNumber: getEncryptedValuePartner('01012345679', ts),
-//         companyContactName: getEncryptedValuePartner('홍길동2', ts),
+//         companyContactName: getEncryptedValuePartner('홍길동', ts),
 //         companyContactPhoneNumber: getEncryptedValuePartner('01098765439', ts),
 //         companyContactEmail: getEncryptedValuePartner(
 //           'honggildong2@example.com',

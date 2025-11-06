@@ -1,4 +1,6 @@
+import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavi } from '@/hooks/useNavi';
+import { useFindAuthStore } from '@/store/partner/useFindAuthStore';
 import {
   createAuthCodePartner,
   파트너스비밀번호찾기,
@@ -7,6 +9,8 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input } from 'antd';
 
 const FindPassword = () => {
+  const { setLoginId, setCompanyOwnerPhoneNumber, setAuthenticationCode } =
+    useFindAuthStore();
   const { goPartnerFindId, goPartnerFindPasswordReset } = useNavi();
   const [form] = Form.useForm();
   const handleCreateAuthCode = () => {
@@ -44,14 +48,31 @@ const FindPassword = () => {
     mutationFn: 파트너스비밀번호찾기,
     onSuccess: (data) => {
       console.log('파트너스비밀번호찾기 성공: ', data);
-      // alert(`회원님의 비밀번호는 ${data.password} 입니다.`);
-      goPartnerFindPasswordReset();
+
+      // 파트너스 계정찾기를 위한 상태저장
+      // setterFindAuthStore();
+
+      swalAlert('비밀번호 재설정 페이지로 이동합니다.');
+      // goPartnerFindPasswordReset();
     },
     onError: (error) => {
+      // 임시로 오류인 경우에도
+      setterFindAuthStore();
+      goPartnerFindPasswordReset();
+
       console.error('파트너스비밀번호찾기 실패: ', error);
       alert(error || '비밀번호 찾기에 실패했습니다. 다시 시도해주세요.');
     },
   });
+
+  const setterFindAuthStore = () => {
+    const formValues = form.getFieldsValue();
+
+    console.log('formValues: ', formValues);
+    setLoginId(formValues['loginId']);
+    setCompanyOwnerPhoneNumber(formValues['companyOwnerPhoneNumber']);
+    setAuthenticationCode(formValues['authenticationCode']);
+  };
 
   return (
     <div className="max-w-sm mx-auto pt-10">

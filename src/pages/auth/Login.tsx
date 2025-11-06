@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavi } from '@/hooks/useNavi';
 import { useAuthStore, useTokenStore } from '@/store/useAuthStore';
 import { createAuthCode, loginUser } from '@/utils/api/api';
@@ -23,7 +24,7 @@ const Login = () => {
         refreshToken,
         accessTokenExpiredDate,
         refreshTokenExpiredDate,
-      } = data?.memberToken || {};
+      } = data.memberToken;
       setToken({
         accessToken,
         refreshToken,
@@ -39,7 +40,10 @@ const Login = () => {
   });
 
   const handleLogin = () => {
-    // e.preventDefault();
+    if (!phone || !code) {
+      swalAlert('휴대폰 번호와 인증번호를 모두 입력해주세요.');
+      return;
+    }
 
     loginMutate({
       phoneNumber: phone,
