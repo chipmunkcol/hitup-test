@@ -1,10 +1,10 @@
 import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useNavi } from '@/hooks/useNavi';
+import { useDuplicatedStore } from '@/store/useAuthStore';
 import { checkDuplicateNickname, registerUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';
-import { Button, Input, Select } from 'antd';
+import { Button, Checkbox, Form, Input, type CheckboxProps } from 'antd';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export interface RegisterForm {
   phoneNumber: string;
@@ -16,13 +16,13 @@ export interface RegisterForm {
 }
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
+  const { goLogin } = useNavi();
   const {
     isCheckDuplicatedNickname,
     isDuplicatedNickname,
     setIsCheckDuplicatedNickname,
     setIsDuplicatedNickname,
-  } = useAuthStore();
+  } = useDuplicatedStore();
   // const [nickNameValue, setNickNameValue] = useState('');
 
   const [form, setForm] = useState<RegisterForm>({
@@ -108,7 +108,7 @@ const RegisterPage = () => {
       console.log('회원가입 성공:', data);
       const res = await swalAlert('회원가입 성공', '로그인 하러가기');
       if (res.isConfirmed) {
-        navigate('/login');
+        goLogin();
       }
     },
     onError: (error) => {
@@ -117,8 +117,9 @@ const RegisterPage = () => {
     },
   });
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleRegister = (value: any) => {
+    console.log('value: ', value);
+
     // if (닉네임 중복확인 안됐으면 return) <-- 전역상태 필요
     if (!isCheckDuplicatedNickname) {
       alert('닉네임 중복확인을 해주세요.');
@@ -139,92 +140,173 @@ const RegisterPage = () => {
     registerMutate(form);
   };
 
+  // step (이용약관 동의 / 회원가입)
+  const [step, setStep] = useState(1);
+
+  const plainOptions = [
+    { label: '만 14세 이상입니다(필수)', value: 'age' },
+    { label: '서비스 이용 약관 동의(필수)', value: 'terms' },
+    {
+      label: '마케팅 목적의 개인정보 수집 및 이용 동의(선택)',
+      value: 'privacy',
+    },
+    { label: '광고성 정보 수신 동의(선택)', value: 'ads' },
+  ];
+
+  const [antdForm] = Form.useForm();
+  const [checkedList, setCheckedList] = useState<string[]>([]);
+  console.log('checkedList: ', checkedList);
+  const checkedAll = checkedList.length === plainOptions.length;
+
+  const onChangeCheckList = (list: string[]) => {
+    setCheckedList(list);
+  };
+
+  const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
+    setCheckedList(e.target.checked ? plainOptions.map((o) => o.value) : []);
+  };
+
+  // 버튼 활성화 조건 (모든 필수 약관 동의)
+  const 약관동의필수값 = ['age', 'terms'];
+  const 버튼활성화 = 약관동의필수값.every((v) => checkedList.includes(v));
+
+  const onClickNextStep = () => {
+    setStep(2);
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6">
-      <form onSubmit={handleRegister} className="flex flex-col gap-6">
-        <div>회원가입</div>
-        <div>닉네임을 설정해 주세요</div>
-        <div>
-          <div className="flex gap-4">
-            <Input
-              name="nickName"
-              value={form.nickName}
-              onChange={onChangeInput}
-            />
-            <Button onClick={handleCheckDuplicate}>중복확인</Button>
-          </div>
-          {isCheckDuplicatedNickname && !isDuplicatedNickname && (
-            <div>사용 가능한 닉네임이에요</div>
-          )}
-          {isDuplicatedNickname && (
-            <div className="text-HITUP_Red">사용 불가능한 닉네임이에요</div>
-          )}
-        </div>
+      <h1>회원가입</h1>
 
-        {/* <div> */}
+      {/* step1 약관동의 */}
+      {/* step1 약관동의 */}
+
+      {step === 1 && (
         <div>
-          <label>생년월일</label>
-          <Input
-            name="birthDay"
-            value={form.birthDay}
-            onChange={onChangeInput}
-          />
-        </div>
-        <div>
-          <label>연락처</label>
-          <Input
-            name="phoneNumber"
-            value={form.phoneNumber}
-            onChange={onChangeInput}
-          />
-        </div>
-        <div className="flex gap-6">
-          <label>성별</label>
-          <Select
-            value={form.gender}
-            onChange={(value: string) => onChangeSelect('gender', value)}
-            style={{ width: 100 }}
-            options={[
-              { label: '남성', value: 'MALE' },
-              { label: '여성', value: 'FEMALE' },
-            ]}
-          />
-        </div>
-        <div>
-          <label>관심낚시</label>
+          <div>이용 약관 동의</div>
+
+          {/* 약관 전체 동의하기 */}
+          <Checkbox onChange={onCheckAllChange} checked={checkedAll}>
+            약관 전체 동의하기(선택 동의 포함)
+          </Checkbox>
+
+          <div className="pl-5">
+            <Checkbox.Group
+              className="flex flex-col"
+              options={plainOptions}
+              value={checkedList}
+              onChange={onChangeCheckList}
+            />
+          </div>
+
+          {/* 약관 설명 */}
+          <div className="py-10">
+            약관에 동의하시면 히트업, 히트업몰 약관이 함께 동의 처리됩니다. 기존
+            약관에 동의하셨더라도 내용이 개정되었으므로 다시 동의가 필요합니다.
+            선택 항목에 동의하지 않아도 통합계정은 정상적으로 이용하실 수
+            있습니다. 정보주체의 개인정보 및 권리 보호를 위해 「개인정보
+            보호법」 및 관계 법령이 정한 바를 준수하여 안전하게 관리하고
+            있습니다.자세한 사항은 개인정보처리방침 에서 확인할 수 있습니다.
+          </div>
+
           <div>
             <Button
-              type={form.interestSeaFishingType ? 'primary' : 'default'}
-              onClick={() => toggleInterest('sea')}
+              onClick={onClickNextStep}
+              className="w-full"
+              disabled={!버튼활성화}
             >
-              바다
-            </Button>
-            <Button
-              type={form.interestFreshwaterFishingType ? 'primary' : 'default'}
-              onClick={() => toggleInterest('freshwater')}
-            >
-              민물
+              다음
             </Button>
           </div>
         </div>
-        {/* </div> */}
-        <Button htmlType="submit">회원가입</Button>
-      </form>
+      )}
+
+      {/* step2 회원가입 */}
+      {/* step2 회원가입 */}
+
+      {step === 2 && (
+        <Form
+          form={antdForm}
+          onFinish={handleRegister}
+          className="flex flex-col gap-6"
+        >
+          <div>닉네임을 설정해 주세요</div>
+          <div>
+            <div className="flex gap-4">
+              <Input
+                name="nickName"
+                value={form.nickName}
+                onChange={onChangeInput}
+              />
+              <Button onClick={handleCheckDuplicate}>중복확인</Button>
+            </div>
+            {isCheckDuplicatedNickname && !isDuplicatedNickname && (
+              <div>사용 가능한 닉네임이에요</div>
+            )}
+            {isDuplicatedNickname && (
+              <div className="text-HITUP_Red">사용 불가능한 닉네임이에요</div>
+            )}
+          </div>
+
+          {/* <div> */}
+          <div>
+            <label>생년월일</label>
+            <Input
+              name="birthDay"
+              value={form.birthDay}
+              onChange={onChangeInput}
+            />
+          </div>
+          <div>
+            <label>연락처</label>
+            <Input
+              name="phoneNumber"
+              value={form.phoneNumber}
+              onChange={onChangeInput}
+            />
+          </div>
+          <div className="">
+            <label>성별</label>
+
+            <div className="">
+              <Button
+                type={form.gender === 'male' ? 'primary' : 'default'}
+                onClick={() => onChangeSelect('gender', 'male')}
+              >
+                남성
+              </Button>
+              <Button
+                type={form.gender === 'female' ? 'primary' : 'default'}
+                onClick={() => onChangeSelect('gender', 'female')}
+              >
+                여성
+              </Button>
+            </div>
+          </div>
+          <div>
+            <label>관심낚시</label>
+            <div>
+              <Button
+                type={form.interestSeaFishingType ? 'primary' : 'default'}
+                onClick={() => toggleInterest('sea')}
+              >
+                바다
+              </Button>
+              <Button
+                type={
+                  form.interestFreshwaterFishingType ? 'primary' : 'default'
+                }
+                onClick={() => toggleInterest('freshwater')}
+              >
+                민물
+              </Button>
+            </div>
+          </div>
+          <Button htmlType="submit">회원가입</Button>
+        </Form>
+      )}
     </div>
   );
 };
 
 export default RegisterPage;
-
-{
-  /* 테스팅 버튼 */
-}
-{
-  /* 테스팅 버튼 */
-}
-{
-  /* 테스팅 버튼 */
-}
-{
-  /* <Button onClick={handleTesting}>테스팅 버튼</Button> */
-}

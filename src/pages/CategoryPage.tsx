@@ -1,4 +1,4 @@
-import ProductCard from '@/components/common/ProductCard';
+import ProductCard from '@/components/atoms/ProductCard';
 import Category from '@/components/common/widgets/Category';
 import { 신상품 } from '@/data/cardData';
 import { Select } from 'antd';

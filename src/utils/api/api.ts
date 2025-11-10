@@ -10,11 +10,12 @@ import type { Product, ProductContact } from '../../data/productDetailData';
 import {
   encryptAes256,
   encryptedAccessKey,
-  encryptedController,
   encryptedData,
+  getDecryptedValue,
   getEncryptedValue,
   timestamp,
 } from '../auth/crypto';
+import type { PartnerTokenRefreshResponse } from './partnerApi';
 
 // axios 기본 설정
 export const fakeApi = axios.create({
@@ -24,30 +25,6 @@ export const fakeApi = axios.create({
 export const apiRequest = axios.create({
   baseURL: 'http://dev-hitup.link:27000',
 });
-
-export const apiRequestEncrypted = axios.create({
-  baseURL: 'http://dev-hitup.link:27000',
-});
-
-apiRequestEncrypted.interceptors.request.use(
-  (config) => {
-    const timestamp = useAuthStore.getState().lastRequestTimestamp;
-    const encryptedAccessKey = encryptAes256(
-      timestamp,
-      import.meta.env.VITE_ACCESS_KEY,
-      import.meta.env.VITE_ACCESS_KEY
-    );
-
-    config.headers['Content-Type'] = 'application/json';
-    config.headers['request-time'] = timestamp;
-    config.headers['access-key'] = encryptedAccessKey;
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 export const getProduct = async (id: number): Promise<Product> => {
   try {
@@ -176,6 +153,28 @@ interface RegisterUserResponse {
   };
 }
 
+//
+export const 커머스토큰갱신 = async (refreshToken: string) => {
+  const { timestamp: ts, encryptedAccessKey } = getRequiredDataForEncrypted();
+
+  try {
+    const response = await apiRequest.post('/api/v1/token/refresh', null, {
+      headers: {
+        ...getEncryptedHeader(ts, encryptedAccessKey),
+        'Refresh-Token': `Bearer ${refreshToken}`,
+      },
+    });
+    if (response.data.code === '200') {
+      return JSON.parse(response.data.data);
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.log('파트너스 토큰갱신 오류:', error);
+    throw error;
+  }
+};
+
 export const registerUser = async (
   data: RegisterForm
 ): Promise<RegisterUserResponse> => {
@@ -190,12 +189,6 @@ export const registerUser = async (
     import.meta.env.VITE_ACCESS_KEY,
     data.phoneNumber
   );
-
-  // const encryptedAccessKey = encryptAes256(
-  //   timestamp,
-  //   import.meta.env.VITE_ACCESS_KEY,
-  //   import.meta.env.VITE_ACCESS_KEY
-  // );
 
   const newForm: RegisterForm = {
     ...data,
@@ -225,7 +218,7 @@ export const registerUser = async (
 const getRequiredDataForEncrypted = () => {
   const timestamp = Date.now().toString();
   const encryptedAccessKey = getEncryptedValue(
-    import.meta.env.VITE_ACCESS_KEY_PARTNERS,
+    import.meta.env.VITE_ACCESS_KEY,
     timestamp
   );
 
@@ -266,30 +259,30 @@ export const createAuthCode = async (phoneNumber: string) => {
 };
 
 export const loginUser = async (loginData: LoginData) => {
-  const encryptedPhoneNumber = encryptedController(loginData.phoneNumber);
+  const { timestamp: ts, encryptedAccessKey } = getRequiredDataForEncrypted();
 
   const newData = {
     ...loginData,
-    phoneNumber: encryptedPhoneNumber,
+    phoneNumber: getEncryptedValue(loginData.phoneNumber, ts),
   };
 
-  return await apiRequestEncrypted
-    .post('/api/v1/member/login', newData)
+  return await apiRequest
+    .post('/api/v1/member/login', newData, {
+      headers: getEncryptedHeader(ts, encryptedAccessKey),
+    })
     .then((res) => {
       if (res.data?.code === '200') {
-        return JSON.parse(res.data.data);
+        const parsedData = JSON.parse(res.data.data);
+        const decryptedData = {
+          ...parsedData,
+          nickName: getDecryptedValue(parsedData.nickName, ts),
+        };
+
+        return decryptedData;
       } else {
         throw new Error(res.data.message);
       }
     });
-
-  // return await apiRequest.post('/api/v1/member/login', newData, {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'request-time': timestamp,
-  //     'access-key': encryptedAccessKey,
-  //   },
-  // });
 };
 
 // fakeApi.interceptors.request.use(

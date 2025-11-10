@@ -4,12 +4,31 @@ export const useNavi = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const goHome = () => navigate('/');
+  const goHome = () => navigate('/user');
   const goCart = () => {
-    navigate('/cart');
+    navigate('/user/cart');
   };
   const goMypage = () => {
-    navigate('/mypage');
+    navigate('/user/mypage');
+  };
+
+  const goLogin = () => navigate('/user/login');
+  const goRegister = () => navigate('/user/register');
+
+  const goAddress = () => {
+    navigate('/user/address');
+  };
+
+  const goCoupon = () => {
+    navigate('/user/coupon');
+  };
+
+  const goPurchaseHistory = () => {
+    navigate('/user/purchase/history');
+  };
+
+  const goReviewManage = () => {
+    navigate('/user/review/writable');
   };
 
   // 파트너스 관련 페이지 (임시)
@@ -29,6 +48,12 @@ export const useNavi = () => {
     goHome,
     goCart,
     goMypage,
+    goLogin,
+    goRegister,
+    goAddress,
+    goCoupon,
+    goPurchaseHistory,
+    goReviewManage,
 
     // 파트너 관련
     goPartnerLogin,

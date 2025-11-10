@@ -1,15 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavi } from '@/hooks/useNavi';
 import CartIcon from '../../../assets/images/icon/CartIcon';
 import ProfileIcon from '../../../assets/images/icon/ProfileIcon';
-import HamburgerBtn from '../HamburgerBtn';
-import Logo from '../Logo';
-import SearchField from './SearchField';
-import { Button } from 'antd';
-import { useNavi } from '@/hooks/useNavi';
+import HamburgerBtn from '../../atoms/HamburgerBtn';
+import Logo from '../../atoms/Logo';
 
 const Header = () => {
   const { goHome, goCart, goMypage, goAddProduct } = useNavi();
-  const navigate = useNavigate();
+
   const pathname = window.location.pathname;
 
   const goMain = () => {
@@ -27,12 +24,12 @@ const Header = () => {
         <HamburgerBtn />
         <Logo onClick={goMain} />
       </div>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <Button onClick={() => navigate('/partner/login')}>
           파트너스 로그인(new!)
         </Button>
         <Button onClick={goAddProduct}>파트너스 상품</Button>
-      </div>
+      </div> */}
       <div className="flex gap-[26px]">
         {/* <div className="hidden md:block">
           <SearchField />

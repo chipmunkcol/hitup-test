@@ -1,42 +1,31 @@
+import { useNavi } from '@/hooks/useNavi';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
-  const { user } = useAuthStore();
-  const navigate = useNavigate();
-  const goAddress = () => {
-    navigate('/address');
-  };
+  const { userAuth } = useAuthStore();
+  const {
+    goLogin,
 
-  const goPartnership = () => {
-    navigate('/partnership');
-  };
-
-  const goCoupon = () => {
-    navigate('/coupon');
-  };
-
-  const goPurchaseHistory = () => {
-    navigate('/purchase/history');
-  };
-
-  const goReviewManage = () => {
-    navigate('/review/writable');
-  };
+    goAddress,
+    goPurchaseHistory,
+    goReviewManage,
+    goCoupon,
+    goPartnerRegister,
+  } = useNavi();
 
   return (
     <div className="max-w-2xl m-auto px-4 py-10">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4 px-16">
           <div className="w-[60px] h-[60px] rounded-full bg-Bgrey-20"></div>
-          {!user && (
-            <div className="flex items-center">
+          {!userAuth && (
+            <div className="flex items-center" onClick={goLogin}>
               로그인/회원가입하고 이용해보세요
             </div>
           )}
-          {user && (
+          {userAuth && (
             <div className="flex flex-col justify-center">
-              <div className="font-bold text-lg">{user?.id}님</div>
+              <div className="font-bold text-lg">{userAuth.nickName} 님</div>
             </div>
           )}
         </div>
@@ -80,7 +69,10 @@ const Mypage = () => {
         <div className="cursor-pointer text-HITUP_Blue" onClick={goAddress}>
           배송지 관리
         </div>
-        <div className="cursor-pointer text-HITUP_Blue" onClick={goPartnership}>
+        <div
+          className="cursor-pointer text-HITUP_Blue"
+          onClick={goPartnerRegister}
+        >
           입점/제휴 신청
         </div>
         <div>멤버쉽 라운지</div>

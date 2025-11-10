@@ -34,9 +34,13 @@ import FindPassword from './pages/partner/FindPassword';
 import FindId from './pages/partner/FindId';
 import FindIdFound from './pages/partner/FindIdFound';
 import ResetPassword from './pages/partner/ResetPassword';
-import CheckTokenExpired from './components/partner/common/CheckTokenExpired';
+import CheckTokenExpiredPartner from './components/partner/common/CheckTokenExpired';
 import Sidebar from './components/partner/common/Sidebar';
 import PartersLayout from './components/common/layout/PartersLayout';
+import { Button } from 'antd';
+import { useNavi } from './hooks/useNavi';
+import TempNaviHeader from './components/common/widgets/TempNaviHeader';
+import CheckTokenExpired from './components/common/Auth/CheckTokenExpired';
 
 function App() {
   // const { user } = useAuthStore();
@@ -44,6 +48,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<TempNaviHeader />} />
+
+        {/* 유저 페이지 */}
         <Route path="/user" element={<Layout />}>
           <Route path="" element={<HomePage />} />
 
@@ -88,7 +95,14 @@ function App() {
 
           <Route path="coupon" element={<CouponPage />} />
 
-          <Route path="mypage" element={<Mypage />} />
+          <Route
+            path="mypage"
+            element={
+              <CheckTokenExpired>
+                <Mypage />
+              </CheckTokenExpired>
+            }
+          />
 
           {/* 주문관련 */}
           <Route path="purchase" element={<PurchasePage />} />
@@ -118,9 +132,9 @@ function App() {
           <Route
             path="management"
             element={
-              <CheckTokenExpired>
+              <CheckTokenExpiredPartner>
                 <Sidebar />
-              </CheckTokenExpired>
+              </CheckTokenExpiredPartner>
             }
           >
             <Route path="product/add" element={<AddProduct />} />

@@ -1,37 +1,25 @@
-import Button from '@/components/common/Button';
+import Button from '@/components/atoms/Button';
 import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavi } from '@/hooks/useNavi';
-import { useAuthStore, useTokenStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { createAuthCode, loginUser } from '@/utils/api/api';
 import { useMutation } from '@tanstack/react-query';
 import { Input } from 'antd';
 import { useState } from 'react';
 
 const Login = () => {
+  const { goRegister } = useNavi();
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [isOpenCode, setIsOpenCode] = useState(false);
-  const setUser = useAuthStore((state) => state.setUser);
-  const setToken = useTokenStore((state) => state.setToken);
+  const { setUserAuth } = useAuthStore();
   const { goHome } = useNavi();
 
   const { mutate: loginMutate } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log('login success data: ', data);
-      const {
-        accessToken,
-        refreshToken,
-        accessTokenExpiredDate,
-        refreshTokenExpiredDate,
-      } = data.memberToken;
-      setToken({
-        accessToken,
-        refreshToken,
-        accessTokenExpiredDate,
-        refreshTokenExpiredDate,
-      });
-      setUser(data);
+      setUserAuth(data);
       goHome();
     },
     onError: (error) => {
@@ -72,6 +60,12 @@ const Login = () => {
       {/* <PurchaseItemCard /> */}
       <div>
         <h2>휴대폰 번호로 간편하게 시작해보세요</h2>
+        <div>
+          회원가입이 아직이신가요?{' '}
+          <span onClick={goRegister} className="underline">
+            (회원가입 하기)
+          </span>
+        </div>
       </div>
       <div className="flex flex-col gap-6 p-6">
         <div>

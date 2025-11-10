@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 
-import ProductCard from '../components/common/ProductCard';
+import ProductCard from '../components/atoms/ProductCard';
 import More from '../components/common/widgets/More';
 import Tab from '../components/common/widgets/Tab';
 import { 신상품 } from '../data/cardData';
 
 import Category from '@/components/common/widgets/Category';
+import { useEffect } from 'react';
 import img1 from '../assets/images/Banner_carousel_desktop1.png';
 import img2 from '../assets/images/Banner_carousel_desktop2.png';
 import { Carousel } from '../components/common/libs/carousel/Carousel';
-import { useTokenStore } from '@/store/useAuthStore';
-import { useEffect } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const slides = [img1, img2];
 
@@ -21,18 +21,20 @@ const HomePage = () => {
     navigate(`/product/${productId}`);
   };
 
-  function checkExpiredToken(expiredTime: string, callback: () => void) {
-    const currentTime = new Date().toISOString();
-    if (expiredTime < currentTime) {
-      callback();
-    }
-  }
+  // function checkExpiredToken(expiredTime: string, callback: () => void) {
+  //   const currentTime = new Date().toISOString();
+  //   if (expiredTime < currentTime) {
+  //     callback();
+  //   }
+  // }
 
-  const { token, clearAccessToken } = useTokenStore();
-  useEffect(() => {
-    if (token.accessToken)
-      checkExpiredToken(token.accessTokenExpiredDate, clearAccessToken);
-  }, [token.accessToken]);
+  // const { token, clearAccessToken } = useTokenStore();
+  // useEffect(() => {
+  //   if (token.accessToken)
+  //     checkExpiredToken(token.accessTokenExpiredDate, clearAccessToken);
+  // }, [token.accessToken]);
+  const { userAuth } = useAuthStore();
+  console.log('userAuth: ', userAuth);
 
   return (
     <div className="w-full">

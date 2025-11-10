@@ -1,4 +1,4 @@
-import Button from '@/components/common/Button';
+import Button from '@/components/atoms/Button';
 import { Input } from 'antd';
 
 const PartnershipPage = () => {

@@ -1,7 +1,7 @@
-import Button from '@/components/common/Button';
+import Button from '@/components/atoms/Button';
 import { TYPOGRAPHY } from '@/styles/typography';
 import SelectboxCheck from '../widgets/SelectboxCheck';
-import Input from '../Input';
+import Input from '../../atoms/Input';
 
 interface ContactSellerPortalProps {
   closePortal: () => void;

@@ -19,125 +19,60 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 // 일단 로컬에 access_token & refresh_token 저장 후 사용
 // 설정된 expired 시간 이후에는 자동 로그아웃 처리 필요
 
-export interface User {
+export interface UserAuth {
   // id: string;
   memberId: string;
   nickName: string;
   birthDay: string; // "1992-10-31"
   gender: string;
   age: number;
+  memberToken: {
+    accessTokenExpiredDate: number;
+    refreshTokenExpiredDate: number;
+    accessToken: string;
+    refreshToken: string;
+  };
 }
 
-interface AuthState {
-  lastRequestTimestamp: string;
-  setLastRequestTimestamp: (timestamp: string) => void;
-
+interface DuplicatedState {
   isCheckDuplicatedNickname: boolean;
   isDuplicatedNickname: boolean;
   setIsCheckDuplicatedNickname: (status: boolean) => void;
   setIsDuplicatedNickname: (status: boolean) => void;
+}
 
-  user: User | null;
-  setUser: (user: User | null) => void;
-  fetchUser: () => Promise<void>;
+interface AuthState {
+  userAuth: UserAuth | null;
+  setUserAuth: (user: Partial<UserAuth>) => void;
+
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  // 암호화 복호화 관련
-  lastRequestTimestamp: '',
-  setLastRequestTimestamp: (timestamp: string) =>
-    set({ lastRequestTimestamp: timestamp }),
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      userAuth: null,
+      setUserAuth: (user) =>
+        set({
+          userAuth: {
+            ...get().userAuth,
+            ...user, // ✅ 변경된 부분만 반영
+          } as UserAuth,
+        }),
+      logout: () => set({ userAuth: null }),
+    }),
+    {
+      name: 'user-auth',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
 
-  // 닉네임 중복 확인
+export const useDuplicatedStore = create<DuplicatedState>()((set) => ({
   isCheckDuplicatedNickname: false,
   isDuplicatedNickname: false,
   setIsCheckDuplicatedNickname: (status: boolean) =>
     set({ isCheckDuplicatedNickname: status }),
   setIsDuplicatedNickname: (status: boolean) =>
     set({ isDuplicatedNickname: status }),
-  // accesstoken 에서 디코딩한 사용자 정보
-  user: null,
-  setUser: (user: User | null) => set({ user: user }),
-  fetchUser: async () => {
-    try {
-      const token = localStorage.getItem('access_token');
-      // const token =
-      //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3NjA0MDg2MDh9.21K6TDJbE03tc4BA0TzAsXnbyLzUILQC_kCuAH6klVU';
-
-      if (!token) {
-        set({ user: null });
-        return;
-      }
-
-      const user = parseJwt(token);
-      set({ user: user });
-    } catch (error) {
-      console.error('Failed to fetch user info:', error);
-      localStorage.removeItem('access_token');
-      set({ user: null });
-    }
-  },
-
-  logout: () => {
-    localStorage.removeItem('access_token');
-    set({ user: null });
-  },
 }));
-
-// 로컬에 token 정보 저장
-export interface Token {
-  accessToken: string;
-  refreshToken: string;
-  accessTokenExpiredDate: string;
-  refreshTokenExpiredDate: string;
-}
-
-interface TokenState {
-  token: Token;
-  setToken: (tokenData: Token) => void;
-  getToken: () => Token;
-  clearAccessToken: () => void;
-  clearToken: () => void;
-}
-
-export const useTokenStore = create<TokenState>()(
-  persist<TokenState>(
-    (set, get) => ({
-      token: {
-        accessToken: '',
-        refreshToken: '',
-        accessTokenExpiredDate: '',
-        refreshTokenExpiredDate: '',
-      },
-      setToken: (tokenData: Token) => set({ token: tokenData }),
-
-      getToken: () => {
-        return get().token;
-      },
-
-      clearAccessToken: () =>
-        set({
-          token: {
-            ...get().token,
-            accessToken: '',
-            accessTokenExpiredDate: '',
-          },
-        }),
-
-      clearToken: () =>
-        set({
-          token: {
-            accessToken: '',
-            refreshToken: '',
-            accessTokenExpiredDate: '',
-            refreshTokenExpiredDate: '',
-          },
-        }),
-    }),
-    {
-      name: 'auth', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
-    }
-  )
-);

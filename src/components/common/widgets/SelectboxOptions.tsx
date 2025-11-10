@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ArrowToBottom from '../../../assets/images/icon/ArrowToBottom';
 import ArrowToTop from '../../../assets/images/icon/ArrowToTop';
 import CancelIcon from '../../../assets/images/icon/CancelIcon';
-import OptionPlusMinusBtn from '../OptionPlusMinusBtn';
+import OptionPlusMinusBtn from '../../atoms/OptionPlusMinusBtn';
 
 type SelectedOption = {
   name: string;

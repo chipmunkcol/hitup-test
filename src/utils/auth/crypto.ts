@@ -104,16 +104,12 @@ export const getEncryptedValue = (text: string, timestamp: string) => {
   return encryptedText;
 };
 
-export const encryptedController = (text: string) => {
-  const timeStamp = String(Date.now());
-  const encryptedText = encryptAes256(
-    timeStamp,
-    import.meta.env.VITE_ACCESS_KEY,
-    text
-  );
-
-  useAuthStore.getState().setLastRequestTimestamp(timeStamp);
-  return encryptedText;
+export const getDecryptedValue = (
+  cipherTextBase64: string,
+  timestamp: string
+) => {
+  const decryptedText = decryptAes256(timestamp, accessKey, cipherTextBase64);
+  return decryptedText;
 };
 
 // ========================================

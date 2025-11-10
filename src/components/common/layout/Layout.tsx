@@ -22,14 +22,14 @@
 // export default Layout;
 
 import type { ReactNode } from 'react';
-import Footer from '../widgets/Footer';
-import Header from '../widgets/Header';
 import { Outlet } from 'react-router-dom';
 import CategoryBig from '../widgets/CategoryBig';
+import Footer from '../widgets/Footer';
+import Header from '../widgets/Header';
 
-interface LayoutProps {
-  children: ReactNode;
-}
+// interface LayoutProps {
+//   children: ReactNode;
+// }
 
 const Layout = () => {
   return (

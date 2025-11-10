@@ -1,11 +1,11 @@
-import OptionPlusMinusBtn from '@/components/common/OptionPlusMinusBtn';
-import SelectBox from '@/components/common/SelectBox';
+import OptionPlusMinusBtn from '@/components/atoms/OptionPlusMinusBtn';
+import SelectBox from '@/components/atoms/SelectBox';
 import { TYPOGRAPHY } from '@/styles/typography';
 import { alertComingSoon } from '@/utils/function';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/common/Button';
+import Button from '../components/atoms/Button';
 import useCart from '../hooks/useCart';
 import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
 import Loading from './utils/Loading';
