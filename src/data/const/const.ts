@@ -1,5 +1,5 @@
 export type ProductType =
-  | '스포츠용품'
+  | '스포츠'
   | '의류'
   | '신발' // '구두/신발'
   | '상품권' // '상품권/쿠폰'
@@ -7,7 +7,7 @@ export type ProductType =
 
 export const enum_options = {
   addProduct상품군: [
-    { value: '스포츠용품', label: '스포츠용품' },
+    { value: '스포츠', label: '스포츠용품' },
     { value: '의류', label: '의류' },
     { value: '신발', label: '구두/신발' },
     { value: '상품권', label: '상품권/쿠폰' },

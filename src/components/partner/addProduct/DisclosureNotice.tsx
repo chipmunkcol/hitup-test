@@ -10,6 +10,7 @@ import {
   Radio,
   Select,
   Space,
+  type FormInstance,
 } from 'antd';
 import { useState } from 'react';
 
@@ -116,10 +117,11 @@ const DisclosureNotice = () => {
         </Checkbox>
       </div>
 
-      {productType === '스포츠용품' && <SportingGoods />}
+      {productType === '스포츠' && <SportingGoods />}
       {productType === '의류' && <Clothes />}
       {productType === '신발' && <Shoes />}
       {productType === '상품권' && <Giftcard />}
+      {productType === '기타재화' && <Other />}
 
       {/* 공통 부분 */}
       {/* 공통 부분 */}
@@ -261,11 +263,58 @@ const DisclosureNotice = () => {
 
 export default DisclosureNotice;
 
-function Giftcard() {
-  type Mode = 'date' | 'manual';
-  const [mode, setMode] = useState<Mode>('date'); // 기본값: 캘린더
+function Other() {
+  return (
+    <>
+      {/* 품명 */}
+      <Form.Item label="품명" name="other-productName" rules={commonRules}>
+        <Input />
+      </Form.Item>
 
-  const handleChange = (value: Mode) => {
+      {/* 모델명 */}
+      <Form.Item label="모델명" name="other-modelName" rules={commonRules}>
+        <Input />
+      </Form.Item>
+
+      {/* 법에 의한 인증, 허가 등을 받았음을 확인할 수 있는 경우 그에 대한 사항* */}
+      <Form.Item
+        label="법에 의한 인증, 허가 등을 받았음을 확인할 수 있는 경우 그에 대한 사항"
+        name="other-certificationDetails"
+        labelCol={{
+          style: {
+            width: '100px',
+            height: '100px',
+            display: 'inline-block',
+            whiteSpace: 'normal',
+            wordBreak: 'keep-all',
+            lineHeight: '1.4',
+          },
+        }}
+        rules={commonRules}
+      >
+        <Input.TextArea style={{ height: '100px' }} />
+      </Form.Item>
+
+      {/* 제조사 */}
+      <Form.Item label="제조사" name="other-manufacturer" rules={commonRules}>
+        <Input />
+      </Form.Item>
+
+      {/* 소비자 상담 연락처 */}
+      <Form.Item
+        label="소비자 상담 연락처"
+        name="other-customerServiceContact"
+        rules={commonRules}
+      >
+        <Input />
+      </Form.Item>
+    </>
+  );
+}
+
+function Giftcard() {
+  const { mode, setMode } = useAddProductStore();
+  const handleChange = (value: typeof mode) => {
     setMode(value);
   };
   return (
@@ -353,8 +402,11 @@ function Shoes() {
       {/* 제품 소재 */}
       <Form.Item label="제품 소재" name="shoes-material" rules={commonRules}>
         <Input.TextArea />
-        <div>운동화인 경우에는 겉감, 안감을 구분하여 표시</div>
       </Form.Item>
+      {/* <div> */}
+      <div className="px-25">운동화인 경우에는 겉감, 안감을 구분하여 표시</div>
+
+      {/* </div> */}
 
       {/* 색상 */}
       <Form.Item label="색상" name="shoes-color" rules={commonRules}>
@@ -369,8 +421,8 @@ function Shoes() {
       {/* 궆높이 */}
       <Form.Item label="굽높이" name="shoes-heelHeight" rules={commonRules}>
         <Input placeholder="없는 경우 0 입력" />
-        <div>굽 재료를 사용하는 신발에 한함 (단위 : cm)</div>
       </Form.Item>
+      <div className="px-25">굽 재료를 사용하는 신발에 한함 (단위 : cm)</div>
 
       {/* 제조사 */}
       <Form.Item label="제조사" name="shoes-manufacturer" rules={commonRules}>
@@ -413,10 +465,8 @@ function Shoes() {
 // 의류용품
 
 function Clothes() {
-  type Mode = 'date' | 'manual';
-  const [mode, setMode] = useState<Mode>('date'); // 기본값: 캘린더
-
-  const handleChange = (value: Mode) => {
+  const { mode, setMode } = useAddProductStore();
+  const handleChange = (value: typeof mode) => {
     setMode(value);
   };
 
@@ -448,18 +498,18 @@ function Clothes() {
         label="세탁방법 및 취급시 주의 사항"
         name="clothes-careInstructions"
         labelCol={{
-          flex: '100px',
-          // style: {
-          //   whiteSpace: 'normal',
-          //   width: '100px',
-          //   height: '100px',
-          //   display: 'flex',
-          //   alignItems: 'center',
-          // },
+          style: {
+            width: '100px',
+            paddingTop: '14px',
+            display: 'inline-block',
+            whiteSpace: 'normal',
+            wordBreak: 'keep-all',
+            lineHeight: '1.4',
+          },
         }}
         rules={commonRules}
       >
-        <Input.TextArea />
+        <Input.TextArea style={{ height: '100px' }} />
       </Form.Item>
 
       {/* 모드 선택 */}
@@ -524,10 +574,9 @@ function Clothes() {
 // 스포츠용품
 // 스포츠용품
 function SportingGoods() {
-  const [mode, setMode] = useState<'date' | 'manual'>('date'); // 기본값: 캘린더
-
-  const handleChange = (e: any) => {
-    setMode(e.target.value);
+  const { mode, setMode } = useAddProductStore();
+  const handleChange = (value: 'date' | 'manual') => {
+    setMode(value);
   };
 
   return (
@@ -580,29 +629,34 @@ function SportingGoods() {
         <Input.TextArea placeholder="제품구성을 입력하세요" />
       </Form.Item>
 
-      {/* 출시연월 */}
-      <Form.Item
-        label="출시연월"
-        name="disclosureReleaseDate"
-        rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
-      >
-        {/* 모드 선택 */}
-        <Radio.Group onChange={handleChange} value={mode}>
-          <Radio value="date">캘린더 선택</Radio>
-          <Radio value="manual">직접 입력</Radio>
-        </Radio.Group>
+      {/* 모드 선택 */}
+      <Radio.Group onChange={(e) => handleChange(e.target.value)} value={mode}>
+        <Radio value="date">캘린더 선택</Radio>
+        <Radio value="manual">직접 입력</Radio>
+      </Radio.Group>
 
-        {/* 출시연월  */}
-        {mode === 'date' ? (
+      {/* 출시연월  */}
+      {mode === 'date' ? (
+        <Form.Item
+          label="출시연월"
+          name="disclosureReleaseDate"
+          rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
+        >
           <DatePicker
             picker="month"
             placeholder="출시연월을 선택하세요"
             style={{ width: '100%' }}
           />
-        ) : (
+        </Form.Item>
+      ) : (
+        <Form.Item
+          label="출시연월"
+          name="disclosureReleaseDate"
+          rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
+        >
           <Input placeholder="예: 2024-11" />
-        )}
-      </Form.Item>
+        </Form.Item>
+      )}
 
       {/* 제조사 */}
       <Form.Item

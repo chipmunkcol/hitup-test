@@ -7,67 +7,28 @@ import Product from '@/components/partner/addProduct/Product';
 import ProductImage from '@/components/partner/addProduct/ProductImage';
 import DetailPageImageComponent from '@/components/partner/addProduct/ProductImageDetail';
 import { enum_options } from '@/data/const/const';
-import { useNavi } from '@/hooks/useNavi';
-import { useAuthStore } from '@/store/partner/useAuthStore';
 import { useAddProductStore } from '@/store/useAddProductStore';
-import { Button, Form, type FormInstance } from 'antd';
-import { useEffect, useState } from 'react';
+import { convertTextTo상품상세참조 } from '@/utils/function';
+import { Button, Form } from 'antd';
+import { useEffect } from 'react';
 
 const AddProduct = () => {
-  const { 상품상세 } = useAddProductStore();
+  const { 상품상세, setMode } = useAddProductStore();
   const [form] = Form.useForm();
 
-  const temp = (상품상세: boolean, form: FormInstance<any>) => {
-    const productGroup = form.getFieldValue('disclosureProductGroup');
-    switch (productGroup) {
-      case '스포츠용품':
-        if (상품상세) {
-          form.setFieldValue('sports-productName', '상품상세 참조');
-          form.setFieldValue('disclosureModelName', '상품상세 참조');
-          form.setFieldValue(
-            'disclosureKCCertificationNumber',
-            '상품상세 참조'
-          );
-          form.setFieldValue('disclosureSize', '상품상세 참조');
-          form.setFieldValue('disclosureWeight', '상품상세 참조');
-          form.setFieldValue('disclosureColor', '상품상세 참조');
-          form.setFieldValue('disclosureMaterial', '상품상세 참조');
-          form.setFieldValue('disclosureProductComposition', '상품상세 참조');
-
-          // Radio 값 변경 -> Input 값 변경
-          // form.setFieldsValue({
-          //   mode: 'manual',
-          //   // disclosureReleaseDate: '상품상세 참조',
-          // });
-          form.setFieldValue('disclosureManufacturer', '상품상세 참조');
-          form.setFieldValue('disclosureProductSpecification', '상품상세 참조');
-          form.setFieldValue('disclosureWarrantyStandard', '상품상세 참조');
-          form.setFieldValue('disclosureASContact', '상품상세 참조');
-        } else {
-          form.setFieldValue('sports-productName', '');
-          form.setFieldValue('disclosureModelName', '');
-          form.setFieldValue('disclosureKCCertificationNumber', '');
-          form.setFieldValue('disclosureSize', '');
-          form.setFieldValue('disclosureWeight', '');
-          form.setFieldValue('disclosureColor', '');
-          form.setFieldValue('disclosureMaterial', '');
-          form.setFieldValue('disclosureProductComposition', '');
-          form.setFieldValue('disclosureReleaseDate', '');
-          form.setFieldValue('disclosureManufacturer', '');
-          form.setFieldValue('disclosureProductSpecification', '');
-          form.setFieldValue('disclosureWarrantyStandard', '');
-          form.setFieldValue('disclosureASContact', '');
-        }
-        break;
-      // 다른 상품군에 대한 처리 추가 가능
-      default:
-        break;
-    }
-  };
-
   useEffect(() => {
-    temp(상품상세, form);
+    if (상품상세) {
+      setMode('manual');
+    }
+
+    convertTextTo상품상세참조(상품상세, form);
   }, [상품상세]);
+
+  // useEffect(() => {
+  //   if (mode === 'manual') {
+  //     form.setFieldValue('disclosureReleaseDate', '상품상세 참조');
+  //   }
+  // }, [mode]);
 
   const onSubmit = (values: any) => {
     // const values = form.getFieldsValue();
@@ -77,7 +38,15 @@ const AddProduct = () => {
   return (
     <Form
       // className="flex-5"
-      labelCol={{ style: { width: '100px' } }}
+      labelCol={{
+        style: {
+          width: '100px',
+          display: 'inline-block',
+          whiteSpace: 'normal',
+          wordBreak: 'keep-all',
+          lineHeight: '1.4',
+        },
+      }}
       wrapperCol={{ flex: 'auto' }}
       labelAlign="left"
       form={form}
