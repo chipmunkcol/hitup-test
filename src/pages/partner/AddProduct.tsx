@@ -1,4 +1,5 @@
 import Category from '@/components/partner/addProduct/Category';
+import Delivery from '@/components/partner/addProduct/Delivery';
 import DisclosureNotice from '@/components/partner/addProduct/DisclosureNotice';
 import MainInfo from '@/components/partner/addProduct/MainInfo';
 import Option from '@/components/partner/addProduct/Option';
@@ -23,12 +24,6 @@ const AddProduct = () => {
 
     convertTextTo상품상세참조(상품상세, form);
   }, [상품상세]);
-
-  // useEffect(() => {
-  //   if (mode === 'manual') {
-  //     form.setFieldValue('disclosureReleaseDate', '상품상세 참조');
-  //   }
-  // }, [mode]);
 
   const onSubmit = (values: any) => {
     // const values = form.getFieldsValue();
@@ -96,6 +91,11 @@ const AddProduct = () => {
       {/* 상품정보제공고시 */}
       <LayoutArea title="상품정보제공고시">
         <DisclosureNotice />
+      </LayoutArea>
+
+      {/* 배송 */}
+      <LayoutArea title="배송">
+        <Delivery />
       </LayoutArea>
 
       {/* 저장하기 폼 제출 */}

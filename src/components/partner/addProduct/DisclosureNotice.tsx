@@ -65,7 +65,7 @@ const DisclosureNotice = () => {
   };
 
   // 상품군에 따라 필수값 변경
-  const [productType, setProductType] = useState<ProductType>('스포츠용품');
+  const [productType, setProductType] = useState<ProductType>('스포츠');
   // console.log('productType: ', productType);
 
   const changeProductType = (value: ProductType) => {

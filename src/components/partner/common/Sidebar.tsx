@@ -44,12 +44,14 @@ const Sidebar = () => {
               </div>
             </div>
             <div
-              className={`${isHidden ? 'opacity-0' : 'opacity-100'} border border-Grey-50 px-4`}
+              className={`${isHidden ? 'opacity-0' : 'opacity-100'} border border-Grey-50 px-4 bg-Grey-05`}
             >
-              <div className="py-4">상품 관리</div>
-              <ul>
-                <li className="py-2">상품 등록</li>
-              </ul>
+              <div className="">
+                <div className="py-4">상품 관리</div>
+                <ul>
+                  <li className="py-2">상품 등록</li>
+                </ul>
+              </div>
             </div>
           </div>
 

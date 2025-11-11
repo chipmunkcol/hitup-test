@@ -1,47 +1,9 @@
 import { CATEGORY, getKoCategory } from '@/data/const/const';
-import { useState } from 'react';
-
-type typeCategory = {
-  category: keyof typeof CATEGORY | '';
-  subCategory: string;
-  type: string;
-  fish: string[];
-};
+import useAddProductCategory from '@/hooks/partner/useAddProductCategory';
 
 const Category = () => {
-  const [category, setCategory] = useState<typeCategory>({
-    category: '',
-    subCategory: '',
-    type: '',
-    fish: [],
-  });
-
-  const fishList =
-    category.category && category.subCategory && category.type
-      ? (((
-          CATEGORY[category.category] as Record<
-            string,
-            { value: string; label: string; fish: string[] }[]
-          >
-        )[category.subCategory]?.filter((v) => v.value === category.type) ??
-          [])[0]?.fish ?? [])
-      : [];
-
-  const onClickCategory = (name: string, value: string) => {
-    setCategory((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onClickFish = (fish: string) => {
-    console.log('fish: ', fish);
-    const newCategory = { ...category };
-    if (category.fish.includes(fish)) {
-      newCategory.fish = newCategory.fish.filter((f) => f !== fish);
-      setCategory(newCategory);
-    } else {
-      newCategory.fish = [...newCategory.fish, fish];
-      setCategory(newCategory);
-    }
-  };
+  const { category, fishList, onClickCategory, onClickFish } =
+    useAddProductCategory();
 
   return (
     <div className="p-4 ">
@@ -106,14 +68,7 @@ const Category = () => {
           <ul className="flex gap-2">
             {fishList &&
               fishList?.map((fish: string) => (
-                <li
-                  // onClick={(e) => {
-                  //   e.stopPropagation();
-                  //   onClickFish(fish);
-                  // }}
-                  key={`fish-${fish}`}
-                  className="flex gap-1"
-                >
+                <li key={`addproduct-fish-${fish}`} className="flex gap-1">
                   <input
                     onChange={() => onClickFish(fish)}
                     checked={category?.fish.includes(fish)}
