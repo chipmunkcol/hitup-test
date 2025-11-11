@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import useCart from '../hooks/useCart';
 import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
-import Loading from './utils/Loading';
+import Loading from './common/Loading';
 
 const CartPage = () => {
   const {

@@ -1,5 +1,7 @@
 import { swalLawAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { enum_options, type ProductType } from '@/data/const/const';
+import { commonRules, commonRulesMaxLength } from '@/data/const/regex';
+
 import { useAddProductStore } from '@/store/useAddProductStore';
 import {
   Button,
@@ -13,11 +15,6 @@ import {
   type FormInstance,
 } from 'antd';
 import { useState } from 'react';
-
-const commonRules = [
-  { required: true, message: '필수 정보를 입력해주세요' },
-  { max: 200, message: '최대 200자까지 입력 가능합니다' },
-];
 
 const DisclosureNotice = () => {
   const { onClick상품상세참조 } = useAddProductStore();
@@ -101,7 +98,7 @@ const DisclosureNotice = () => {
         <Form.Item
           label="상품군*"
           name="disclosureProductGroup"
-          rules={commonRules}
+          rules={commonRulesMaxLength(200)}
           // initialValue={enum_options.addProduct상품군[0].value}
         >
           <Select
@@ -267,12 +264,20 @@ function Other() {
   return (
     <>
       {/* 품명 */}
-      <Form.Item label="품명" name="other-productName" rules={commonRules}>
+      <Form.Item
+        label="품명"
+        name="other-productName"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
       {/* 모델명 */}
-      <Form.Item label="모델명" name="other-modelName" rules={commonRules}>
+      <Form.Item
+        label="모델명"
+        name="other-modelName"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
@@ -290,13 +295,17 @@ function Other() {
             lineHeight: '1.4',
           },
         }}
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea style={{ height: '100px' }} />
       </Form.Item>
 
       {/* 제조사 */}
-      <Form.Item label="제조사" name="other-manufacturer" rules={commonRules}>
+      <Form.Item
+        label="제조사"
+        name="other-manufacturer"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
@@ -304,7 +313,7 @@ function Other() {
       <Form.Item
         label="소비자 상담 연락처"
         name="other-customerServiceContact"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input />
       </Form.Item>
@@ -320,7 +329,11 @@ function Giftcard() {
   return (
     <>
       {/* 발행자 */}
-      <Form.Item label="발행자" name="giftcard-issuer" rules={commonRules}>
+      <Form.Item
+        label="발행자"
+        name="giftcard-issuer"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
@@ -370,7 +383,7 @@ function Giftcard() {
       <Form.Item
         label="이용조건"
         name="giftcard-usageConditions"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input />
       </Form.Item>
@@ -379,7 +392,7 @@ function Giftcard() {
       <Form.Item
         label="전액 환급 조건"
         name="giftcard-fullRefundConditions"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea />
       </Form.Item>
@@ -388,7 +401,7 @@ function Giftcard() {
       <Form.Item
         label="소비자 상담 연락처"
         name="giftcard-customerServiceContact"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input />
       </Form.Item>
@@ -400,7 +413,11 @@ function Shoes() {
   return (
     <>
       {/* 제품 소재 */}
-      <Form.Item label="제품 소재" name="shoes-material" rules={commonRules}>
+      <Form.Item
+        label="제품 소재"
+        name="shoes-material"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input.TextArea />
       </Form.Item>
       {/* <div> */}
@@ -409,23 +426,39 @@ function Shoes() {
       {/* </div> */}
 
       {/* 색상 */}
-      <Form.Item label="색상" name="shoes-color" rules={commonRules}>
+      <Form.Item
+        label="색상"
+        name="shoes-color"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
       {/* 발길이 */}
-      <Form.Item label="발길이" name="shoes-length" rules={commonRules}>
+      <Form.Item
+        label="발길이"
+        name="shoes-length"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
       {/* 궆높이 */}
-      <Form.Item label="굽높이" name="shoes-heelHeight" rules={commonRules}>
+      <Form.Item
+        label="굽높이"
+        name="shoes-heelHeight"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="없는 경우 0 입력" />
       </Form.Item>
       <div className="px-25">굽 재료를 사용하는 신발에 한함 (단위 : cm)</div>
 
       {/* 제조사 */}
-      <Form.Item label="제조사" name="shoes-manufacturer" rules={commonRules}>
+      <Form.Item
+        label="제조사"
+        name="shoes-manufacturer"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
@@ -433,7 +466,7 @@ function Shoes() {
       <Form.Item
         label="취급시 주의사항"
         name="shoes-careInstructions"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
         // style={{ whiteSpace: 'normal' }}
         labelCol={{ style: { width: '100px', whiteSpace: 'normal' } }}
       >
@@ -444,13 +477,17 @@ function Shoes() {
       <Form.Item
         label="품질보증기준"
         name="shoes-warrantyStandard"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea />
       </Form.Item>
 
       {/* A/S 연락처 */}
-      <Form.Item label="A/S 연락처" name="shoes-asContact" rules={commonRules}>
+      <Form.Item
+        label="A/S 연락처"
+        name="shoes-asContact"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
     </>
@@ -473,22 +510,38 @@ function Clothes() {
   return (
     <>
       {/* 제품 소재 */}
-      <Form.Item label="제품 소재" name="clothes-material" rules={commonRules}>
+      <Form.Item
+        label="제품 소재"
+        name="clothes-material"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input.TextArea />
       </Form.Item>
 
       {/* 색상 */}
-      <Form.Item label="색상" name="clothes-color" rules={commonRules}>
+      <Form.Item
+        label="색상"
+        name="clothes-color"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
       {/* 치수 */}
-      <Form.Item label="치수" name="clothes-size" rules={commonRules}>
+      <Form.Item
+        label="치수"
+        name="clothes-size"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
       {/* 제조사 */}
-      <Form.Item label="제조사" name="clothes-manufacturer" rules={commonRules}>
+      <Form.Item
+        label="제조사"
+        name="clothes-manufacturer"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input />
       </Form.Item>
 
@@ -507,7 +560,7 @@ function Clothes() {
             lineHeight: '1.4',
           },
         }}
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea style={{ height: '100px' }} />
       </Form.Item>
@@ -530,7 +583,7 @@ function Clothes() {
           <Form.Item
             // label="제조연월"
             name="disclosureReleaseDate"
-            rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
+            rules={commonRules}
           >
             {/* 출시연월  */}
             {mode === 'date' ? (
@@ -550,7 +603,7 @@ function Clothes() {
       <Form.Item
         label="품질보증기준"
         name="clothes-warrantyStandard"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea />
       </Form.Item>
@@ -559,7 +612,7 @@ function Clothes() {
       <Form.Item
         label="A/S 연락처"
         name="clothes-asContact"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input />
       </Form.Item>
@@ -582,12 +635,20 @@ function SportingGoods() {
   return (
     <>
       {/* 품명 */}
-      <Form.Item label="품명" name="sports-productName" rules={commonRules}>
+      <Form.Item
+        label="품명"
+        name="sports-productName"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="품명을 입력하세요" />
       </Form.Item>
 
       {/* 모델명 */}
-      <Form.Item label="모델명" name="disclosureModelName" rules={commonRules}>
+      <Form.Item
+        label="모델명"
+        name="disclosureModelName"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="모델명을 입력하세요" />
       </Form.Item>
 
@@ -595,28 +656,44 @@ function SportingGoods() {
       <Form.Item
         label="KC 인증번호"
         name="disclosureKCCertificationNumber"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input placeholder="KC 인증번호를 입력하세요" />
       </Form.Item>
 
       {/* 크기 */}
-      <Form.Item label="크기" name="disclosureSize" rules={commonRules}>
+      <Form.Item
+        label="크기"
+        name="disclosureSize"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="크기를 입력하세요" />
       </Form.Item>
 
       {/* 중량 */}
-      <Form.Item label="중량" name="disclosureWeight" rules={commonRules}>
+      <Form.Item
+        label="중량"
+        name="disclosureWeight"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="중량을 입력하세요" />
       </Form.Item>
 
       {/* 색상 */}
-      <Form.Item label="색상" name="disclosureColor" rules={commonRules}>
+      <Form.Item
+        label="색상"
+        name="disclosureColor"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="색상을 입력하세요" />
       </Form.Item>
 
       {/* 재질 */}
-      <Form.Item label="재질" name="disclosureMaterial" rules={commonRules}>
+      <Form.Item
+        label="재질"
+        name="disclosureMaterial"
+        rules={commonRulesMaxLength(200)}
+      >
         <Input placeholder="재질을 입력하세요" />
       </Form.Item>
 
@@ -624,7 +701,7 @@ function SportingGoods() {
       <Form.Item
         label="제품구성"
         name="disclosureProductComposition"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea placeholder="제품구성을 입력하세요" />
       </Form.Item>
@@ -640,7 +717,7 @@ function SportingGoods() {
         <Form.Item
           label="출시연월"
           name="disclosureReleaseDate"
-          rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
+          rules={commonRules}
         >
           <DatePicker
             picker="month"
@@ -652,7 +729,7 @@ function SportingGoods() {
         <Form.Item
           label="출시연월"
           name="disclosureReleaseDate"
-          rules={[{ required: true, message: '출시연월을 입력해주세요' }]}
+          rules={commonRules}
         >
           <Input placeholder="예: 2024-11" />
         </Form.Item>
@@ -662,7 +739,7 @@ function SportingGoods() {
       <Form.Item
         label="제조사"
         name="disclosureManufacturer"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input placeholder="제조사를 입력하세요" />
       </Form.Item>
@@ -671,7 +748,7 @@ function SportingGoods() {
       <Form.Item
         label="상품별 세부사양"
         name="disclosureProductSpecification"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea placeholder="상품별 세부사양을 입력하세요" />
       </Form.Item>
@@ -680,7 +757,7 @@ function SportingGoods() {
       <Form.Item
         label="품질보증기준"
         name="disclosureWarrantyStandard"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input.TextArea placeholder="품질보증기준을 입력하세요" />
       </Form.Item>
@@ -689,7 +766,7 @@ function SportingGoods() {
       <Form.Item
         label="A/S 연락처"
         name="disclosureASContact"
-        rules={commonRules}
+        rules={commonRulesMaxLength(200)}
       >
         <Input placeholder="A/S 연락처를 입력하세요" />
       </Form.Item>

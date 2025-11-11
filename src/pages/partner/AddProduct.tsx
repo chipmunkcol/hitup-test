@@ -28,11 +28,14 @@ const AddProduct = () => {
   const onSubmit = (values: any) => {
     // const values = form.getFieldsValue();
     console.log('values: ', values);
+
+    // Form.Item을 조건부로 호출해서 option 값 갯수가 초기값이없는경우엔 1로 보고 처리해도 괜찮을듯
+    console.log('옵션갯수 초기값 설정 되나?', values.optionLength);
   };
 
   return (
     <Form
-      // className="flex-5"
+      form={form}
       labelCol={{
         style: {
           width: '100px',
@@ -44,9 +47,9 @@ const AddProduct = () => {
       }}
       wrapperCol={{ flex: 'auto' }}
       labelAlign="left"
-      form={form}
       initialValues={{
         disclosureProductGroup: enum_options.addProduct상품군[0].value,
+        optionLength: 1,
       }}
       onFinish={onSubmit}
     >
