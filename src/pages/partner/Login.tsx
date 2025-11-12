@@ -1,4 +1,4 @@
-import useLogin from '@/hooks/users/useLogin';
+import useLogin from '@/hooks/partner/useLogin';
 import { Button, Form, Input } from 'antd';
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
       <Form
         form={form}
         onFinish={handleLogin}
-        labelCol={{ style: { width: '80px', height: '50px' } }}
+        labelCol={{ style: { width: '80px', height: '55px' } }}
         labelAlign="left"
       >
         {/* 아이디 */}

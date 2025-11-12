@@ -9,6 +9,7 @@ import Button from '../components/atoms/Button';
 import useCart from '../hooks/useCart';
 import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
 import Loading from './common/Loading';
+import { useNavi } from '@/hooks/useNavi';
 
 const CartPage = () => {
   const {
@@ -53,7 +54,7 @@ const CartPage = () => {
   console.log('addresses: ', addresses);
 
   const [isLoadingRefetch, setIsLoadingRefetch] = useState(false);
-  const navigate = useNavigate();
+  const { goAddAddress, goPurchase } = useNavi();
   const handlePurchase = async () => {
     // refetch 돌리면 query에서 받아오는 data가 undefined 되어서 아래 로직 실행x
     setIsLoadingRefetch(true);
@@ -65,12 +66,12 @@ const CartPage = () => {
     if (refreshedAddresses && refreshedAddresses?.length === 0) {
       const res = confirm('등록 된 배송지가 없습니다');
       if (res) {
-        navigate('/address/add');
+        goAddAddress();
       }
     }
 
     if (refreshedAddresses && refreshedAddresses?.length > 0) {
-      navigate('/purchase');
+      goPurchase();
     }
 
     setIsLoadingRefetch(false);

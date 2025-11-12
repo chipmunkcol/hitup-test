@@ -1,3 +1,4 @@
+import AfterService from '@/components/partner/addProduct/AfterService';
 import Category from '@/components/partner/addProduct/Category';
 import Delivery from '@/components/partner/addProduct/Delivery';
 import DisclosureNotice from '@/components/partner/addProduct/DisclosureNotice';
@@ -7,6 +8,7 @@ import OptionCustom from '@/components/partner/addProduct/OptionCustom';
 import Product from '@/components/partner/addProduct/Product';
 import ProductImage from '@/components/partner/addProduct/ProductImage';
 import DetailPageImageComponent from '@/components/partner/addProduct/ProductImageDetail';
+import Return from '@/components/partner/addProduct/Return';
 import { enum_options } from '@/data/const/const';
 import { useAddProductStore } from '@/store/useAddProductStore';
 import { convertTextTo상품상세참조 } from '@/utils/function';
@@ -30,7 +32,9 @@ const AddProduct = () => {
     console.log('values: ', values);
 
     // Form.Item을 조건부로 호출해서 option 값 갯수가 초기값이없는경우엔 1로 보고 처리해도 괜찮을듯
-    console.log('옵션갯수 초기값 설정 되나?', values.optionLength);
+    // console.log('옵션갯수 초기값 설정 되나?', values.optionLength);
+    // console.log('radiogroupForDelivery: ', values.extraDeliveryFee);
+    console.log('afterServiceInfo: ', values.afterServiceInfo);
   };
 
   return (
@@ -101,6 +105,16 @@ const AddProduct = () => {
         <Delivery />
       </LayoutArea>
 
+      {/* 반품/교환 */}
+      <LayoutArea title="반품/교환">
+        <Return />
+      </LayoutArea>
+
+      {/* A/S 특이사항 */}
+      <LayoutArea title="A/S 특이사항">
+        <AfterService />
+      </LayoutArea>
+
       {/* 저장하기 폼 제출 */}
       <div className="w-full flex justify-center gap-4">
         <Button>취소</Button>
@@ -123,7 +137,7 @@ const LayoutArea = ({ title, children }: LayoutAreaProps) => {
   return (
     <div className="p-4 ">
       <div className="border border-Grey-30 rounded-md p-4">
-        <div>{title}</div>
+        <div className="text-sm font-semibold pb-4">{title}</div>
         <div className="flex flex-col gap-6">{children}</div>
       </div>
     </div>

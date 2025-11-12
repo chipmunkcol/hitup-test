@@ -36,6 +36,7 @@ const domesticData = {
 
 const MainInfo = () => {
   const [originType, setOriginType] = useState<string | null>(null); // 수입산 / 국산 / 기타
+  // console.log('originType: ', originType);
   const [region, setRegion] = useState<string | null>(null); // 시도 or 대륙
   const [subRegion, setSubRegion] = useState<string | null>(null); // 구 or 나라
 
@@ -215,16 +216,6 @@ const MainInfo = () => {
       <div className="flex gap-2">
         <div className="flex-1">원산지*</div>
         <div className="flex-5 flex gap-2">
-          {/* <Select
-            style={{ width: 200 }}
-            defaultValue="대한민국"
-            options={[
-              { value: '대한민국', label: '대한민국' },
-              { value: '중국', label: '중국' },
-              { value: '일본', label: '일본' },
-              { value: '미국', label: '미국' },
-            ]}
-          /> */}
           <div className="flex gap-3">
             {/* [2-1] 원산지 */}
             <Select
@@ -239,6 +230,7 @@ const MainInfo = () => {
             ></Select>
 
             {/* [2-2] 시·도 or 대륙 */}
+            {/* [2-2] 시·도 or 대륙 */}
             {originType && originType !== '기타' && (
               <Select
                 placeholder={
@@ -250,14 +242,17 @@ const MainInfo = () => {
                 }
                 value={region || undefined}
                 onChange={handleRegionChange}
-                options={(originType === '국산'
-                  ? Object.keys(domesticData)
-                  : Object.keys(importData)
-                ).map((key) => (
-                  <Select.Option key={key} value={key}>
-                    {key}
-                  </Select.Option>
-                ))}
+                options={
+                  originType === '국산'
+                    ? Object.keys(domesticData).map((v) => ({
+                        label: v,
+                        value: v,
+                      }))
+                    : Object.keys(importData).map((v) => ({
+                        label: v,
+                        value: v,
+                      }))
+                }
               ></Select>
             )}
 
@@ -273,16 +268,11 @@ const MainInfo = () => {
                 }
                 value={subRegion || undefined}
                 onChange={handleSubRegionChange}
-              >
-                {(originType === '국산'
+                options={(originType === '국산'
                   ? domesticData[region as keyof typeof domesticData]
                   : importData[region as keyof typeof importData]
-                ).map((item) => (
-                  <Select.Option key={item} value={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
+                ).map((v) => ({ label: v, value: v }))}
+              ></Select>
             )}
 
             {/* 선택 결과 표시 */}

@@ -1,3 +1,4 @@
+import { useNavi } from '@/hooks/useNavi';
 import { useAuthStore } from '@/store/partner/useAuthStore';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -19,6 +20,22 @@ const Sidebar = () => {
     setIsHidden(false);
   };
 
+  // 상품관리 토글 기능
+  const pathname = window.location.pathname;
+  console.log('pathname: ', pathname);
+  const [isProductOpen, setIsProductOpen] = useState(false);
+  const toggleProduct = () => {
+    setIsProductOpen(!isProductOpen);
+  };
+  const { goDashboard, goAddProduct } = useNavi();
+
+  const 상품관리카테고리 = [
+    { name: '상품 조회/수정', onClick: () => {} },
+    { name: '상품 등록', onClick: goAddProduct },
+  ];
+
+  //
+
   return (
     <div className="h-full w-full ">
       <div className="h-full flex">
@@ -26,7 +43,7 @@ const Sidebar = () => {
           className={`relative transition-all duration-500 ${isHidden ? 'w-[30px]' : 'w-[330px]'} `}
         >
           <div
-            className={`fixed transition-all duration-500 ${isHidden ? ' -left-[300px]' : 'left-0'} w-[330px] h-full bg-Grey-10`}
+            className={`fixed transition-all duration-500 ${isHidden ? ' -left-[300px]' : 'left-0'} w-[330px] h-full bg-blue-950 text-white`}
           >
             <div className="p-10 flex flex-col gap-10">
               <div className="flex justify-between">
@@ -44,22 +61,44 @@ const Sidebar = () => {
               </div>
             </div>
             <div
-              className={`${isHidden ? 'opacity-0' : 'opacity-100'} border border-Grey-50 px-4 bg-Grey-05`}
+              className={`${isHidden ? 'opacity-0' : 'opacity-100'} border border-Grey-50`}
             >
               <div className="">
-                <div className="py-4">상품 관리</div>
-                <ul>
-                  <li className="py-2">상품 등록</li>
-                </ul>
+                <div
+                  className={`${pathname.includes('dashboard') ? 'bg-blue-500' : ''} py-5 px-4`}
+                  onClick={goDashboard}
+                >
+                  대시보드
+                </div>
+                <div
+                  className={`${pathname.includes('product') ? 'bg-blue-500' : ''} py-5 px-4 flex justify-between `}
+                  onClick={toggleProduct}
+                >
+                  <div>상품 관리</div>
+                  <div>{isProductOpen ? '˄' : '˅'}</div>
+                </div>
+                {isProductOpen && (
+                  <ul>
+                    {/* <li className="py-2 px-4" onClick={goAddProduct}>
+                      상품 등록
+                    </li> */}
+                    {상품관리카테고리.map((item) => (
+                      <li
+                        key={`sidebar-상품관리카테고리-${item.name}`}
+                        className="py-2 px-4"
+                        onClick={item.onClick}
+                      >
+                        {item.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
 
           {isHidden && (
-            <div
-              className="absolute top-[40px] right-[6px]"
-              onClick={showSidebar}
-            >
+            <div className="fixed top-[4] left-[4px]" onClick={showSidebar}>
               {'[>]'}
             </div>
           )}

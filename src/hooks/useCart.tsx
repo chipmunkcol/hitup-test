@@ -13,16 +13,16 @@ export interface CartItemWithChecked extends CartItem {
   checked: boolean;
 }
 
-const useCart = ({ data: CartItem }: UseCartProps) => {
+const useCart = ({ data: cartItem }: UseCartProps) => {
   // 장바구니 상태
   const [cart, setCart] = useState<CartItemWithChecked[]>([]);
 
   useEffect(() => {
     // if (CartItem?.length > 0) {
-    if (CartItem) {
-      setCart(CartItem.map((item) => ({ ...item, checked: true })));
+    if (cartItem && cartItem?.length > 0) {
+      setCart(cartItem.map((item) => ({ ...item, checked: true })));
     }
-  }, [CartItem]);
+  }, [cartItem]);
   console.log('cart: ', cart);
 
   const groupedItems = groupByBrand(cart);

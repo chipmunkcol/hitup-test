@@ -38,6 +38,7 @@ import EditReviewPage from './pages/review/EditReviewPage';
 import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import ReviewManagePage from './pages/review/ReviewManagePage';
+import Dashboard from './pages/partner/Dashboard';
 
 function App() {
   // const { user } = useAuthStore();
@@ -110,6 +111,9 @@ function App() {
         <Route path="*" element={<div>없는 페이지</div>} />
 
         {/* 브랜드 파트너 페이지 */}
+        {/* 브랜드 파트너 페이지 */}
+        {/* 브랜드 파트너 페이지 */}
+
         {/* 임시로 지정 서버 나누고 나서는 /partner depth에서 로그인/회원가입 제외 */}
 
         <Route path="/partner" element={<PartersLayout />}>
@@ -135,6 +139,7 @@ function App() {
             }
           >
             <Route path="product/add" element={<AddProduct />} />
+            <Route path="dashboard" element={<Dashboard />} />
           </Route>
         </Route>
       </Routes>

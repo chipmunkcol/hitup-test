@@ -44,7 +44,9 @@ const ResetPassword = () => {
       <Form
         // form={form}
         onFinish={handleFindPassword}
-        labelCol={{ style: { width: '120px', marginRight: '10px' } }}
+        labelCol={{
+          style: { width: '120px', height: '55px', marginRight: '10px' },
+        }}
         labelAlign="left"
       >
         {/* 새 비밀번호 */}

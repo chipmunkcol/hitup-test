@@ -31,6 +31,16 @@ export const useNavi = () => {
     navigate('/user/review/writable');
   };
 
+  // /address/add
+  const goAddAddress = () => {
+    navigate('/user/address/add');
+  };
+
+  // '/purchase'
+  const goPurchase = () => {
+    navigate('/user/purchase');
+  };
+
   // 파트너스 관련 페이지 (임시)
   const goPartnerLogin = () => navigate('/partner/login');
   const goPartnerRegister = () => navigate('/partner/register');
@@ -42,6 +52,7 @@ export const useNavi = () => {
     navigate('/partner/find-password/reset');
 
   const goAddProduct = () => navigate('/partner/management/product/add');
+  const goDashboard = () => navigate('/partner/management/dashboard');
 
   return {
     goBack,
@@ -54,6 +65,8 @@ export const useNavi = () => {
     goCoupon,
     goPurchaseHistory,
     goReviewManage,
+    goAddAddress,
+    goPurchase,
 
     // 파트너 관련
     goPartnerLogin,
@@ -63,5 +76,6 @@ export const useNavi = () => {
     goPartnerFindIdFound,
     goPartnerFindPasswordReset,
     goAddProduct,
+    goDashboard,
   };
 };

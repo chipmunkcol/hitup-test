@@ -16,36 +16,71 @@ function getImportValue(key: keyof typeof importData) {
 }
 ```
 
-type PartnerFindPasswordPayload = Omit<
-PartnerFindAccountPayload,
-'companyOwnerName'
+객체 부분 key 변경하기
 
-> & {
-> loginId: string;
-> };
+```
+type PartnerFindPasswordPayload = Omit<PartnerFindAccountPayload,'companyOwnerName'> & { loginId: string; };
+
+```
+
+```
 
 type AuthStoreState = {
-partnerAuth: PartnerAuth | null;
-setPartnerAuth: (authData: Partial<PartnerAuth>) => void;
+  partnerAuth: PartnerAuth | null;
+  setPartnerAuth: (authData: Partial<PartnerAuth>) => void;
 };
 
 export const useAuthStore = create<AuthStoreState>()(
-persist(
-(set, get) => ({
-partnerAuth: null,
-setPartnerAuth: (authData) =>
-set({
-partnerAuth: {
-...get().partnerAuth,
-...authData, // ✅ 변경된 부분만 반영
-} as PartnerAuth,
-}),
-}),
-{
-name: 'partner-auth',
-storage: createJSONStorage(() => localStorage),
-}
-)
+  persist(
+    (set, get) => ({
+      partnerAuth: null,
+      setPartnerAuth: (authData) =>
+        set({
+          partnerAuth: {
+            ...get().partnerAuth,
+            ...authData, // ✅ 변경된 부분만 반영
+          } as PartnerAuth,
+        }),
+    }),
+    {
+      name: 'partner-auth',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
 );
 
+
+```
+
 ### antd
+
+Radio, Select, Selectbox
+
+```
+<Radio.Group
+  defaultValue={'card'}
+  options={[
+    { value: 'card', label: '카드결제' },
+    { value: 'naverpay', label: '네이버페이' },
+  ]}
+  onChange={onChange}
+/>
+```
+
+```
+<SelectBox
+  options={[
+    { value: '1', label: '1개', price: item.가격 },
+    {
+      value: '2',
+      label: '2개',
+      price: item.가격 * 2,
+    },
+    {
+      value: '3',
+      label: '3개',
+      price: item.가격 * 3,
+    },
+  ]}
+/>
+```
