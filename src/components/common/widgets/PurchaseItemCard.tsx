@@ -1,5 +1,5 @@
 import { TYPOGRAPHY } from '@/styles/typography';
-import Button from '../../atoms/Button';
+import Button from '../../atoms/MyButton';
 
 const PurchaseItemCard = () => {
   return (

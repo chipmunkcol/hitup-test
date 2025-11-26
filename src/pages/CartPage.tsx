@@ -5,7 +5,7 @@ import { alertComingSoon } from '@/utils/function';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/atoms/Button';
+import Button from '../components/atoms/MyButton';
 import useCart from '../hooks/useCart';
 import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
 import Loading from './common/Loading';

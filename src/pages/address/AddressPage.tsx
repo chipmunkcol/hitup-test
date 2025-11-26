@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../components/atoms/Button';
+import Button from '../../components/atoms/MyButton';
 import type { Address } from '../../data/addressesData';
 import { useDeliveryStore } from '../../store/useDeliveryStore';
 import { getAddresses } from '../../utils/api/api';

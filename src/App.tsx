@@ -39,6 +39,7 @@ import Writable from './pages/review/reviewManage/Writable';
 import Written from './pages/review/reviewManage/Written';
 import ReviewManagePage from './pages/review/ReviewManagePage';
 import Dashboard from './pages/partner/Dashboard';
+import TestPage from './pages/TestPage';
 
 function App() {
   // const { user } = useAuthStore();
@@ -47,6 +48,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<TempNaviHeader />} />
+
+        {/* 테스트 페이지 */}
+        <Route path="/test" element={<TestPage />} />
 
         {/* 유저 페이지 */}
         <Route path="/user" element={<Layout />}>

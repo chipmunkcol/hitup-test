@@ -1,4 +1,4 @@
-import Button from '@/components/atoms/Button';
+import Button from '@/components/atoms/MyButton';
 import { swalAlert } from '@/components/common/libs/sweetalert/sweetalert';
 import { useNavi } from '@/hooks/useNavi';
 import { useAuthStore } from '@/store/useAuthStore';

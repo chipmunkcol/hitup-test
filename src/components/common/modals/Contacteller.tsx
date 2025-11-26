@@ -1,4 +1,4 @@
-import Button from '@/components/atoms/Button';
+import Button from '@/components/atoms/MyButton';
 import { TYPOGRAPHY } from '@/styles/typography';
 import SelectboxCheck from '../widgets/SelectboxCheck';
 import Input from '../../atoms/Input';

@@ -1,7 +1,7 @@
 import lineDashed from '@/assets/images/lineDashed.jpg';
 
 import { TYPOGRAPHY } from '@/styles/typography';
-import Button from '@/components/atoms/Button';
+import Button from '@/components/atoms/MyButton';
 
 const GetCouponPortal = () => {
   return (

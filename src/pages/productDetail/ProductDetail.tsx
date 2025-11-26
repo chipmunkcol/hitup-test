@@ -1,4 +1,4 @@
-import Button from '@/components/atoms/Button';
+import Button from '@/components/atoms/MyButton';
 import { TumbCarousel } from '@/components/common/libs/carousel/TumbCarousel';
 import { swalConfirm } from '@/components/common/libs/sweetalert/sweetalert';
 import DropdownInfo from '@/components/common/widgets/DropdownInfo';
