@@ -12,7 +12,6 @@ import {
   Radio,
   Select,
   Space,
-  type FormInstance,
 } from 'antd';
 import { useState } from 'react';
 
@@ -31,7 +30,7 @@ const DisclosureNotice = () => {
   type IsRadioOpen = keyof typeof isRadioOpen;
 
   // 직접 입력값 상태
-  const [directInputValues, setDirectInputValues] = useState({
+  const [, setDirectInputValues] = useState({
     radio1: '',
     radio2: '',
     radio3: '',

@@ -2,7 +2,6 @@ import type { CartItem } from '@/data/cardData';
 import type { Coupon } from '@/data/couponData';
 import type { Review } from '@/data/reviewableProductData';
 import type { RegisterForm } from '@/pages/auth/RegisterPage';
-import { useAuthStore } from '@/store/useAuthStore';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import type { Address } from '../../data/addressesData';
@@ -15,7 +14,6 @@ import {
   getEncryptedValue,
   timestamp,
 } from '../auth/crypto';
-import type { PartnerTokenRefreshResponse } from './partnerApi';
 
 // axios 기본 설정
 export const fakeApi = axios.create({

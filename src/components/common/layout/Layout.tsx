@@ -21,7 +21,6 @@
 
 // export default Layout;
 
-import type { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 import CategoryBig from '../widgets/CategoryBig';
 import Footer from '../widgets/Footer';

@@ -5,7 +5,7 @@ import HamburgerBtn from '../../atoms/HamburgerBtn';
 import Logo from '../../atoms/Logo';
 
 const Header = () => {
-  const { goHome, goCart, goMypage, goAddProduct } = useNavi();
+  const { goHome, goCart, goMypage } = useNavi();
 
   const pathname = window.location.pathname;
 

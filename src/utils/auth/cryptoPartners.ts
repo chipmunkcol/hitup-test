@@ -187,7 +187,7 @@ export const encryptedAccessKey = encryptAes256(
 // console.log('encryptedAccessKey: ', encryptedAccessKey);
 
 // 2. 복호화 테스트 (로컬에서 확인용)
-const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
+// const decryptedData = decryptAes256(timestamp, accessKey, encryptedData);
 // const decryptedData = decryptAes256(
 //   timestamp,
 //   accessKey,

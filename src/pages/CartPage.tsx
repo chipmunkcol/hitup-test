@@ -1,17 +1,18 @@
 import OptionPlusMinusBtn from '@/components/atoms/OptionPlusMinusBtn';
 import SelectBox from '@/components/atoms/SelectBox';
+import { useNavi } from '@/hooks/useNavi';
 import { TYPOGRAPHY } from '@/styles/typography';
 import { alertComingSoon } from '@/utils/function';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/MyButton';
 import useCart from '../hooks/useCart';
 import { getAddresses, getAvailableCoupons, getCart } from '../utils/api/api';
 import Loading from './common/Loading';
-import { useNavi } from '@/hooks/useNavi';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const {
     data: CartItems,
     isError,

@@ -21,7 +21,7 @@ const ContactHistory = () => {
 
   const data = productData?.상품문의 || [];
 
-  const { user } = useAuthStore();
+  const { userAuth } = useAuthStore();
 
   // 문의 삭제 핸들러
   const queryClient = useQueryClient();
@@ -118,7 +118,7 @@ const ContactHistory = () => {
                         </div>
                       )}
                     </div>
-                    {user?.id === item?.작성자 && (
+                    {userAuth?.nickName === item?.작성자 && (
                       <div className="flex-1 flex gap-3">
                         {!item.답변.완료 && <Button>수정</Button>}
                         <Button onClick={() => handleDelete(id, item.id)}>

@@ -1,13 +1,4 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Radio,
-  Select,
-  Space,
-  Switch,
-} from 'antd';
+import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
 import { useState } from 'react';
 const importData = {
   라틴아메리카: ['멕시코', '브라질', '아르헨티나', '칠레'],

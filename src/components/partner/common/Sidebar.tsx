@@ -12,9 +12,9 @@ const Sidebar = () => {
     setIsHidden(!isHidden);
   };
 
-  const hiddenSidebar = () => {
-    setIsHidden(true);
-  };
+  // const hiddenSidebar = () => {
+  //   setIsHidden(true);
+  // };
 
   const showSidebar = () => {
     setIsHidden(false);

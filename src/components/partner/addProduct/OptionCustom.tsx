@@ -15,9 +15,7 @@ const OptionCustom = () => {
     options: [],
   });
 
-  const [customOptionInput, setCustomOptionInput] = useState<
-    CustomOptionInputType[]
-  >([]);
+  const [, setCustomOptionInput] = useState<CustomOptionInputType[]>([]);
   // console.log('customOptionInput: ', customOptionInput);
 
   useEffect(() => {

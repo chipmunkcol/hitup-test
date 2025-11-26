@@ -1,6 +1,5 @@
 import PortalLayout from '@/components/common/layout/PortalLayout';
 import AddressList from '@/components/common/modals/partner/AddressList';
-import { commonRules } from '@/data/const/regex';
 import usePortal from '@/hooks/usePortal';
 import { Button, Form, Input, Select } from 'antd';
 

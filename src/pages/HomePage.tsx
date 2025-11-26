@@ -6,11 +6,10 @@ import Tab from '../components/common/widgets/Tab';
 import { 신상품 } from '../data/cardData';
 
 import Category from '@/components/common/widgets/Category';
-import { useEffect } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
 import img1 from '../assets/images/Banner_carousel_desktop1.png';
 import img2 from '../assets/images/Banner_carousel_desktop2.png';
 import { Carousel } from '../components/common/libs/carousel/Carousel';
-import { useAuthStore } from '@/store/useAuthStore';
 
 const slides = [img1, img2];
 

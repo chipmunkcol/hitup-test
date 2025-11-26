@@ -4,7 +4,6 @@ import useActiveBtn from '@/hooks/useActiveBtn';
 import useActiveBtnV2 from '@/hooks/useActiveBtnV2';
 import usePortal from '@/hooks/usePortal';
 import { Button, Form, Input, Radio, Select } from 'antd';
-import useSelection from 'antd/es/table/hooks/useSelection';
 import { useState } from 'react';
 
 type T = '배송' | '배송없음' | '템플릿';

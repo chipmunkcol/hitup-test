@@ -1,5 +1,5 @@
 import { passwordRegex } from '@/data/const/regex';
-import { 파트너스등록, type 파트너스등록Payload } from '@/utils/api/partnerApi';
+import { 파트너스등록 } from '@/utils/api/partnerApi';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Checkbox, Form, Input, Radio } from 'antd';
 import { useState } from 'react';

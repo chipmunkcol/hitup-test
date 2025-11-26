@@ -296,7 +296,6 @@ export const 파트너스등록 = async (payload: 파트너스등록Payload) => 
     companyNumber,
     companyOwnerName,
     companyOwnerPhoneNumber,
-    companyType,
   } = payload;
 
   const { timestamp: ts, encryptedAccessKey } =

@@ -1,6 +1,5 @@
-import { parseJwt } from '@/utils/auth/function';
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 // {
 //     "memberId": "4a35d1d8-52b2-461e-bf4a-66c8028f2e6f",
